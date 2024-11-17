@@ -2,13 +2,13 @@ package main;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 public class GameWindow extends JFrame {
     private GameScreen gameScreen;
     private BufferedImage img;
+
     public GameWindow(){
         importImage();
         

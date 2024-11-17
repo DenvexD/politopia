@@ -2,7 +2,6 @@ package main;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Random;
-
 import javax.swing.JPanel;
 import java.awt.Graphics;
 
@@ -10,16 +9,32 @@ public class GameScreen extends JPanel {
     private ArrayList<BufferedImage> sprites = new ArrayList<>();
     private BufferedImage img;
     private Random random;
+    private long lastTime = 0;
+    private int frames = 0;
+
     public GameScreen(BufferedImage img){
         random = new Random();
         this.img = img;
         sprites = getSprites();
         
     }
+
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         paintMapRandomly(g);
+
+        printFPS();
     }
+
+    private void printFPS() {
+        frames ++;
+        if(System.currentTimeMillis() - lastTime >= 1000){
+            System.out.println("Current FPS: " + frames);
+            frames = 0;
+            lastTime = System.currentTimeMillis();
+        }
+    }
+
     public ArrayList<BufferedImage> getSprites(){
         for(int x = 0; x < 10; x++){
             for(int y = 0; y < 10; y++){
@@ -29,6 +44,7 @@ public class GameScreen extends JPanel {
         }
         return sprites;
     }
+
     public void paintMapRandomly(Graphics g){
         for(int x = 0; x < 20; x++){
             for(int y = 0; y < 20; y++){
