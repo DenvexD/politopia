@@ -9,8 +9,6 @@ public class GameScreen extends JPanel {
     private ArrayList<BufferedImage> sprites = new ArrayList<>();
     private BufferedImage img;
     private Random random;
-    private long lastTime = 0;
-    private int frames = 0;
 
     public GameScreen(BufferedImage img){
         random = new Random();
@@ -22,17 +20,6 @@ public class GameScreen extends JPanel {
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         paintMapRandomly(g);
-
-        printFPS();
-    }
-
-    private void printFPS() {
-        frames ++;
-        if(System.currentTimeMillis() - lastTime >= 1000){
-            System.out.println("Current FPS: " + frames);
-            frames = 0;
-            lastTime = System.currentTimeMillis();
-        }
     }
 
     public ArrayList<BufferedImage> getSprites(){
