@@ -20,25 +20,21 @@ public class App implements Runnable{
         
 
     }
-    private static void gameLoop (GameWindow gameWindow){
-        timePerFrame = 1000000000.0 / 120.0;
-        lastTimeFrameNano = 0;
+    private static void renderTheGameInThread(GameWindow gameWindow){
 
-        timePerUpdate = 1000000000.0 / 60.0;
-        lastTimeUpdateNano = 0;
-
-        while (true) {
-            if(isReadyForNextFrame()){
-                lastTimeFrameNano = System.nanoTime();
-                updateWindow(gameWindow);
-            }
-            if (isReadyForNextUpdate()) {
-                lastTimeUpdateNano = System.nanoTime();
-                updateGame();
-            }
-            printUPS();
-            printFPS();
+        if(isReadyForNextFrame()){
+            lastTimeFrameNano = System.nanoTime();
+            updateWindow(gameWindow);
         }
+        printFPS();
+    }
+    private static void updateTheGameInThread(){
+
+        if (isReadyForNextUpdate()) {
+            lastTimeUpdateNano = System.nanoTime();
+            updateGame();
+        }
+        printUPS();
     }
 
     private static void updateGame(){
@@ -83,8 +79,17 @@ public class App implements Runnable{
  
     
     public void run() {
+        timePerFrame = 1000000000.0 / 120.0;
+        lastTimeFrameNano = 0;
+
+        timePerUpdate = 1000000000.0 / 60.0;
+        lastTimeUpdateNano = 0;
+
         GameWindow gameWindow = new GameWindow();
-        gameLoop(gameWindow);
+        while (true) {
+            renderTheGameInThread(gameWindow);
+            updateTheGameInThread();
+        }
     }
 
 
