@@ -1,4 +1,7 @@
 package main;
+
+
+
 public class App implements Runnable{
     private static double timePerFrame;
     private static long lastTimeFrameNano;
@@ -12,6 +15,8 @@ public class App implements Runnable{
 
     private static Thread gameThread;
 
+
+
     public static void main(String[] args) throws Exception {
         App app = new App();
         gameThread = new Thread(app){};
@@ -20,6 +25,7 @@ public class App implements Runnable{
         
 
     }
+
     private static void renderTheGameInThread(GameWindow gameWindow){
 
         if(isReadyForNextFrame()){
@@ -86,6 +92,7 @@ public class App implements Runnable{
         lastTimeUpdateNano = 0;
 
         GameWindow gameWindow = new GameWindow();
+        gameWindow.initInputs();
         while (true) {
             renderTheGameInThread(gameWindow);
             updateTheGameInThread();
