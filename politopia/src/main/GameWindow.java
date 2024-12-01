@@ -5,7 +5,7 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
-public class GameWindow extends JFrame {
+public class GameWindow extends JFrame{
     private GameScreen gameScreen;
     private BufferedImage img;
 

@@ -1,5 +1,5 @@
 package main;
-public class App {
+public class App implements Runnable{
     private static double timePerFrame;
     private static long lastTimeFrameNano;
     private static long lastTimeFrameMillis;
@@ -9,12 +9,15 @@ public class App {
     private static long lastTimeUpdateNano;
     private static long lastTimeUpdateMillis;
     private static long ups;
+
+    private static Thread gameThread;
+
     public static void main(String[] args) throws Exception {
+        App app = new App();
+        gameThread = new Thread(app){};
+        gameThread.start();
 
-
-
-        GameWindow gameWindow = new GameWindow();
-        gameLoop(gameWindow);
+        
 
     }
     private static void gameLoop (GameWindow gameWindow){
@@ -77,4 +80,12 @@ public class App {
     private static boolean oneSecondSinceLastFPS(){
         return(System.currentTimeMillis() - lastTimeFrameMillis >= 1000);
     }
+ 
+    
+    public void run() {
+        GameWindow gameWindow = new GameWindow();
+        gameLoop(gameWindow);
+    }
+
+
 }

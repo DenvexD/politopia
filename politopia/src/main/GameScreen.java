@@ -10,10 +10,11 @@ public class GameScreen extends JPanel {
     private BufferedImage img;
     private Random random;
 
+
     public GameScreen(BufferedImage img){
         random = new Random();
         this.img = img;
-        sprites = getSprites();
+        sprites = getSprites(img);
         
     }
 
@@ -22,7 +23,7 @@ public class GameScreen extends JPanel {
         paintMapRandomly(g);
     }
 
-    public ArrayList<BufferedImage> getSprites(){
+    public ArrayList<BufferedImage> getSprites(BufferedImage img){
         for(int x = 0; x < 10; x++){
             for(int y = 0; y < 10; y++){
 
@@ -41,4 +42,7 @@ public class GameScreen extends JPanel {
             }
         }
     }
+
+
+
 }
