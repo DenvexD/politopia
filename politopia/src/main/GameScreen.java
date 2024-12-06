@@ -19,13 +19,29 @@ public class GameScreen extends JPanel {
         random = new Random();
         this.img = img;
         sprites = getSprites(img);
+
+
         
     }
+    
 
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        paintMapRandomly(g);
+
+        switch (GameStates.gameStates) {
+            case MENU:
+                paintMapRandomly(g);
+                break;
+        
+            case SETTINGS:
+                break;
+            case PLAYING:
+                break;
+        }
     }
+
+
+
 
     public ArrayList<BufferedImage> getSprites(BufferedImage img){
         for(int x = 0; x < 10; x++){
