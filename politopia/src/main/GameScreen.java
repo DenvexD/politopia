@@ -11,13 +11,15 @@ public class GameScreen extends JPanel {
     private ArrayList<BufferedImage> sprites = new ArrayList<>();
     private BufferedImage img;
     private Random random;
+    private Game game;
 
     
 
 
-    public GameScreen(BufferedImage img){
+    public GameScreen(BufferedImage img, Game game){
         random = new Random();
         this.img = img;
+        this.game = game;
         sprites = getSprites(img);
 
 
@@ -30,8 +32,7 @@ public class GameScreen extends JPanel {
 
         switch (GameStates.gameStates) {
             case MENU:
-                paintMapRandomly(g);
-                break;
+                this.game.getMenu().render(g);
         
             case SETTINGS:
                 break;
@@ -59,6 +60,7 @@ public class GameScreen extends JPanel {
                 int randomSpriteNumber = random.nextInt(100);
                 BufferedImage randomSprite = sprites.get(randomSpriteNumber);
                 g.drawImage(randomSprite, x*32, y*32, null);
+                
             }
         }
     }

@@ -16,13 +16,15 @@ public class GameWindow extends JFrame{
 
     private MyMouseListener myMouseListener;
     private KeyboardListener keyboardListener;
+    private Game game;
 
-    public GameWindow(){
+    public GameWindow(Game game){
+        this.game = game;
         importImage();
         
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        gameScreen = new GameScreen(img);
+        gameScreen = new GameScreen(img, this.game);
         add(gameScreen);
         setVisible(true);
         setTheWindowSize();
@@ -45,7 +47,7 @@ public class GameWindow extends JFrame{
     }
 
     public void initInputs(){
-        myMouseListener = new MyMouseListener();
+        myMouseListener = new MyMouseListener(game);
         keyboardListener = new KeyboardListener();
         addMouseListener(myMouseListener);
         addMouseMotionListener(myMouseListener);

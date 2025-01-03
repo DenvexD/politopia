@@ -1,8 +1,8 @@
 package main;
 
+import scenes.Menu;
 
-
-public class App implements Runnable{
+public class Game implements Runnable{
     private static double timePerFrame;
     private static long lastTimeFrameNano;
     private static long lastTimeFrameMillis;
@@ -15,16 +15,21 @@ public class App implements Runnable{
 
     private static Thread gameThread;
 
+    private Menu menu;
+
+
 
 
     public static void main(String[] args) throws Exception {
-        App app = new App();
-        gameThread = new Thread(app){};
+        Game game = new Game();
+        game.initScenes();
+        gameThread = new Thread(game){};
         gameThread.start();
 
         
 
     }
+
 
     private static void renderTheGameInThread(GameWindow gameWindow){
 
@@ -42,7 +47,6 @@ public class App implements Runnable{
         }
         printUPS();
     }
-
     private static void updateGame(){
         ups++;
         //updating the game
@@ -91,7 +95,7 @@ public class App implements Runnable{
         timePerUpdate = 1000000000.0 / 60.0;
         lastTimeUpdateNano = 0;
 
-        GameWindow gameWindow = new GameWindow();
+        GameWindow gameWindow = new GameWindow(this);
         gameWindow.initInputs();
         while (true) {
             renderTheGameInThread(gameWindow);
@@ -99,5 +103,14 @@ public class App implements Runnable{
         }
     }
 
+    private void initScenes(){
+        this.menu = new Menu(this);
+    }
+
+    public Menu getMenu(){
+        return this.menu;
+    }
+
 
 }
+
