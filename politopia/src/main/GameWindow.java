@@ -17,6 +17,8 @@ public class GameWindow extends JFrame{
     private MyMouseListener myMouseListener;
     private KeyboardListener keyboardListener;
     private Game game;
+    private static int height = 640;
+    private static int width = 640;
 
     public GameWindow(Game game){
         this.game = game;
@@ -39,7 +41,7 @@ public class GameWindow extends JFrame{
         
     }
     private void setTheWindowSize(){
-        windowSize = new Dimension(640, 640);
+        windowSize = new Dimension(width, height);
         setMinimumSize(windowSize);
         setMaximumSize(windowSize);
         setPreferredSize(windowSize);
@@ -54,5 +56,12 @@ public class GameWindow extends JFrame{
         addKeyListener(keyboardListener);
         requestFocus();
         
+    }
+
+    public static int getWindowWidth(){
+        return width;
+    }
+    public static int getWindowHeight(){
+        return height;
     }
 }
