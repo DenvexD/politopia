@@ -2,9 +2,11 @@ package main;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Random;
+
 import javax.swing.JPanel;
 
-
+import inputs.KeyboardListener;
+import inputs.MyMouseListener;
 import java.awt.Graphics;
 
 public class GameScreen extends JPanel {
@@ -12,6 +14,9 @@ public class GameScreen extends JPanel {
     private BufferedImage img;
     private Random random;
     private Game game;
+    private MyMouseListener myMouseListener;
+    private KeyboardListener keyboardListener;
+
 
     
 
@@ -65,6 +70,17 @@ public class GameScreen extends JPanel {
         }
     }
 
+
+        public void initInputs(){
+        myMouseListener = new MyMouseListener(game);
+        keyboardListener = new KeyboardListener();
+        addMouseListener(myMouseListener);
+        addMouseMotionListener(myMouseListener);
+        addKeyListener(keyboardListener);
+        requestFocus();
+        System.out.println("sded");
+        
+    }
 
 
 }

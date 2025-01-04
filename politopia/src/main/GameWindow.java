@@ -6,16 +6,14 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
-import inputs.KeyboardListener;
-import inputs.MyMouseListener;
+
 
 public class GameWindow extends JFrame{
     private GameScreen gameScreen;
     private BufferedImage img;
     private Dimension windowSize;
 
-    private MyMouseListener myMouseListener;
-    private KeyboardListener keyboardListener;
+
     private Game game;
     private static int height = 640;
     private static int width = 640;
@@ -23,7 +21,6 @@ public class GameWindow extends JFrame{
     public GameWindow(Game game){
         this.game = game;
         importImage();
-        
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         gameScreen = new GameScreen(img, this.game);
@@ -49,13 +46,7 @@ public class GameWindow extends JFrame{
     }
 
     public void initInputs(){
-        myMouseListener = new MyMouseListener(game);
-        keyboardListener = new KeyboardListener();
-        addMouseListener(myMouseListener);
-        addMouseMotionListener(myMouseListener);
-        addKeyListener(keyboardListener);
-        requestFocus();
-        
+        gameScreen.initInputs();
     }
 
     public static int getWindowWidth(){

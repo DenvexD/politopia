@@ -1,6 +1,7 @@
 package ui;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
 public class Button {
     private String text;
@@ -10,6 +11,7 @@ public class Button {
     private int textHeight;
     private int textX;
     private int textY;
+    private Rectangle bound;
     
     public Button(String text, int width, int height){
         this.text = text;
@@ -17,6 +19,7 @@ public class Button {
         this.height = height;
     }
     public void draw(Graphics g, int x, int y){
+        initBounds(x, y);
         this.drawBody(g, x, y);
         this.drawBorders(g, x, y);
         this.drawText(g, x, y);
@@ -39,6 +42,9 @@ public class Button {
         textY = y + this.height / 2 + textHeight / 4;
         g.drawString(text, textX, textY);
     }
+    private void initBounds(int x, int y){
+        this.bound = new Rectangle(x, y, this.width, this.height);
+    }
 
     public int getWidth(){
         return this.width;
@@ -46,4 +52,8 @@ public class Button {
     public int getHeight(){
         return this.height;
     }
+    public Rectangle getBound(){
+        return this.bound;
+    }
+
 }

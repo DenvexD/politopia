@@ -1,7 +1,7 @@
 package scenes;
 
+import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import ui.Button;
@@ -32,16 +32,27 @@ public class Menu extends GameScene implements scenesMethods{
     @Override
     public void render(Graphics g) {
         drawButtonDiv(g, buttonDiv);
+        g.setColor(Color.BLUE);
+        g.drawLine(0,0 ,640 ,640 );
+        g.setColor(Color.GRAY);
     }
-    public void mouseClicked(int X, int Y){
-        System.out.println("mouse clicked at:" + X + " " +  Y);
+    public void mouseClicked(int x, int y){
+        if(playButton.getBound().contains(x, y)){
+            System.out.println("played got clicked");
+        }
+        if(settingsButton.getBound().contains(x, y)){
+            System.out.println("settings got clicked");
+        }
+        if(quitButton.getBound().contains(x, y)){
+            System.out.println("quit got clicked");
+        }
     }
 
     private int getButtonDivCentreX(Button button){
         return GameWindow.getWindowWidth() / 2 - button.getWidth() / 2;
     }
     private int getButtonDivCentreY(int divHight){
-        return GameWindow.getWindowWidth() / 2 - divHight / 2;
+        return GameWindow.getWindowHeight() / 2 - divHight / 2;
     }
     private void drawButtonDiv(Graphics g, ArrayList<Button> buttonDiv){
         int divHight = getButtonDivHight(buttonDiv);
