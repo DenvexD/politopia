@@ -1,6 +1,5 @@
 package scenes;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
@@ -32,21 +31,8 @@ public class Menu extends GameScene implements scenesMethods{
     @Override
     public void render(Graphics g) {
         drawButtonDiv(g, buttonDiv);
-        g.setColor(Color.BLUE);
-        g.drawLine(0,0 ,640 ,640 );
-        g.setColor(Color.GRAY);
     }
-    public void mouseClicked(int x, int y){
-        if(playButton.getBound().contains(x, y)){
-            System.out.println("played got clicked");
-        }
-        if(settingsButton.getBound().contains(x, y)){
-            System.out.println("settings got clicked");
-        }
-        if(quitButton.getBound().contains(x, y)){
-            System.out.println("quit got clicked");
-        }
-    }
+
 
     private int getButtonDivCentreX(Button button){
         return GameWindow.getWindowWidth() / 2 - button.getWidth() / 2;
@@ -73,4 +59,50 @@ public class Menu extends GameScene implements scenesMethods{
         divHight += yOffset * buttonDiv.size();
         return divHight;
     }
+
+    public void mouseClicked(int x, int y){
+        if(playButton.getBound().contains(x, y)){
+            System.out.println("played got clicked");
+        }
+        if(settingsButton.getBound().contains(x, y)){
+            System.out.println("settings got clicked");
+        }
+        if(quitButton.getBound().contains(x, y)){
+            System.exit(0);
+        }
+    }
+
+    public void mousePressed(int x, int y) {
+        if(playButton.getBound().contains(x, y)){
+            playButton.setMousePressed();
+        }
+        if(settingsButton.getBound().contains(x, y)){
+            settingsButton.setMousePressed();
+        }
+        if(quitButton.getBound().contains(x, y)){
+            quitButton.setMousePressed();
+        }
+    }
+
+    public void mouseReleased(int x, int y) {
+        playButton.resetMousePressed();
+        quitButton.resetMousePressed();
+        settingsButton.resetMousePressed();
+    }
+
+    public void mouseMoved(int x, int y) {
+        playButton.resetMouseOver();
+        quitButton.resetMouseOver();
+        settingsButton.resetMouseOver();
+
+        if(playButton.getBound().contains(x, y)){
+            playButton.setMouseOver();
+        }
+        if(settingsButton.getBound().contains(x, y)){
+            settingsButton.setMouseOver();
+        }
+        if(quitButton.getBound().contains(x, y)){
+            quitButton.setMouseOver();
+    }
+}
 }
