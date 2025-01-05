@@ -7,6 +7,7 @@ import ui.Button;
 import main.GameWindow;
 
 import main.Game;
+import main.GameStates;
 
 
 
@@ -62,6 +63,7 @@ public class Menu extends GameScene implements scenesMethods{
 
     public void mouseClicked(int x, int y){
         if(playButton.getBound().contains(x, y)){
+            GameStates.gameState = GameStates.PLAYING;
             System.out.println("played got clicked");
         }
         if(settingsButton.getBound().contains(x, y)){

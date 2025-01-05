@@ -35,14 +35,14 @@ public class GameScreen extends JPanel {
     public void paintComponent(Graphics g){
         super.paintComponent(g);
 
-        switch (GameStates.gameStates) {
+        switch (GameStates.gameState) {
             case MENU:
                 this.game.getMenu().render(g);
         
             case SETTINGS:
                 break;
             case PLAYING:
-                break;
+                this.game.getPlay().render(g);
         }
     }
 

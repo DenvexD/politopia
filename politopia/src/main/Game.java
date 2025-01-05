@@ -1,6 +1,8 @@
 package main;
 
 import scenes.Menu;
+import scenes.Play;
+import main.GameStates;
 
 public class Game implements Runnable{
     private static double timePerFrame;
@@ -16,6 +18,7 @@ public class Game implements Runnable{
     private static Thread gameThread;
 
     private Menu menu;
+    private Play play;
 
 
 
@@ -105,10 +108,14 @@ public class Game implements Runnable{
 
     private void initScenes(){
         this.menu = new Menu(this);
+        this.play = new Play(this);
     }
 
     public Menu getMenu(){
         return this.menu;
+    }
+    public Play getPlay(){
+        return this.play;
     }
 
 
