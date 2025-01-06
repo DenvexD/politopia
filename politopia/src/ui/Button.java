@@ -1,6 +1,7 @@
 package ui;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Rectangle;
 
 public class Button {
@@ -13,6 +14,7 @@ public class Button {
     private int textY;
     private Rectangle bound;
     private boolean mousePressed, mouseOver;
+    private Image img;
     
     public Button(String text, int width, int height){
         this.text = text;
@@ -21,10 +23,19 @@ public class Button {
     }
     public void draw(Graphics g, int x, int y){
         initBounds(x, y);
-        this.drawBody(g, x, y);
-        this.drawBorders(g, x, y);
-        this.drawText(g, x, y);
+        if(this.img == null){
+            this.drawBody(g, x, y);
+            this.drawBorders(g, x, y);
+        }else{
+            g.drawImage(this.img, x, y, this.width, this.height, null);
+        }
+
+        if(this.text != null){
+            this.drawText(g, x, y);
+        }
+        
     }
+
 
     private void drawBody(Graphics g, int x, int y){
         if (this.mouseOver){
@@ -52,7 +63,7 @@ public class Button {
         textY = y + this.height / 2 + textHeight / 4;
         g.drawString(text, textX, textY);
     }
-    private void initBounds(int x, int y){
+    public void initBounds(int x, int y){
         this.bound = new Rectangle(x, y, this.width, this.height);
     }
 
@@ -87,6 +98,15 @@ public class Button {
     }
     public void resetMouseOver(){
         this.mouseOver = false;
+    }
+    public void setWidth(int width){
+        this.width = width;
+    }
+    public void setHeght(int height){
+        this.height = height;
+    }
+    public void setImage(Image img){
+        this.img = img;
     }
 
 }

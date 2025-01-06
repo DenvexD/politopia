@@ -14,11 +14,17 @@ public class Game implements Runnable{
     private static long lastTimeUpdateNano;
     private static long lastTimeUpdateMillis;
     private static long ups;
+    private GameWindow gameWindow;
 
     private static Thread gameThread;
 
     private Menu menu;
     private Play play;
+
+    private int fieldWidth = 32;
+    private int fieldHeight = 32;
+    private int windowHeight = 640;
+    private int windowWidth = 640;
 
 
 
@@ -99,6 +105,7 @@ public class Game implements Runnable{
         lastTimeUpdateNano = 0;
 
         GameWindow gameWindow = new GameWindow(this);
+        this.gameWindow = gameWindow;
         gameWindow.initInputs();
         while (true) {
             renderTheGameInThread(gameWindow);
@@ -118,6 +125,28 @@ public class Game implements Runnable{
         return this.play;
     }
 
+    public int getFieldHeight(){
+        return fieldHeight;
+    }
+    public int getFieldWidth(){
+        return fieldWidth;
+    }
+    public void setFieldHeight(int height){
+        fieldHeight = height;
+    }
+    public void setFieldWidth(int width){
+        fieldWidth = width;
+    }
+
+    public GameWindow getGameWindow(){
+        return this.gameWindow;
+    }
+    public int getWindowWidth(){
+        return this.windowWidth;
+    }
+    public int getWindowHeight(){
+        return this.windowHeight;
+    }
 
 }
 
