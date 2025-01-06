@@ -14,8 +14,6 @@ public class Board extends Button{
     private int widthInFields;
     private int heightInFields;
     private Game game;
-    private int screenCentreX;
-    private int screenCentreY;
     private int x;
     private int y;
     public Board(int widthInFields, int heightInFields, Game game){
@@ -26,12 +24,6 @@ public class Board extends Button{
         this.x = game.getWindowWidth() / 2;
         this.y = game.getWindowHeight() / 2;
         initFields();
-    }
-    private int findCentreX(){
-        return this.getWidth() / 2;
-    }
-    private int findCentreY(){
-        return this.getHeight() / 2;
     }
     private void initFields(){
         int i = 0;
@@ -57,17 +49,27 @@ public class Board extends Button{
                 if (this.isVisable(field)){
                     field.draw(g, field.getBound().x, field.getBound().y);
                 }
+
             }
         }
-
     }
 
     private boolean isVisable(Field field){
         return field.getBound().intersects(0, 0, game.getWindowWidth(), game.getWindowHeight());
     }
     public void adjustBoardCoordinates(int adjustX, int adjustY){
-        this.x = this.x + adjustX;
-        this.y = this.y + adjustY;
+        this.adjustFieldsCoordinates(adjustX, adjustY);
+        this.x += adjustX *5;
+        this.y += adjustY *5;
+        System.out.println(adjustX);
+    }
+    private void adjustFieldsCoordinates(int adjustX, int adjustY){
+       for (ArrayList<Field> rawOFields : this.fields) {
+            for (Field field : rawOFields) {
+                field.getBound().x += adjustX;
+                field.getBound().y += adjustY;
+            }
+        }
     }
     public int getX(){
         return this.x;
@@ -75,32 +77,7 @@ public class Board extends Button{
     public int getY(){
         return this.y;
     }
-
-    private int findLeftTopCornerX(){
-        int distanceToBoardCorner = this.getWidth() / 2;
-        int distanceToScreenCorner = this.x;
-        int shortestDistance = Math.min(distanceToScreenCorner, distanceToBoardCorner);
-        return this.x - shortestDistance;
-    }
-    private int findLeftTopCornerY(){
-        int distanceToBoardCorner = this.getHeight() / 2;
-        int distanceToScreenCorner = this.y;
-        int shortestDistance = Math.min(distanceToScreenCorner, distanceToBoardCorner);
-        return this.y - shortestDistance;
-    }
-    private int findRightBottomCornerX(){
-        int distanceToBoardCorner = this.getWidth() / 2;
-        int distanceToScreenCorner = game.getWindowWidth() - this.x;
-        int shortestDistance = Math.min(distanceToScreenCorner, distanceToBoardCorner);
-        return this.x + shortestDistance;
-    }
-    private int findRightBottomCornerY(){
-        int distanceToBoardCorner = this.getHeight() / 2;
-        int distanceToScreenCorner = game.getWindowHeight() - this.y;
-        int shortestDistance = Math.min(distanceToScreenCorner, distanceToBoardCorner);
-        return this.y + shortestDistance;
-    }
-
+    
 
 
 }

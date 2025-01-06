@@ -5,17 +5,13 @@ import java.awt.Graphics;
 
 import main.Game;
 import objects.Board;
-import objects.Field;
 import java.awt.Image;
-import java.awt.Toolkit;
 
 public class Play extends GameScene implements scenesMethods {
-    private int xFieldDimensions = 640; 
-    private int yFieldDimensions = 640;
-    private int xScreenDimensions = 640;
-    private int ySreenDimensions = 640;
     private Board myBoard;
     private Image img;
+    private int mousePositionX;
+    private int mousePositionY;
 
     public Play(Game game){
         super(game);
@@ -31,6 +27,37 @@ public class Play extends GameScene implements scenesMethods {
     }
 
     private void initBoard(){
-        myBoard = new Board(40, 40, getGame());
+        myBoard = new Board(5, 5, getGame());
+    }
+    public void mouseDragged(int newPositionX, int newPositionY){
+        int adjustX =  this.mousePositionX - newPositionX;
+        int adjustY = this.mousePositionY - newPositionY;
+        myBoard.adjustBoardCoordinates(adjustX, adjustY);
+        this.mousePositionX = newPositionX;
+        this.mousePositionY = newPositionY;
+        this.handleIntersection();
+    }
+
+    public void mousePressed(int x, int y){
+        this.mousePositionX = x;
+        this.mousePositionY = y;
+    }
+    private void handleIntersection(){
+        int adjusmentX = 0;
+        int adjustmentY = 0;
+        if (myBoard.getX() > 640) {
+            adjusmentX = 640 - myBoard.getX();
+        }
+        if (myBoard.getX() < 0) {
+            adjusmentX = -myBoard.getX();
+        }
+        if (myBoard.getY() > 640) {
+            adjustmentY = 640 - myBoard.getY();
+        }
+        if (myBoard.getY() < 0) {
+            adjustmentY = -myBoard.getY();
+        }
+        System.out.println("x: " + myBoard.getX() + " y: " + myBoard.getY());
+        myBoard.adjustBoardCoordinates(adjusmentX, adjustmentY);
     }
 }

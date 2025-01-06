@@ -7,9 +7,7 @@ import java.awt.Toolkit;
 
 public class Field extends Button {
     private FieldTypes fieldType;
-    private int x1;
-    private int x2;
-    
+
     public Field(int width, int height, FieldTypes fieldType){
         super(null, width, height);
         this.fieldType = fieldType;
