@@ -44,6 +44,7 @@ public class Button {
             g.setColor(Color.GRAY);
         }
         g.fillRect(x, y, this.width, this.height);
+  
     }
     private void drawBorders(Graphics g, int x, int y){
         g.setColor(Color.BLACK);

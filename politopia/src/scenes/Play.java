@@ -42,22 +42,35 @@ public class Play extends GameScene implements scenesMethods {
         this.mousePositionX = x;
         this.mousePositionY = y;
     }
+    public void mouseWheelMoved(double rotation){
+        if (rotation > 0){
+            myBoard.adjustBoardSize(1, 1);
+        }
+        if (rotation < 0) {
+            myBoard.adjustBoardSize(-1, -1);
+        }
+
+    }
     private void handleIntersection(){
         int adjusmentX = 0;
         int adjustmentY = 0;
-        if (myBoard.getX() > 640) {
-            adjusmentX = 640 - myBoard.getX();
+        int rightBoarder = myBoard.getX() - myBoard.getWidth()/3;
+        int leftBoarder = myBoard.getX() + myBoard.getWidth()/3;
+        int highBoarder = myBoard.getY() - myBoard.getHeight()/3;
+        int bottomBoarder = myBoard.getY() + myBoard.getHeight()/3;
+        if (rightBoarder > 640) {
+            adjusmentX = 640 - rightBoarder;  
         }
-        if (myBoard.getX() < 0) {
-            adjusmentX = -myBoard.getX();
+        if (leftBoarder < 0) {
+            adjusmentX = -leftBoarder;
         }
-        if (myBoard.getY() > 640) {
-            adjustmentY = 640 - myBoard.getY();
+        if (highBoarder > 640) {
+            adjustmentY = 640 -highBoarder;
         }
-        if (myBoard.getY() < 0) {
-            adjustmentY = -myBoard.getY();
+        if (bottomBoarder < 0) {
+            adjustmentY = -bottomBoarder;
         }
         System.out.println("x: " + myBoard.getX() + " y: " + myBoard.getY());
-        myBoard.adjustBoardCoordinates(adjusmentX, adjustmentY);
+        myBoard.adjustBoardCoordinates(-adjusmentX, -adjustmentY);
     }
 }

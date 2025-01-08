@@ -95,7 +95,7 @@ public class MyMouseListener implements MouseListener, MouseMotionListener, Mous
             case SETTINGS:
                 break;
             case PLAYING:
-                System.out.println(e);
+                game.getPlay().mouseWheelMoved((e.getPreciseWheelRotation()));
         }
     }
 

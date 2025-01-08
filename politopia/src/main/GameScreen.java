@@ -79,7 +79,6 @@ public class GameScreen extends JPanel {
         addMouseWheelListener(myMouseListener);
         addKeyListener(keyboardListener);
         requestFocus();
-        System.out.println("sded");
         
     }
 
