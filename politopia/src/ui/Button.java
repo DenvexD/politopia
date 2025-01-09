@@ -103,7 +103,7 @@ public class Button {
     public void setWidth(int width){
         this.width = width;
     }
-    public void setHeght(int height){
+    public void setHeight(int height){
         this.height = height;
     }
     public void setImage(Image img){

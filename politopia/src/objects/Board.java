@@ -81,6 +81,34 @@ public class Board extends Button{
             prevField.right = field;
         }
     }
+    private void reInitFieldsCoordinates(int adjustHeight, int adjustWidth){
+        Field currField = this.fields.getFirst().getFirst();
+        int i = 0;
+        for (int y = this.y - this.getHeight()/2; y < this.y + this.getHeight()/2; y += game.getFieldHeight()) {
+            for(int x = this.x - this.getWidth()/2; x < this.x + this.getWidth()/2; x += game.getFieldWidth()){
+                currField.setHeight(field.getHeight() + adjustHeight);
+                currField.setWidth(field.getWidth() + adjustWidth);
+                currField.initBounds(x, y);
+                
+                currField = this.getNextField(currField);
+                i++;
+            }
+        }
+    }
+    private Field getNextField(Field currField){
+        if (currField.right != null){
+            currField = currField.right;
+        }else{
+            if (currField.bottom == null) {
+                return null;
+            }
+            while (currField.left != null) {
+                currField = currField.left;
+            }
+            currField = currField.bottom;
+        }
+        return currField;
+    }
 
     public void draw(Graphics g){
         int left = 0;
@@ -127,7 +155,16 @@ public class Board extends Button{
         this.adjustFieldsCoordinates(adjustX, adjustY);
         this.x -= adjustX;
         this.y -= adjustY;
-        System.out.println(adjustX);
+    }
+    public void moveCoordinatesToCentre(int x, int y){
+        int distanceY = game.getWindowHeight()/2 - y;
+        int distanceX = game.getWindowWidth()/2 - x;
+        this.adjustBoardCoordinates(distanceX, distanceY);
+    }
+    public void removeCoordinatesToCentre(int x, int y){
+        int distanceY = game.getWindowHeight()/2 -y;
+        int distanceX = game.getWindowWidth()/2 - x;
+        this.adjustBoardCoordinates(-distanceX, -distanceY);
     }
     private void adjustFieldsCoordinates(int adjustX, int adjustY){
        for (ArrayList<Field> rawOFields : this.fields) {
@@ -140,15 +177,13 @@ public class Board extends Button{
     }
     public void adjustBoardSize(int adjustHeight, int adjustWidth){
         this.setWidth(this.getWidth() + adjustWidth * this.fields.get(0).size());
-        this.setHeght(this.getHeight() + adjustHeight * this.fields.size());
+        this.setHeight(this.getHeight() + adjustHeight * this.fields.size());
         this.adjustFieldsSize(adjustHeight, adjustWidth);
     }
     private void adjustFieldsSize(int adjustHeight, int adjustWidth){
-        for (int y = this.y - this.getHeight()/2; y < this.y + this.getHeight()/2; y += game.getFieldHeight()) {
-            for(int x = this.x - this.getWidth()/2; x < this.x + this.getWidth()/2; x += game.getFieldWidth()){
-
-            }
-        }
+        game.setFieldHeight(game.getFieldHeight() + adjustHeight);
+        game.setFieldWidth(game.getFieldWidth() + adjustWidth);
+        this.reInitFieldsCoordinates(adjustHeight, adjustWidth);
     }
     public int getX(){
         return this.x;

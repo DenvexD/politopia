@@ -6,12 +6,15 @@ import java.awt.Graphics;
 import main.Game;
 import objects.Board;
 import java.awt.Image;
+import java.awt.MouseInfo;
+import java.awt.PointerInfo;
 
 public class Play extends GameScene implements scenesMethods {
     private Board myBoard;
     private Image img;
     private int mousePositionX;
     private int mousePositionY;
+    private PointerInfo pointerInfo = MouseInfo.getPointerInfo();
 
     public Play(Game game){
         super(game);
@@ -38,17 +41,51 @@ public class Play extends GameScene implements scenesMethods {
         this.handleIntersection();
     }
 
+
     public void mousePressed(int x, int y){
         this.mousePositionX = x;
         this.mousePositionY = y;
     }
-    public void mouseWheelMoved(double rotation){
+    public void mouseWheelMoved(double rotation, int x, int y){
+        int change = myBoard.getWidth() / 200;
         if (rotation > 0){
-            myBoard.adjustBoardSize(1, 1);
+            int centreX = 0;
+            int centreY = 0;
+            int widthX = myBoard.getWidth();
+            int heightX = myBoard.getHeight(); 
+            myBoard.adjustBoardSize(-change, -change);
+            int diffX = (myBoard.getWidth() - widthX) / 2;
+            int diffY = (myBoard.getHeight() - heightX) /2; 
+            int adjusmentX  = diffX * (myBoard.getX() - centreX - x) / (myBoard.getWidth() /2);
+            int adjustmentY = diffY * (myBoard.getY() - centreY - y) / (myBoard.getHeight() / 2);
+            centreX += adjusmentX;
+            centreY += adjustmentY;
+            
+            
+            System.out.println("d: " + centreX + " x: " + centreY);
+            myBoard.adjustBoardCoordinates(-adjusmentX, -adjustmentY);
+
+
         }
         if (rotation < 0) {
-            myBoard.adjustBoardSize(-1, -1);
+            int centreX = 0;
+            int centreY = 0;
+            int widthX = myBoard.getWidth();
+            int heightX = myBoard.getHeight(); 
+            myBoard.adjustBoardSize(change, change);
+            int diffX = (myBoard.getWidth() - widthX) / 2;
+            int diffY = (myBoard.getHeight() - heightX) /2; 
+            int adjusmentX  = diffX * (myBoard.getX() - centreX - x) / (myBoard.getWidth() /2);
+            int adjustmentY = diffY * (myBoard.getY() - centreY - y) / (myBoard.getHeight() / 2);
+            
+            centreX += adjusmentX;
+            centreY += adjustmentY;
+            System.out.println("d: " + centreX + " x: " + centreY);
+            myBoard.adjustBoardCoordinates(-adjusmentX, -adjustmentY);
+
+            
         }
+        
 
     }
     private void handleIntersection(){
@@ -70,7 +107,6 @@ public class Play extends GameScene implements scenesMethods {
         if (bottomBoarder < 0) {
             adjustmentY = -bottomBoarder;
         }
-        System.out.println("x: " + myBoard.getX() + " y: " + myBoard.getY());
         myBoard.adjustBoardCoordinates(-adjusmentX, -adjustmentY);
     }
 }

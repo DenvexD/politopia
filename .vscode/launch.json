@@ -19,9 +19,9 @@
         },
         {
             "type": "java",
-            "name": "App",
+            "name": "Game",
             "request": "launch",
-            "mainClass": "main.App",
+            "mainClass": "main.Game",
             "projectName": "politopia_546a703f"
         }
     ]

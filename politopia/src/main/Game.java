@@ -20,10 +20,10 @@ public class Game implements Runnable{
     private Menu menu;
     private Play play;
 
-    private int fieldWidth = 124;
-    private int fieldHeight = 124;
-    private int windowHeight = 840;
-    private int windowWidth = 840;
+    private int fieldWidth = 60;
+    private int fieldHeight = 60;
+    private int windowHeight = 640;
+    private int windowWidth = 640;
 
 
 
@@ -125,16 +125,16 @@ public class Game implements Runnable{
     }
 
     public int getFieldHeight(){
-        return fieldHeight;
+        return this.fieldHeight;
     }
     public int getFieldWidth(){
-        return fieldWidth;
+        return this.fieldWidth;
     }
     public void setFieldHeight(int height){
-        fieldHeight = height;
+        this.fieldHeight = height;
     }
     public void setFieldWidth(int width){
-        fieldWidth = width;
+        this.fieldWidth = width;
     }
 
     public GameWindow getGameWindow(){

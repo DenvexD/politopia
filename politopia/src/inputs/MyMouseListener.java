@@ -26,6 +26,7 @@ public class MyMouseListener implements MouseListener, MouseMotionListener, Mous
                 break;
             case PLAYING:
                 game.getPlay().mouseDragged(e.getX(), e.getY());
+
         }
     }
 
@@ -37,7 +38,6 @@ public class MyMouseListener implements MouseListener, MouseMotionListener, Mous
             case SETTINGS:
                 break;
             case PLAYING:
-                break;
         }
     }
 
@@ -95,7 +95,7 @@ public class MyMouseListener implements MouseListener, MouseMotionListener, Mous
             case SETTINGS:
                 break;
             case PLAYING:
-                game.getPlay().mouseWheelMoved((e.getPreciseWheelRotation()));
+                game.getPlay().mouseWheelMoved(e.getPreciseWheelRotation(), e.getX(), e.getY());
         }
     }
 
