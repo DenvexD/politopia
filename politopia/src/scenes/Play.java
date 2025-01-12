@@ -6,21 +6,14 @@ import java.awt.Graphics;
 import main.Game;
 import objects.Board;
 import java.awt.Image;
-import java.awt.MouseInfo;
-import java.awt.PointerInfo;
 
 public class Play extends GameScene implements scenesMethods {
     private Board myBoard;
     private Image img;
     private int mousePositionX;
     private int mousePositionY;
-    private PointerInfo pointerInfo = MouseInfo.getPointerInfo();
-    private int centreX = 0;
-    private int centreY = 0;
-    private float X;
-    private float Y;
-    private int widthX;
-    private int heightX;
+    private float cumulativeDeviationX;
+    private float cumulativeDeviationY;
 
     public Play(Game game){
         super(game);
@@ -36,7 +29,7 @@ public class Play extends GameScene implements scenesMethods {
     }
 
     private void initBoard(){
-        myBoard = new Board(20, 20, getGame());
+        myBoard = new Board(getGame().getBoardWidthInFields(), getGame().getBoardHeightInFields(), getGame());
     }
     public void mouseDragged(int newPositionX, int newPositionY){
         int adjustX =  this.mousePositionX - newPositionX;
@@ -54,39 +47,34 @@ public class Play extends GameScene implements scenesMethods {
     }
     public void mouseWheelMoved(double rotation, int x, int y){
         int change = myBoard.getWidth() / 40;
-        this.widthX = myBoard.getWidth();
-        this.heightX = myBoard.getHeight(); 
+        int oldWidthX = myBoard.getWidth();
+        int oldHeightX = myBoard.getHeight(); 
         if (rotation > 0){
             myBoard.adjustBoardSize(-change, -change);
-
         }
         if (rotation < 0) {
             myBoard.adjustBoardSize(change, change);
         }
-        int newWidth = myBoard.getWidth();
-        int newHeight = myBoard.getHeight();
-        float widthRatio = (float)newWidth / this.widthX;
-        float heightRatio = (float)newHeight / this.heightX;
+        float widthRatio = (float)myBoard.getWidth() / oldWidthX;
+        float heightRatio = (float)myBoard.getHeight() / oldHeightX;
+        adjustBoardCoordinatesOnZoom(widthRatio, heightRatio, x, y);
+    }
+    private void adjustBoardCoordinatesOnZoom(float widthRatio, float heightRatio, int x, int y){
         int oldDistanceX = x - myBoard.getX();
         int oldDistanceY = y - myBoard.getY();
-        int adjustDistanceX = Math.round((widthRatio - 1) * oldDistanceX);
-        int adjustDistanceY = Math.round((heightRatio - 1) * oldDistanceY);
-        float adjustDistanceXX = (widthRatio - 1) * oldDistanceX;
-        float adjustDistanceYY = (heightRatio - 1) * oldDistanceY;
-        X += adjustDistanceXX - adjustDistanceX;
-        Y += adjustDistanceYY - adjustDistanceY;
-        int realX = (int)X;
-        int realY = (int)Y;
+        float adjustDistanceX = (widthRatio - 1) * oldDistanceX;
+        float adjustDistanceY = (heightRatio - 1) * oldDistanceY;
 
-        System.out.println("X: " + realX + " Y: " + X);
-        X -= realX;
-        Y -= realY;
-        myBoard.adjustBoardCoordinates(adjustDistanceX + realX, adjustDistanceY + realY);
+        cumulativeDeviationX += adjustDistanceX - Math.round(adjustDistanceX);
+        cumulativeDeviationY += adjustDistanceY - Math.round(adjustDistanceY);
+        int intPartDeviationX = (int)cumulativeDeviationX;
+        int intPartDeviationY = (int)cumulativeDeviationY;
 
-            
-        
-
+        myBoard.adjustBoardCoordinates(Math.round(adjustDistanceX) + intPartDeviationX, Math.round(adjustDistanceY) + intPartDeviationY);
+        cumulativeDeviationX -= intPartDeviationX;
+        cumulativeDeviationY -= intPartDeviationY;
     }
+
     private void handleIntersection(){
         int adjusmentX = 0;
         int adjustmentY = 0;

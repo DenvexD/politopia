@@ -176,8 +176,8 @@ public class Board extends Button{
         }
     }
     public void adjustBoardSize(int adjustHeight, int adjustWidth){
-        this.setWidth(this.getWidth() + adjustWidth * this.fields.get(0).size());
-        this.setHeight(this.getHeight() + adjustHeight * this.fields.size());
+        this.setWidth(this.getWidth() + adjustWidth * game.getBoardWidthInFields());
+        this.setHeight(this.getHeight() + adjustHeight * game.getBoardHeightInFields());
         this.adjustFieldsSize(adjustHeight, adjustWidth);
     }
     private void adjustFieldsSize(int adjustHeight, int adjustWidth){

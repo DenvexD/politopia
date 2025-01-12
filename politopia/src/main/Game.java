@@ -24,6 +24,8 @@ public class Game implements Runnable{
     private int fieldHeight = 60;
     private int windowHeight = 640;
     private int windowWidth = 640;
+    private int boardWidthInFields = 10;
+    private int boardHeightInFields = 10;
 
 
 
@@ -145,6 +147,18 @@ public class Game implements Runnable{
     }
     public int getWindowHeight(){
         return this.windowHeight;
+    }
+    public int getBoardWidthInFields(){
+        return this.boardWidthInFields;
+    }
+    public int getBoardHeightInFields(){
+        return boardHeightInFields;
+    }
+    public void setBoardWidthInFields(int boardWidthInFields){
+        this.boardWidthInFields = boardWidthInFields;
+    }
+    public void setBoardHeightInFields(int boardHeightInFields){
+        this.boardHeightInFields = boardHeightInFields;
     }
 
 }
