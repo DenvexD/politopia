@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import main.Game;
 import objects.Board;
 import java.awt.Image;
+import java.awt.Polygon;
 
 public class Play extends GameScene implements scenesMethods {
     private Board myBoard;
@@ -17,7 +18,6 @@ public class Play extends GameScene implements scenesMethods {
 
     public Play(Game game){
         super(game);
-        System.out.println("play");
         initBoard();
     }
 
@@ -37,7 +37,6 @@ public class Play extends GameScene implements scenesMethods {
         myBoard.adjustBoardCoordinates(adjustX, adjustY);
         this.mousePositionX = newPositionX;
         this.mousePositionY = newPositionY;
-        this.handleIntersection();
     }
 
 
@@ -73,7 +72,7 @@ public class Play extends GameScene implements scenesMethods {
         cumulativeDeviationY -= intPartDeviationY;
     }
 
-    private void handleIntersection(){
+    public void handleIntersection(){
         int adjusmentX = 0;
         int adjustmentY = 0;
         int rightBoarder = myBoard.getX() - myBoard.getWidth()/3;

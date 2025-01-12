@@ -2,10 +2,11 @@ package ui;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Polygon;
 import java.awt.Rectangle;
 
 public class Button {
-    private String text;
+    protected String text;
     private int height;
     private int width;
     private int textWidth;
@@ -55,7 +56,7 @@ public class Button {
         }
 
     }
-    private void drawText(Graphics g, int x, int y){
+    protected void drawText(Graphics g, int x, int y){
         g.setColor(Color.WHITE);
         textWidth = g.getFontMetrics().stringWidth(text);
         textHeight = g.getFontMetrics().getHeight();
@@ -108,6 +109,9 @@ public class Button {
     }
     public void setImage(Image img){
         this.img = img;
+    }
+    public Image getImage(){
+        return this.img;
     }
 
 }

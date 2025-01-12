@@ -11,16 +11,12 @@ public class Board extends Button{
     private ArrayList<ArrayList<Field>> fields = new ArrayList<>();
     private ArrayList<Field> rawOFields;
     private Field field;
-    private int widthInFields;
-    private int heightInFields;
     private Game game;
     private int x;
     private int y;
     public Board(int widthInFields, int heightInFields, Game game){
         super(null, widthInFields * game.getFieldWidth(), heightInFields * game.getFieldHeight());
         this.game = game;
-        this.widthInFields = widthInFields;
-        this.heightInFields = heightInFields;
         this.x = game.getWindowWidth() / 2;
         this.y = game.getWindowHeight() / 2;
         initFields();
@@ -49,12 +45,8 @@ public class Board extends Button{
 
         }
     }
-    private Boolean isLastRaw(){
-        int rawsAmount = this.heightInFields;
-        return this.fields.size() == rawsAmount;
-    }
     private Field initFieldBoarders(int x, int y, int i){
-        field = new Field(game.getFieldWidth(), game.getFieldHeight(), FieldTypes.DEEP_WATER);
+        field = new Field(game.getFieldWidth(), game.getFieldHeight(), null);
         field.initBounds(x, y);
         field.setText(Integer.toString(i));
         this.rawOFields.add(field);
@@ -67,12 +59,7 @@ public class Board extends Button{
                 topRowField.bottom = currField;
                 currField = currField.left;
                 topRowField = topRowField.left;
-
-
             }
-
-
-
         }
     }
     private void initFieldLeftRightNeighbours(Field prevField, Field field){
@@ -83,7 +70,6 @@ public class Board extends Button{
     }
     private void reInitFieldsCoordinates(int adjustHeight, int adjustWidth){
         Field currField = this.fields.getFirst().getFirst();
-        int i = 0;
         for (int y = this.y - this.getHeight()/2; y < this.y + this.getHeight()/2; y += game.getFieldHeight()) {
             for(int x = this.x - this.getWidth()/2; x < this.x + this.getWidth()/2; x += game.getFieldWidth()){
                 currField.setHeight(field.getHeight() + adjustHeight);
@@ -91,7 +77,6 @@ public class Board extends Button{
                 currField.initBounds(x, y);
                 
                 currField = this.getNextField(currField);
-                i++;
             }
         }
     }
@@ -111,37 +96,11 @@ public class Board extends Button{
     }
 
     public void draw(Graphics g){
-        int left = 0;
-        int right = 0;
-        int top = 0;
-        int bottom = 0;
         g.setColor(Color.BLACK);
-
         for (ArrayList<Field> rawOFields : this.fields) {
             for (Field field : rawOFields) {
-                if (field.left != null) {
-                    left = field.left.number;
-                }else{
-                    left = 0;
-                }
-                if (field.right != null) {
-                    right = field.right.number;
-                }else{
-                    right = 0;
-                }
-                if (field.top != null) {
-                    top = field.top.number;
-                }else{
-                    top = 0;
-                }
-                if (field.bottom != null) {
-                    bottom = field.bottom.number;
-                }else{
-                    bottom = 0;
-                }
-                field.setText("" + field.number + " L" +  left +  " R" + right + " T" + top + " B" + bottom);
                 if (this.isVisable(field)){
-                    field.draw(g, field.getBound().x, field.getBound().y);
+                    field.draw(g, field.getX(), field.getY());
                 }
 
             }
@@ -149,7 +108,7 @@ public class Board extends Button{
     }
 
     private boolean isVisable(Field field){
-        return field.getBound().intersects(0, 0, game.getWindowWidth(), game.getWindowHeight());
+        return field.getPolygonBound().intersects(0, 0, game.getWindowWidth(), game.getWindowHeight());
     }
     public void adjustBoardCoordinates(int adjustX, int adjustY){
         this.adjustFieldsCoordinates(adjustX, adjustY);
@@ -169,8 +128,7 @@ public class Board extends Button{
     private void adjustFieldsCoordinates(int adjustX, int adjustY){
        for (ArrayList<Field> rawOFields : this.fields) {
             for (Field field : rawOFields) {
-                field.getBound().x -= adjustX;
-                field.getBound().y -= adjustY;
+                field.initBounds(field.getX() - adjustX, field.getY() - adjustY);
             }
             
         }
