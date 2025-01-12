@@ -46,20 +46,18 @@ public class Play extends GameScene implements scenesMethods {
         this.mousePositionY = y;
     }
     public void mouseWheelMoved(double rotation, int x, int y){
-        int change = myBoard.getWidth() / 40;
-        int oldWidthX = myBoard.getWidth();
-        int oldHeightX = myBoard.getHeight(); 
+        int sizeChangeX = myBoard.getWidth() / 40;
+        int sizeChangeY = myBoard.getHeight() / 40;
         if (rotation > 0){
-            myBoard.adjustBoardSize(-change, -change);
+            sizeChangeX = -sizeChangeX;
+            sizeChangeY = -sizeChangeY;
         }
-        if (rotation < 0) {
-            myBoard.adjustBoardSize(change, change);
-        }
-        float widthRatio = (float)myBoard.getWidth() / oldWidthX;
-        float heightRatio = (float)myBoard.getHeight() / oldHeightX;
-        adjustBoardCoordinatesOnZoom(widthRatio, heightRatio, x, y);
+        myBoard.adjustBoardSize(sizeChangeX, sizeChangeX);
+        adjustBoardCoordinatesOnZoom(sizeChangeX, sizeChangeY, x, y);
     }
-    private void adjustBoardCoordinatesOnZoom(float widthRatio, float heightRatio, int x, int y){
+    private void adjustBoardCoordinatesOnZoom(int sizeChangeX, int sizeChangeY, int x, int y){
+        float widthRatio = myBoard.getWidth() / ((float)myBoard.getWidth() - sizeChangeX * getGame().getBoardWidthInFields());
+        float heightRatio = myBoard.getHeight() / ((float)myBoard.getHeight() - sizeChangeY * getGame().getBoardHeightInFields());
         int oldDistanceX = x - myBoard.getX();
         int oldDistanceY = y - myBoard.getY();
         float adjustDistanceX = (widthRatio - 1) * oldDistanceX;
