@@ -25,10 +25,10 @@ public class Button {
     public void draw(Graphics g, int x, int y){
         initBounds(x, y);
         if(this.img == null){
-            this.drawBody(g, x, y);
-            this.drawBorders(g, x, y);
+            this.drawBody(g);
+            this.drawBorders(g);
         }else{
-            g.drawImage(this.img, x, y, this.width, this.height, null);
+            g.drawImage(this.img, this.bound.x, this.bound.width, this.width, this.height, null);
         }
 
         if(this.text != null){
@@ -38,21 +38,22 @@ public class Button {
     }
 
 
-    private void drawBody(Graphics g, int x, int y){
+    private void drawBody(Graphics g){
         if (this.mouseOver){
             g.setColor(Color.DARK_GRAY);
         }else{
             g.setColor(Color.GRAY);
         }
-        g.fillRect(x, y, this.width, this.height);
+        
+        g.fillRect(this.bound.x, this.bound.y, this.bound.width, this.bound.height);
   
     }
-    private void drawBorders(Graphics g, int x, int y){
+    private void drawBorders(Graphics g){
         g.setColor(Color.BLACK);
-        g.drawRect(x, y, this.width, this.height);
+        g.drawRect(this.bound.x, this.bound.y, this.bound.width, this.bound.height);
         if (this.mousePressed) {
-            g.drawRect(x+1, y+1, this.width-2, this.height-2);
-            g.drawRect(x+2, y+2, this.width-4, this.height-4);
+            g.drawRect(this.bound.x + 1, this.bound.y + 1, this.bound.width - 2, this.bound.height - 2);
+            g.drawRect(this.bound.x + 2, this.bound.y + 2, this.bound.width - 4, this.bound.height - 4);
         }
 
     }
@@ -66,7 +67,7 @@ public class Button {
         g.drawString(text, textX, textY);
     }
     public void initBounds(int x, int y){
-        this.bound = new Rectangle(x, y, this.width, this.height);
+        this.bound = new Rectangle(x - this.width/2, y - this.height/2, this.width, this.height);
     }
 
     public int getWidth(){

@@ -1,5 +1,6 @@
 package scenes;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
@@ -36,17 +37,18 @@ public class Menu extends GameScene implements scenesMethods{
 
 
     private int getButtonDivCentreX(Button button){
-        return GameWindow.getWindowWidth() / 2 - button.getWidth() / 2;
+        return GameWindow.getWindowWidth() / 2;
     }
     private int getButtonDivCentreY(int divHight){
-        return GameWindow.getWindowHeight() / 2 - divHight / 2;
+        return GameWindow.getWindowHeight() / 2;
     }
     private void drawButtonDiv(Graphics g, ArrayList<Button> buttonDiv){
         int divHight = getButtonDivHight(buttonDiv);
         int i = 0;
         int compoundHight = 0;
         for (Button button : buttonDiv) {
-            button.draw(g, getButtonDivCentreX(button), getButtonDivCentreY(divHight) + i * yOffset + compoundHight);
+            int yCoordinates = getButtonDivCentreY(divHight) - divHight/2 + button.getHeight()/2 + i * yOffset + compoundHight;
+            button.draw(g, getButtonDivCentreX(button), yCoordinates);
             i ++;
             compoundHight += button.getHeight();
         }

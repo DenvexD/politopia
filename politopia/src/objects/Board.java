@@ -32,6 +32,9 @@ public class Board extends Button{
         int[] xPoints = {x, x + this.getWidth() / 2, x, x - this.getWidth() / 2};
         int[] yPoints = {y - this.getHeight() / 2, y, y + this.getHeight() / 2, y};
         this.polygonBound = new Polygon(xPoints, yPoints, 4);
+        System.out.println(Arrays.toString(Arrays.copyOf(this.polygonBound.xpoints, this.polygonBound.npoints)));
+        System.out.println(Arrays.toString(Arrays.copyOf(this.polygonBound.ypoints, this.polygonBound.npoints)));
+
     }
     private void initFields(){
         int i = 0;
@@ -64,7 +67,7 @@ public class Board extends Button{
     }
     private Field initFieldBoarders(int x, int y, int i){
         field = new Field(game.getFieldWidth(), game.getFieldHeight(), null);
-        field.initBounds(x, y);
+        field.initBounds(x, y + game.getFieldHeight()/2);
         field.setText(Integer.toString(i));
         this.rawOFields.add(field);
         return field;
