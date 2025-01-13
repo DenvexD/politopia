@@ -61,8 +61,8 @@ public class Button {
         textWidth = g.getFontMetrics().stringWidth(text);
         textHeight = g.getFontMetrics().getHeight();
         
-        textX = x + this.width / 2 - textWidth / 2;
-        textY = y + this.height / 2 + textHeight / 4;
+        textX = x - textWidth / 2;
+        textY = y + textHeight / 4;
         g.drawString(text, textX, textY);
     }
     public void initBounds(int x, int y){

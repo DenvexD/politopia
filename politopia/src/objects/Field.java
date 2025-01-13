@@ -32,7 +32,6 @@ public class Field extends Button {
     public void draw(Graphics g, int x, int y){
         this.initBounds(x, y);
         if(this.getImage() == null){
-            g.setColor(Color.black);
             g.fillPolygon(this.polygonBound);
         }else{
             g.drawImage(this.getImage(), x, y, this.getWidth(), this.getHeight(), null);

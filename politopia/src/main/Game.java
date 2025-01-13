@@ -20,12 +20,12 @@ public class Game implements Runnable{
     private Menu menu;
     private Play play;
 
-    private int fieldWidth = 60;
-    private int fieldHeight = 60;
+    private int fieldWidth = 120;
+    private int fieldHeight = 120;
     private int windowHeight = 640;
     private int windowWidth = 640;
-    private int boardWidthInFields = 10;
-    private int boardHeightInFields = 10;
+    private int boardWidthInFields = 5;
+    private int boardHeightInFields = 5;
 
 
 
