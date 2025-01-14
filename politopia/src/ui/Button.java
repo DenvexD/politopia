@@ -2,10 +2,8 @@ package ui;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Polygon;
 import java.awt.Rectangle;
 
-import main.Game;
 
 public class Button {
     protected String text;

@@ -2,7 +2,6 @@ package objects;
 
 import ui.Button;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Polygon;
@@ -48,6 +47,13 @@ public class Field extends Button {
         int[] xPoints = {x, x + this.getWidth() / 2, x, x - this.getWidth() / 2};
         int[] yPoints = {y - this.getHeight() / 2, y, y + this.getHeight() / 2, y};
         this.polygonBound = new Polygon(xPoints, yPoints, 4);
+    }
+    public void adjustBounds(int x, int y){
+        this.x = x;
+        this.y = y;
+        this.polygonBound.xpoints = new int[]{x, x + this.getWidth() / 2, x, x - this.getWidth() / 2};
+        this.polygonBound.ypoints = new int[]{y - this.getHeight() / 2, y, y + this.getHeight() / 2, y};
+        this.polygonBound.invalidate();
     }
     public void setType(FieldTypes fieldType){
         this.fieldType = fieldType;

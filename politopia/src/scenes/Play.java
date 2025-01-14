@@ -6,9 +6,6 @@ import java.awt.Graphics;
 import main.Game;
 import objects.Board;
 import java.awt.Image;
-import java.awt.Polygon;
-
-import javax.swing.text.html.HTMLDocument.HTMLReader.BlockAction;
 
 public class Play extends GameScene implements scenesMethods {
     private Board myBoard;
@@ -28,8 +25,6 @@ public class Play extends GameScene implements scenesMethods {
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, 640, 640);
         myBoard.draw(g);
-        g.setColor(Color.black);
-        g.drawRect(320, 320, 2, 2);
     }
 
     private void initBoard(){
@@ -51,7 +46,6 @@ public class Play extends GameScene implements scenesMethods {
     public void mouseWheelMoved(double rotation, int x, int y){
         int sizeChangeX = (myBoard.getWidth() / 80) * 2;
         int sizeChangeY = (myBoard.getHeight() / 80) * 2;
-        System.out.println("chX: " + sizeChangeX + " chY: " + sizeChangeY);
         if (rotation > 0){
             sizeChangeX = -sizeChangeX;
             sizeChangeY = -sizeChangeY;
