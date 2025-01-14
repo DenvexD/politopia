@@ -32,8 +32,7 @@ public class Board extends Button{
         int[] xPoints = {x, x + this.getWidth() / 2, x, x - this.getWidth() / 2};
         int[] yPoints = {y - this.getHeight() / 2, y, y + this.getHeight() / 2, y};
         this.polygonBound = new Polygon(xPoints, yPoints, 4);
-        System.out.println(Arrays.toString(Arrays.copyOf(this.polygonBound.xpoints, this.polygonBound.npoints)));
-        System.out.println(Arrays.toString(Arrays.copyOf(this.polygonBound.ypoints, this.polygonBound.npoints)));
+        
 
     }
     private void initFields(){
@@ -64,9 +63,14 @@ public class Board extends Button{
             topRowField = currField;
             prevField = null;
         }
+        for (ArrayList<Field> row : fields) {
+            for (Field field : row) {
+                System.out.println(field.number);
+            }
+        }
     }
     private Field initFieldBoarders(int x, int y, int i){
-        field = new Field(game.getFieldWidth(), game.getFieldHeight(), null);
+        field = new Field(game.getFieldWidth(), game.getFieldHeight(), FieldTypes.CLOUDS);
         field.initBounds(x, y + game.getFieldHeight()/2);
         field.setText(Integer.toString(i));
         this.rawOFields.add(field);
@@ -89,30 +93,46 @@ public class Board extends Button{
         }
     }
     private void reInitFieldsCoordinates(int adjustHeight, int adjustWidth){
-        Field currField = this.fields.getFirst().getFirst();
-        for (int y = this.y - this.getHeight()/2; y < this.y + this.getHeight()/2; y += game.getFieldHeight()) {
-            for(int x = this.x - this.getWidth()/2; x < this.x + this.getWidth()/2; x += game.getFieldWidth()){
-                currField.setHeight(field.getHeight() + adjustHeight);
-                currField.setWidth(field.getWidth() + adjustWidth);
-                currField.initBounds(x, y);
-                
+        Field currField = null;
+        int leftBoarderX = this.polygonBound.xpoints[3];
+        int currRow = 0;
+        int currRowX = this.polygonBound.xpoints[0] - currRow * game.getFieldWidth()/2;
+        while (currRowX > leftBoarderX) {
+            int currX = this.polygonBound.xpoints[0] - currRow * game.getFieldWidth()/2;
+            int currY = this.polygonBound.ypoints[0] + currRow * game.getFieldHeight()/2;
+            int rightBoarderX = this.polygonBound.xpoints[1] - currRow * game.getFieldWidth()/2;
+            int rightBoarderY = this.polygonBound.ypoints[1] + currRow * game.getFieldHeight()/2;
+            while (currX < rightBoarderX && currY < rightBoarderY) {
+                System.out.println("x: " + currX + " y: " + currY + " bx: " + rightBoarderX + " by: " + rightBoarderY + " bbx: " + leftBoarderX + " xxx: " + currRowX);
                 currField = this.getNextField(currField);
+                // System.out.println("www " + currField.getWidth() + " aaa " + adjustWidth + "ooo " + (field.getWidth() + adjustWidth));
+                currField.setHeight(currField.getHeight() + adjustHeight);
+                currField.setWidth(currField.getWidth() + adjustWidth);
+                System.out.println(currField.getWidth());
+                
+                currField.initBounds(currX, currY + currField.getHeight()/2);
+                currX += game.getFieldWidth()/2;
+                currY += game.getFieldHeight()/2;
             }
+            currRow++;
+            currRowX = this.polygonBound.xpoints[0] - currRow * game.getFieldWidth()/2;
         }
+        System.out.println("w: " + this.getWidth() + " fw: " + fields.getFirst().getFirst().getWidth());
     }
     private Field getNextField(Field currField){
-        if (currField.right != null){
-            currField = currField.right;
-        }else{
-            if (currField.bottom == null) {
-                return null;
-            }
-            while (currField.left != null) {
-                currField = currField.left;
-            }
-            currField = currField.bottom;
+        if (currField == null) {
+            return this.fields.getFirst().getFirst();
         }
-        return currField;
+        int row = (currField.number + 1) / game.getBoardWidthInFields();
+        int column = (currField.number + 1) - row * game.getBoardWidthInFields();
+        System.out.println("r: " + row + " c: " + column);
+
+        if (row <= game.getBoardWidthInFields()-1 && column <= game.getBoardHeightInFields()-1) {
+            return this.fields.get(row).get(column);
+        }else{
+            return null;
+        }
+
     }
 
     public void draw(Graphics g){
@@ -181,11 +201,15 @@ public class Board extends Button{
     public void adjustBoardSize(int adjustHeight, int adjustWidth){
         this.setWidth(this.getWidth() + adjustWidth * game.getBoardWidthInFields());
         this.setHeight(this.getHeight() + adjustHeight * game.getBoardHeightInFields());
+        // System.out.println(adjustWidth * game.getBoardWidthInFields() + " a: " + adjustWidth + " h: " + game.getBoardWidthInFields());
+        this.initBounds(this.x, this.y);
         this.adjustFieldsSize(adjustHeight, adjustWidth);
+        
     }
     private void adjustFieldsSize(int adjustHeight, int adjustWidth){
         game.setFieldHeight(game.getFieldHeight() + adjustHeight);
         game.setFieldWidth(game.getFieldWidth() + adjustWidth);
+        System.out.println(game.getFieldWidth());
         this.reInitFieldsCoordinates(adjustHeight, adjustWidth);
     }
     public int getX(){

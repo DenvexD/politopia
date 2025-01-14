@@ -5,6 +5,8 @@ import java.awt.Image;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 
+import main.Game;
+
 public class Button {
     protected String text;
     private int height;
@@ -107,6 +109,7 @@ public class Button {
     }
     public void setHeight(int height){
         this.height = height;
+        
     }
     public void setImage(Image img){
         this.img = img;

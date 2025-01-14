@@ -34,7 +34,7 @@ public class Field extends Button {
         if(this.getImage() == null){
             g.fillPolygon(this.polygonBound);
         }else{
-            g.drawImage(this.getImage(), x, y, this.getWidth(), this.getHeight(), null);
+            g.drawImage(this.getImage(), x - this.getWidth()/2, y - this.getWidth()/2, this.getWidth(), this.getHeight(), null);
         }
         if (this.text != null) {
             this.drawText(g, x, y);
@@ -62,7 +62,10 @@ public class Field extends Button {
             switch (this.fieldType) {
                 case DEEP_WATER:
                     img = Toolkit.getDefaultToolkit().getImage("politopia/src/main/res/deep.png");  
-                    break; 
+                    break;
+                case CLOUDS:
+                    img = Toolkit.getDefaultToolkit().getImage("politopia/src/main/res/clouds.png");  
+                    break;
                 default:
                     img = null;
             }

@@ -49,13 +49,14 @@ public class Play extends GameScene implements scenesMethods {
         this.mousePositionY = y;
     }
     public void mouseWheelMoved(double rotation, int x, int y){
-        int sizeChangeX = myBoard.getWidth() / 40;
-        int sizeChangeY = myBoard.getHeight() / 40;
+        int sizeChangeX = (myBoard.getWidth() / 80) * 2;
+        int sizeChangeY = (myBoard.getHeight() / 80) * 2;
+        System.out.println("chX: " + sizeChangeX + " chY: " + sizeChangeY);
         if (rotation > 0){
             sizeChangeX = -sizeChangeX;
             sizeChangeY = -sizeChangeY;
         }
-        myBoard.adjustBoardSize(sizeChangeX, sizeChangeX);
+        myBoard.adjustBoardSize(sizeChangeX, sizeChangeY);
         adjustBoardCoordinatesOnZoom(sizeChangeX, sizeChangeY, x, y);
     }
     private void adjustBoardCoordinatesOnZoom(int sizeChangeX, int sizeChangeY, int x, int y){
