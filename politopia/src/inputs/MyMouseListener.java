@@ -73,7 +73,7 @@ public class MyMouseListener implements MouseListener, MouseMotionListener, Mous
             case SETTINGS:
                 break;
             case PLAYING:
-                game.getPlay().handleIntersection();
+                game.getPlay().mouseReleased(e.getX(), e.getY());
         }
     }
 

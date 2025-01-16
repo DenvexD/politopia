@@ -8,6 +8,8 @@ public class Game implements Runnable{
     private static long lastTimeFrameNano;
     private static long lastTimeFrameMillis;
     private static long fps;
+    private static int FPS;
+    private static int UPS;
 
     private static double timePerUpdate;
     private static long lastTimeUpdateNano;
@@ -26,6 +28,7 @@ public class Game implements Runnable{
     private int windowWidth = 640;
     private int boardWidthInFields = 5;
     private int boardHeightInFields = 5;
+    private int velocityMovementFramesDuration = 80;
 
 
 
@@ -99,6 +102,9 @@ public class Game implements Runnable{
  
     
     public void run() {
+        UPS = 60;
+        FPS = 120;
+
         timePerFrame = 1000000000.0 / 120.0;
         lastTimeFrameNano = 0;
 
@@ -159,6 +165,18 @@ public class Game implements Runnable{
     }
     public void setBoardHeightInFields(int boardHeightInFields){
         this.boardHeightInFields = boardHeightInFields;
+    }
+    public int getvelocityMovementFramesDuration(){
+        return this.velocityMovementFramesDuration;
+    }
+    public void setvelocityMovementFramesDuration(int velocityMovementFramesDuration){
+        this.velocityMovementFramesDuration = velocityMovementFramesDuration;
+    }
+    public static int getFPS(){
+        return FPS;
+    }
+    public static int getUPS(){
+        return UPS;
     }
 
 }

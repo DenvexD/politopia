@@ -14,6 +14,15 @@ public class Play extends GameScene implements scenesMethods {
     private int mousePositionY;
     private float cumulativeDeviationX;
     private float cumulativeDeviationY;
+    private int mouseLastPressedPositionX;
+    private int mouseLastPressedPositionY;
+    private long timeMousePressed;
+    private float velocityX = 0;
+    private float velocityY = 0;
+    private float accelerationX = 0;
+    private float accelerationY = 0;
+    private boolean velocityGreaterZeroX;
+    private boolean velocityGreaterZeroY;
 
     public Play(Game game){
         super(game);
@@ -22,6 +31,7 @@ public class Play extends GameScene implements scenesMethods {
 
     @Override
     public void render(Graphics g) {
+        this.moveBoardVelocity();
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, 640, 640);
         myBoard.draw(g);
@@ -36,13 +46,49 @@ public class Play extends GameScene implements scenesMethods {
         myBoard.adjustBoardCoordinates(adjustX, adjustY);
         this.mousePositionX = newPositionX;
         this.mousePositionY = newPositionY;
+        if (System.currentTimeMillis() - this.timeMousePressed > 1000) {
+            this.mouseLastPressedPositionX = newPositionX;
+            this.mouseLastPressedPositionY = newPositionY;
+            this.timeMousePressed = System.currentTimeMillis();
+        }
     }
 
 
     public void mousePressed(int x, int y){
+        this.timeMousePressed = System.currentTimeMillis();
+        this.mouseLastPressedPositionX = x;
+        this.mouseLastPressedPositionY = y;
         this.mousePositionX = x;
         this.mousePositionY = y;
     }
+    public void mouseReleased(int x, int y){
+        addVelocityToTheBoard(x, y);
+
+        handleIntersection();
+    }
+    private void addVelocityToTheBoard(int x, int y){
+        int durationMousePressed = (int)( System.currentTimeMillis() - this.timeMousePressed);
+        this.velocityX = (float)(x - this.mouseLastPressedPositionX) / (durationMousePressed / 5);
+        this.velocityY = (float)(y - this.mouseLastPressedPositionY) / (durationMousePressed / 5);
+        this.velocityGreaterZeroX = velocityX > 0;
+        this.velocityGreaterZeroY = velocityY > 0;
+        this.accelerationX = (float)-velocityX / getGame().getvelocityMovementFramesDuration();
+        this.accelerationY = (float)-velocityY / getGame().getvelocityMovementFramesDuration();
+    }
+    private void moveBoardVelocity(){
+        if (this.velocityX > 0 == this.velocityGreaterZeroX && this.velocityY > 0 == velocityGreaterZeroY) {
+            myBoard.adjustBoardCoordinates((int)-this.velocityX, (int)-this.velocityY);
+            this.velocityX += this.accelerationX;
+            this.velocityY += this.accelerationY;
+        }else{
+            this.velocityX = 0;
+            this.velocityY = 0;
+            this.accelerationX = 0;
+            this.accelerationY = 0;
+        }
+
+    }
+
     public void mouseWheelMoved(double rotation, int x, int y){
         int sizeChangeX = (myBoard.getWidth() / 80) * 2;
         int sizeChangeY = (myBoard.getHeight() / 80) * 2;
@@ -70,8 +116,7 @@ public class Play extends GameScene implements scenesMethods {
         cumulativeDeviationX -= intPartDeviationX;
         cumulativeDeviationY -= intPartDeviationY;
     }
-
-    public void handleIntersection(){
+    private void handleIntersection(){
         int adjusmentX = 0;
         int adjustmentY = 0;
         int rightBoarder = myBoard.getX() - myBoard.getWidth()/3;
