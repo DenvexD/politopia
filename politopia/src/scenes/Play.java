@@ -108,9 +108,18 @@ public class Play extends GameScene implements scenesMethods {
             sizeChangeX = -sizeChangeX;
             sizeChangeY = -sizeChangeY;
         }
-        myBoard.adjustBoardSize(sizeChangeX, sizeChangeY);
-        adjustBoardCoordinatesOnZoom(sizeChangeX, sizeChangeY, x, y);
-        handleIntersection();
+        if ((!isMaxSize() && rotation < 0) || (!isMinSize() && rotation > 0)) {
+            myBoard.adjustBoardSize(sizeChangeX, sizeChangeY);
+            adjustBoardCoordinatesOnZoom(sizeChangeX, sizeChangeY, x, y);
+            handleIntersection();
+        }
+
+    }
+    private boolean isMaxSize(){
+        return getGame().getFieldWidth() * 5 > getGame().getWindowWidth() && getGame().getFieldHeight() * 5 > getGame().getWindowHeight();
+    }
+    private boolean isMinSize(){
+        return myBoard.getWidth()  * 0.7 < getGame().getWindowWidth() && myBoard.getHeight() * 0.7 < getGame().getWindowHeight();
     }
     private void adjustBoardCoordinatesOnZoom(int sizeChangeX, int sizeChangeY, int x, int y){
         float widthRatio = myBoard.getWidth() / ((float)myBoard.getWidth() - sizeChangeX * getGame().getBoardWidthInFields());
