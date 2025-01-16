@@ -147,6 +147,7 @@ public class Board extends Button{
         this.adjustFieldsCoordinates(adjustX, adjustY);
         this.x -= adjustX;
         this.y -= adjustY;
+        this.adjustBounds(this.x, this.y);
     }
     public void moveCoordinatesToCentre(int x, int y){
         int distanceY = game.getWindowHeight()/2 - y;
@@ -177,6 +178,9 @@ public class Board extends Button{
     }
     public int getY(){
         return this.y;
+    }
+    public Polygon getPolygonBound(){
+        return polygonBound;
     }
     
 

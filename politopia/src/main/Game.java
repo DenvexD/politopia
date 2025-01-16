@@ -8,8 +8,8 @@ public class Game implements Runnable{
     private static long lastTimeFrameNano;
     private static long lastTimeFrameMillis;
     private static long fps;
-    private static int FPS;
-    private static int UPS;
+    private static float FPS = (float)120.0;
+    private static float UPS = (float)60.0;
 
     private static double timePerUpdate;
     private static long lastTimeUpdateNano;
@@ -19,8 +19,8 @@ public class Game implements Runnable{
 
     private static Thread gameThread;
 
-    private Menu menu;
-    private Play play;
+    private static Menu menu;
+    private static Play play;
 
     private int fieldWidth = 120;
     private int fieldHeight = 120;
@@ -62,7 +62,16 @@ public class Game implements Runnable{
     }
     private static void updateGame(){
         ups++;
-        //updating the game
+        switch (GameStates.gameState) {
+            case MENU:
+                
+                break;
+            case PLAYING:
+                getPlay().update();
+                break;
+            default:
+                break;
+        }
     }
     private static void updateWindow(GameWindow gameWindow){
         fps++;
@@ -102,13 +111,12 @@ public class Game implements Runnable{
  
     
     public void run() {
-        UPS = 60;
-        FPS = 120;
 
-        timePerFrame = 1000000000.0 / 120.0;
+
+        timePerFrame = 1000000000.0 / FPS;
         lastTimeFrameNano = 0;
 
-        timePerUpdate = 1000000000.0 / 60.0;
+        timePerUpdate = 1000000000.0 / UPS;
         lastTimeUpdateNano = 0;
 
         GameWindow gameWindow = new GameWindow(this);
@@ -121,15 +129,15 @@ public class Game implements Runnable{
     }
 
     private void initScenes(){
-        this.menu = new Menu(this);
-        this.play = new Play(this);
+        menu = new Menu(this);
+        play = new Play(this);
     }
 
-    public Menu getMenu(){
-        return this.menu;
+    public static Menu getMenu(){
+        return menu;
     }
-    public Play getPlay(){
-        return this.play;
+    public static Play getPlay(){
+        return play;
     }
 
     public int getFieldHeight(){
@@ -171,12 +179,6 @@ public class Game implements Runnable{
     }
     public void setvelocityMovementFramesDuration(int velocityMovementFramesDuration){
         this.velocityMovementFramesDuration = velocityMovementFramesDuration;
-    }
-    public static int getFPS(){
-        return FPS;
-    }
-    public static int getUPS(){
-        return UPS;
     }
 
 }

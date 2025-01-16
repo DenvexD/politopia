@@ -13,7 +13,6 @@ public class GameScreen extends JPanel {
     private ArrayList<BufferedImage> sprites = new ArrayList<>();
     private BufferedImage img;
     private Random random;
-    private Game game;
     private MyMouseListener myMouseListener;
     private KeyboardListener keyboardListener;
 
@@ -24,7 +23,6 @@ public class GameScreen extends JPanel {
     public GameScreen(BufferedImage img, Game game){
         random = new Random();
         this.img = img;
-        this.game = game;
         sprites = getSprites(img);
 
 
@@ -37,12 +35,12 @@ public class GameScreen extends JPanel {
 
         switch (GameStates.gameState) {
             case MENU:
-                this.game.getMenu().render(g);
+                Game.getMenu().render(g);
         
             case SETTINGS:
                 break;
             case PLAYING:
-                this.game.getPlay().render(g);
+                Game.getPlay().render(g);
         }
     }
 
@@ -72,7 +70,7 @@ public class GameScreen extends JPanel {
 
 
         public void initInputs(){
-        myMouseListener = new MyMouseListener(game);
+        myMouseListener = new MyMouseListener();
         keyboardListener = new KeyboardListener();
         addMouseListener(myMouseListener);
         addMouseMotionListener(myMouseListener);

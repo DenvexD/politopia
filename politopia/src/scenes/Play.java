@@ -23,6 +23,7 @@ public class Play extends GameScene implements scenesMethods {
     private float accelerationY = 0;
     private boolean velocityGreaterZeroX;
     private boolean velocityGreaterZeroY;
+    private boolean mouseExited = false;
 
     public Play(Game game){
         super(game);
@@ -31,16 +32,22 @@ public class Play extends GameScene implements scenesMethods {
 
     @Override
     public void render(Graphics g) {
-        this.moveBoardVelocity();
+
+        moveBoardVelocity();
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, 640, 640);
         myBoard.draw(g);
+    }
+    public void update(){
+
     }
 
     private void initBoard(){
         myBoard = new Board(getGame().getBoardWidthInFields(), getGame().getBoardHeightInFields(), getGame());
     }
     public void mouseDragged(int newPositionX, int newPositionY){
+        if (!this.mouseExited) {
+            resetVelocity();
         int adjustX =  this.mousePositionX - newPositionX;
         int adjustY = this.mousePositionY - newPositionY;
         myBoard.adjustBoardCoordinates(adjustX, adjustY);
@@ -51,6 +58,8 @@ public class Play extends GameScene implements scenesMethods {
             this.mouseLastPressedPositionY = newPositionY;
             this.timeMousePressed = System.currentTimeMillis();
         }
+        }
+        
     }
 
 
@@ -63,8 +72,8 @@ public class Play extends GameScene implements scenesMethods {
     }
     public void mouseReleased(int x, int y){
         addVelocityToTheBoard(x, y);
-
         handleIntersection();
+
     }
     private void addVelocityToTheBoard(int x, int y){
         int durationMousePressed = (int)( System.currentTimeMillis() - this.timeMousePressed);
@@ -76,17 +85,20 @@ public class Play extends GameScene implements scenesMethods {
         this.accelerationY = (float)-velocityY / getGame().getvelocityMovementFramesDuration();
     }
     private void moveBoardVelocity(){
-        if (this.velocityX > 0 == this.velocityGreaterZeroX && this.velocityY > 0 == velocityGreaterZeroY) {
+        if (this.velocityX > 0 == this.velocityGreaterZeroX && this.velocityY > 0 == velocityGreaterZeroY && (this.velocityX != 0 || this.velocityY != 0)) {
             myBoard.adjustBoardCoordinates((int)-this.velocityX, (int)-this.velocityY);
             this.velocityX += this.accelerationX;
             this.velocityY += this.accelerationY;
+            handleIntersection();
         }else{
-            this.velocityX = 0;
-            this.velocityY = 0;
-            this.accelerationX = 0;
-            this.accelerationY = 0;
+            resetVelocity();
         }
-
+    }
+    private void resetVelocity(){
+        this.velocityX = 0;
+        this.velocityY = 0;
+        this.accelerationX = 0;
+        this.accelerationY = 0;
     }
 
     public void mouseWheelMoved(double rotation, int x, int y){
@@ -98,6 +110,7 @@ public class Play extends GameScene implements scenesMethods {
         }
         myBoard.adjustBoardSize(sizeChangeX, sizeChangeY);
         adjustBoardCoordinatesOnZoom(sizeChangeX, sizeChangeY, x, y);
+        handleIntersection();
     }
     private void adjustBoardCoordinatesOnZoom(int sizeChangeX, int sizeChangeY, int x, int y){
         float widthRatio = myBoard.getWidth() / ((float)myBoard.getWidth() - sizeChangeX * getGame().getBoardWidthInFields());
@@ -116,25 +129,29 @@ public class Play extends GameScene implements scenesMethods {
         cumulativeDeviationX -= intPartDeviationX;
         cumulativeDeviationY -= intPartDeviationY;
     }
-    private void handleIntersection(){
-        int adjusmentX = 0;
+    public void handleIntersection(){
+        int adjustmentX = 0;
         int adjustmentY = 0;
-        int rightBoarder = myBoard.getX() - myBoard.getWidth()/3;
-        int leftBoarder = myBoard.getX() + myBoard.getWidth()/3;
-        int highBoarder = myBoard.getY() - myBoard.getHeight()/3;
-        int bottomBoarder = myBoard.getY() + myBoard.getHeight()/3;
-        if (rightBoarder > 640) {
-            adjusmentX = 640 - rightBoarder;  
+        int topCornerY = myBoard.getPolygonBound().ypoints[0];
+        int downCornerY = myBoard.getPolygonBound().ypoints[2];
+        int leftCornerX = myBoard.getPolygonBound().xpoints[3];
+        int rightCornerX = myBoard.getPolygonBound().xpoints[1];
+
+        if (topCornerY > getGame().getWindowHeight()/2) {
+            adjustmentY = topCornerY - getGame().getWindowHeight()/2;  
         }
-        if (leftBoarder < 0) {
-            adjusmentX = -leftBoarder;
+        if (downCornerY < getGame().getWindowHeight()/2) {
+            adjustmentY = downCornerY - getGame().getWindowHeight()/2; 
         }
-        if (highBoarder > 640) {
-            adjustmentY = 640 -highBoarder;
+        if (rightCornerX < getGame().getWindowWidth()/2) {
+            adjustmentX = rightCornerX - getGame().getWindowWidth()/2;
         }
-        if (bottomBoarder < 0) {
-            adjustmentY = -bottomBoarder;
+        if (leftCornerX > getGame().getWindowWidth()/2) {
+            adjustmentX = leftCornerX - getGame().getWindowWidth()/2;
         }
-        myBoard.adjustBoardCoordinates(-adjusmentX, -adjustmentY);
+        myBoard.adjustBoardCoordinates(adjustmentX, adjustmentY);
+    }
+    public void setMouseExited(boolean status){
+        this.mouseExited = status;
     }
 }
