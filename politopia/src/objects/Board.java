@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Polygon;
 import java.util.ArrayList;
+import java.util.Random;
 
 import main.Game;
 import ui.Button;
@@ -16,6 +17,7 @@ public class Board extends Button{
     private int x;
     private int y;
     private Polygon polygonBound;
+    private Random random = new Random();
     public Board(int widthInFields, int heightInFields, Game game){
         super(null, widthInFields * game.getFieldWidth(), heightInFields * game.getFieldHeight());
         this.game = game;
@@ -69,11 +71,15 @@ public class Board extends Button{
         }
     }
     private Field initFieldBounds(int x, int y, int i){
-        field = new Field(game.getFieldWidth(), game.getFieldHeight(), FieldTypes.CLOUDS);
+        field = new Field(game.getFieldWidth(), game.getFieldHeight(), getRandomType());
         field.initBounds(x, y + game.getFieldHeight()/2);
         field.setText(Integer.toString(i));
         this.rawOFields.add(field);
         return field;
+    }
+    private FieldTypes getRandomType(){
+        int pick = random.nextInt(FieldTypes.values().length);
+        return FieldTypes.values()[pick];
     }
     private void conectTopAndBottomFields(Field topRowField, Field currField){
         if (topRowField != null) {

@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Polygon;
 import java.awt.Toolkit;
+import java.util.ArrayList;
 
 public class Field extends Button {
     private FieldTypes fieldType;
@@ -17,6 +18,7 @@ public class Field extends Button {
     private Polygon polygonBound;
     private int x;
     private int y;
+    private ArrayList<Image> fieldComponents = new ArrayList<Image>();
 
     public Field(int width, int height, FieldTypes fieldType){
         super(null, width, height);
@@ -30,10 +32,9 @@ public class Field extends Button {
     @Override
     public void draw(Graphics g, int x, int y){
         this.initBounds(x, y);
-        if(this.getImage() == null){
-            g.fillPolygon(this.polygonBound);
-        }else{
-            g.drawImage(this.getImage(), x - this.getWidth()/2, y - this.getWidth()/2, this.getWidth(), this.getHeight(), null);
+
+        for (Image image : this.fieldComponents) {
+            g.drawImage(image, x - this.getWidth()/2, y - this.getWidth()/2, this.getWidth(), this.getHeight(), null);
         }
         if (this.text != null) {
             this.drawText(g, x, y);
@@ -63,24 +64,25 @@ public class Field extends Button {
         return this.polygonBound;
     }
     private void setImageBasedOnType(){
-        Image img;
         if (this.fieldType != null) {
             switch (this.fieldType) {
                 case DEEP_WATER:
-                    img = Toolkit.getDefaultToolkit().getImage("politopia/src/main/res/deep.png");  
+                    this.fieldComponents.add(Toolkit.getDefaultToolkit().getImage("politopia/src/main/res/deep.png"));  
                     break;
                 case CLOUDS:
-                    img = Toolkit.getDefaultToolkit().getImage("politopia/src/main/res/clouds.png");  
+                    this.fieldComponents.add(Toolkit.getDefaultToolkit().getImage("politopia/src/main/res/clouds.png"));  
                     break;
-                default:
-                    img = null;
+                case Imperius:
+                    this.fieldComponents.add(Toolkit.getDefaultToolkit().getImage("politopia/src/main/res/Imperius ground.png"));
+                    break;
+                case Vengir:
+                    this.fieldComponents.add(Toolkit.getDefaultToolkit().getImage("politopia/src/main/res/Vengir ground.png"));
+                    break;
+                case Zebasi:
+                    this.fieldComponents.add(Toolkit.getDefaultToolkit().getImage("politopia/src/main/res/Zebasi ground.png"));
+                    break;
             }
-        }else{
-            img = null;
         }
-        
-
-        this.setImage(img);
     }
 
     public int getNumberOfNeighbours(){

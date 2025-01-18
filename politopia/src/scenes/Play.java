@@ -77,15 +77,15 @@ public class Play extends GameScene implements scenesMethods {
     }
     private void addVelocityToTheBoard(int x, int y){
         int durationMousePressed = (int)( System.currentTimeMillis() - this.timeMousePressed);
-        this.velocityX = (float)(x - this.mouseLastPressedPositionX) / (durationMousePressed / 5);
-        this.velocityY = (float)(y - this.mouseLastPressedPositionY) / (durationMousePressed / 5);
+        this.velocityX = (float)(x - this.mouseLastPressedPositionX) / (durationMousePressed / 6);
+        this.velocityY = (float)(y - this.mouseLastPressedPositionY) / (durationMousePressed / 6);
         this.velocityGreaterZeroX = velocityX > 0;
         this.velocityGreaterZeroY = velocityY > 0;
         this.accelerationX = (float)-velocityX / getGame().getvelocityMovementFramesDuration();
         this.accelerationY = (float)-velocityY / getGame().getvelocityMovementFramesDuration();
     }
     private void moveBoardVelocity(){
-        if (this.velocityX > 0 == this.velocityGreaterZeroX && this.velocityY > 0 == velocityGreaterZeroY && (this.velocityX != 0 || this.velocityY != 0)) {
+        if ((int)this.velocityX > 0 == this.velocityGreaterZeroX && (int)this.velocityY > 0 == velocityGreaterZeroY && ((int)this.velocityX != 0 || (int)this.velocityY != 0)) {
             myBoard.adjustBoardCoordinates((int)-this.velocityX, (int)-this.velocityY);
             this.velocityX += this.accelerationX;
             this.velocityY += this.accelerationY;
@@ -108,7 +108,7 @@ public class Play extends GameScene implements scenesMethods {
             sizeChangeX = -sizeChangeX;
             sizeChangeY = -sizeChangeY;
         }
-        if ((!isMaxSize() && rotation < 0) || (!isMinSize() && rotation > 0)) {
+        if ((!isMaxSize() && rotation < 0) || (!isMinSize(sizeChangeX, sizeChangeY) && rotation > 0)) {
             myBoard.adjustBoardSize(sizeChangeX, sizeChangeY);
             adjustBoardCoordinatesOnZoom(sizeChangeX, sizeChangeY, x, y);
             handleIntersection();
@@ -118,8 +118,9 @@ public class Play extends GameScene implements scenesMethods {
     private boolean isMaxSize(){
         return getGame().getFieldWidth() * 5 > getGame().getWindowWidth() && getGame().getFieldHeight() * 5 > getGame().getWindowHeight();
     }
-    private boolean isMinSize(){
-        return myBoard.getWidth()  * 0.7 < getGame().getWindowWidth() && myBoard.getHeight() * 0.7 < getGame().getWindowHeight();
+    private boolean isMinSize(int sizeChangeX, int sizeChangeY){
+        System.out.println("width: " + myBoard.getWidth() + " height: " + myBoard.getHeight());
+        return (myBoard.getWidth() + sizeChangeX * getGame().getBoardWidthInFields())  * 0.85 < getGame().getWindowWidth() && (myBoard.getHeight() + sizeChangeY * getGame().getBoardHeightInFields()) * 0.85 < getGame().getWindowHeight();
     }
     private void adjustBoardCoordinatesOnZoom(int sizeChangeX, int sizeChangeY, int x, int y){
         float widthRatio = myBoard.getWidth() / ((float)myBoard.getWidth() - sizeChangeX * getGame().getBoardWidthInFields());
