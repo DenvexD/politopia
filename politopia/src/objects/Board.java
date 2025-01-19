@@ -18,6 +18,24 @@ public class Board extends Button{
     private int y;
     private Polygon polygonBound;
     private Random random = new Random();
+
+    private int mousePositionX;
+    private int mousePositionY;
+    private float cumulativeDeviationX;
+    private float cumulativeDeviationY;
+
+    private int mouseLastPressedPositionX;
+    private int mouseLastPressedPositionY;
+    private long timeMousePressed;
+    private float velocityX = 0;
+    private float velocityY = 0;
+    private float accelerationX = 0;
+    private float accelerationY = 0;
+    private boolean velocityGreaterZeroX;
+    private boolean velocityGreaterZeroY;
+    
+    private boolean mouseExited = false;
+
     public Board(int widthInFields, int heightInFields, Game game){
         super(null, widthInFields * game.getFieldWidth(), heightInFields * game.getFieldHeight());
         this.game = game;
@@ -149,6 +167,113 @@ public class Board extends Button{
     private boolean isVisable(Field field){
         return field.getPolygonBound().intersects(0, 0, game.getWindowWidth(), game.getWindowHeight());
     }
+
+
+    public void mouseDragged(int newPositionX, int newPositionY){
+        if (!this.mouseExited) {
+            resetVelocity();
+        int adjustX =  this.mousePositionX - newPositionX;
+        int adjustY = this.mousePositionY - newPositionY;
+        this.adjustBoardCoordinates(adjustX, adjustY);
+        this.mousePositionX = newPositionX;
+        this.mousePositionY = newPositionY;
+        if (System.currentTimeMillis() - this.timeMousePressed > 1000) {
+            this.mouseLastPressedPositionX = newPositionX;
+            this.mouseLastPressedPositionY = newPositionY;
+            this.timeMousePressed = System.currentTimeMillis();
+        }
+        }
+        
+    }
+
+
+    public void mousePressed(int x, int y){
+        this.timeMousePressed = System.currentTimeMillis();
+        this.mouseLastPressedPositionX = x;
+        this.mouseLastPressedPositionY = y;
+        this.mousePositionX = x;
+        this.mousePositionY = y;
+    }
+    public void mouseReleased(int x, int y){
+        addVelocityToTheBoard(x, y);
+        handleIntersection();
+
+    }
+    private void addVelocityToTheBoard(int x, int y){
+        int durationMousePressed = (int)( System.currentTimeMillis() - this.timeMousePressed);
+        this.velocityX = (float)(x - this.mouseLastPressedPositionX) / (durationMousePressed / 6);
+        this.velocityY = (float)(y - this.mouseLastPressedPositionY) / (durationMousePressed / 6);
+        this.velocityGreaterZeroX = velocityX > 0;
+        this.velocityGreaterZeroY = velocityY > 0;
+        this.accelerationX = (float)-velocityX / game.getvelocityMovementFramesDuration();
+        this.accelerationY = (float)-velocityY / game.getvelocityMovementFramesDuration();
+    }
+    public void moveBoardVelocity(){
+        if (this.velocityX > 0 == this.velocityGreaterZeroX && this.velocityY > 0 == velocityGreaterZeroY && (this.velocityX != 0 || this.velocityY != 0)) {
+            this.adjustBoardCoordinates((int)-this.velocityX, (int)-this.velocityY);
+            this.velocityX += this.accelerationX;
+            this.velocityY += this.accelerationY;
+            handleIntersection();
+        }else{
+            resetVelocity();
+        }
+    }
+    private void resetVelocity(){
+        this.velocityX = 0;
+        this.velocityY = 0;
+        this.accelerationX = 0;
+        this.accelerationY = 0;
+    }
+
+
+    public void mouseWheelMoved(double rotation, int x, int y){
+        int sizeChangeX = (this.getWidth() / 80) * 2;
+        int sizeChangeY = (this.getHeight() / 80) * 2;
+        if (rotation > 0){
+            sizeChangeX = -sizeChangeX;
+            sizeChangeY = -sizeChangeY;
+        }
+        if ((!isMaxSize() && rotation < 0) || (!isMinSize(sizeChangeX, sizeChangeY) && rotation > 0)) {
+            this.adjustBoardSize(sizeChangeX, sizeChangeY);
+            this.adjustBoardCoordinatesOnZoom(sizeChangeX, sizeChangeY, x, y);
+            handleIntersection();
+        }
+
+    }
+    private boolean isMaxSize(){
+        return game.getFieldWidth() * 5 > game.getWindowWidth() && game.getFieldHeight() * 5 > game.getWindowHeight();
+    }
+    private boolean isMinSize(int sizeChangeX, int sizeChangeY){
+        System.out.println("width: " + this.getWidth() + " height: " + this.getHeight());
+        return (this.getWidth() + sizeChangeX * game.getBoardWidthInFields())  * 0.85 < game.getWindowWidth() && (this.getHeight() + sizeChangeY * game.getBoardHeightInFields()) * 0.85 < game.getWindowHeight();
+    }
+
+    public void handleIntersection(){
+        int adjustmentX = 0;
+        int adjustmentY = 0;
+        int topCornerY = this.getPolygonBound().ypoints[0];
+        int downCornerY = this.getPolygonBound().ypoints[2];
+        int leftCornerX = this.getPolygonBound().xpoints[3];
+        int rightCornerX = this.getPolygonBound().xpoints[1];
+
+        if (topCornerY > game.getWindowHeight()/2) {
+            adjustmentY = topCornerY - game.getWindowHeight()/2;  
+        }
+        if (downCornerY < game.getWindowHeight()/2) {
+            adjustmentY = downCornerY - game.getWindowHeight()/2; 
+        }
+        if (rightCornerX < game.getWindowWidth()/2) {
+            adjustmentX = rightCornerX - game.getWindowWidth()/2;
+        }
+        if (leftCornerX > game.getWindowWidth()/2) {
+            adjustmentX = leftCornerX - game.getWindowWidth()/2;
+        }
+        this.adjustBoardCoordinates(adjustmentX, adjustmentY);
+    }
+
+
+
+
     public void adjustBoardCoordinates(int adjustX, int adjustY){
         this.adjustFieldsCoordinates(adjustX, adjustY);
         this.x -= adjustX;
@@ -166,6 +291,24 @@ public class Board extends Button{
                 field.adjustBounds(field.getX() - adjustX, field.getY() - adjustY);
             }
         }
+    }
+
+    public void adjustBoardCoordinatesOnZoom(int sizeChangeX, int sizeChangeY, int x, int y){
+        float widthRatio = this.getWidth() / ((float)this.getWidth() - sizeChangeX * game.getBoardWidthInFields());
+        float heightRatio = this.getHeight() / ((float)this.getHeight() - sizeChangeY * game.getBoardHeightInFields());
+        int oldDistanceX = x - this.getX();
+        int oldDistanceY = y - this.getY();
+        float adjustDistanceX = (widthRatio - 1) * oldDistanceX;
+        float adjustDistanceY = (heightRatio - 1) * oldDistanceY;
+
+        cumulativeDeviationX += adjustDistanceX - Math.round(adjustDistanceX);
+        cumulativeDeviationY += adjustDistanceY - Math.round(adjustDistanceY);
+        int intPartDeviationX = (int)cumulativeDeviationX;
+        int intPartDeviationY = (int)cumulativeDeviationY;
+
+        this.adjustBoardCoordinates(Math.round(adjustDistanceX) + intPartDeviationX, Math.round(adjustDistanceY) + intPartDeviationY);
+        cumulativeDeviationX -= intPartDeviationX;
+        cumulativeDeviationY -= intPartDeviationY;
     }
     public void adjustBoardSize(int adjustHeight, int adjustWidth){
         this.setWidth(this.getWidth() + adjustWidth * game.getBoardWidthInFields());
@@ -187,6 +330,11 @@ public class Board extends Button{
     }
     public Polygon getPolygonBound(){
         return polygonBound;
+    }
+
+    public void setMouseExited(boolean status){
+        this.mouseExited = status;
+        this.handleIntersection();
     }
     
 

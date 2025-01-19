@@ -101,7 +101,6 @@ public class MyMouseListener implements MouseListener, MouseMotionListener, Mous
                 break;
             case PLAYING:
                 Game.getPlay().setMouseExited(true);
-                Game.getPlay().handleIntersection();
         }
     }
 
