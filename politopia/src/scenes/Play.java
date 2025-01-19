@@ -23,7 +23,7 @@ public class Play extends GameScene implements scenesMethods {
         myBoard.draw(g);
     }
     public void update(){
-
+        myBoard.update();
     }
 
     private void initBoard(){
@@ -50,5 +50,9 @@ public class Play extends GameScene implements scenesMethods {
    
     public void setMouseExited(boolean status){
         myBoard.setMouseExited(status);
+    }
+
+    public void mouseClicked(int x, int y) {
+        myBoard.mouseClicked(x, y);
     }
 }

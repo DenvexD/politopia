@@ -50,7 +50,7 @@ public class MyMouseListener implements MouseListener, MouseMotionListener, Mous
             case SETTINGS:
                 break;
             case PLAYING:
-                break;
+                Game.getPlay().mouseClicked(e.getX(), e.getY());
         }
     }
 

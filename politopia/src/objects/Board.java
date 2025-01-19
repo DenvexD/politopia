@@ -44,6 +44,28 @@ public class Board extends Button{
         this.initBounds(this.x, this.y);
         initFields();
     }
+
+
+    public void draw(Graphics g){
+        for (ArrayList<Field> rawOFields : this.fields) {
+            for (Field field : rawOFields) {
+                if (this.isVisable(field)){
+                    g.setColor(Color.gray);
+                    field.draw(g, field.getX(), field.getY());
+                }
+            }
+        }    
+    }
+
+    public void update(){
+        for (ArrayList<Field> arrayList : fields) {
+            for (Field field : arrayList) {
+                field.update();
+            }
+        }
+    }
+
+
     @Override
     public void initBounds(int x, int y){
         this.x = x;
@@ -153,16 +175,7 @@ public class Board extends Button{
 
     }
 
-    public void draw(Graphics g){
-        for (ArrayList<Field> rawOFields : this.fields) {
-            for (Field field : rawOFields) {
-                if (this.isVisable(field)){
-                    g.setColor(Color.gray);
-                    field.draw(g, field.getX(), field.getY());
-                }
-            }
-        }    
-    }
+
 
     private boolean isVisable(Field field){
         return field.getPolygonBound().intersects(0, 0, game.getWindowWidth(), game.getWindowHeight());
@@ -234,12 +247,15 @@ public class Board extends Button{
             sizeChangeY = -sizeChangeY;
         }
         if ((!isMaxSize() && rotation < 0) || (!isMinSize(sizeChangeX, sizeChangeY) && rotation > 0)) {
+            System.out.println("1");
             this.adjustBoardSize(sizeChangeX, sizeChangeY);
             this.adjustBoardCoordinatesOnZoom(sizeChangeX, sizeChangeY, x, y);
             handleIntersection();
         } else{
             if (isMinSize(sizeChangeX, sizeChangeY) && rotation > 0) {
+                System.out.println("2");
                 sizeChangeX = getRestSizeChangeX();
+                System.out.println(sizeChangeX);
                 sizeChangeY = getRestSizeChangeY();
                 System.out.println(sizeChangeX);
                 this.adjustBoardSize(sizeChangeX, sizeChangeY);
@@ -362,6 +378,15 @@ public class Board extends Button{
     public void setMouseExited(boolean status){
         this.mouseExited = status;
         this.handleIntersection();
+    }
+    public void mouseClicked(int x, int y) {
+        for (ArrayList<Field> arrayList : fields) {
+            for (Field field : arrayList) {
+                if (field.getPolygonBound().contains(x, y)) {
+                    field.mouseClicked();
+                }
+            }
+        }
     }
     
 

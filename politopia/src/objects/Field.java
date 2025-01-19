@@ -7,6 +7,7 @@ import java.awt.Image;
 import java.awt.Polygon;
 import java.awt.Toolkit;
 import java.util.ArrayList;
+import objects.fieldObjects.Snow;
 
 public class Field extends Button {
     private FieldTypes fieldType;
@@ -19,6 +20,8 @@ public class Field extends Button {
     private int x;
     private int y;
     private ArrayList<Image> fieldComponents = new ArrayList<Image>();
+    private boolean isSnowCovered = true;
+    private Snow snow;
 
     public Field(int width, int height, FieldTypes fieldType){
         super(null, width, height);
@@ -28,19 +31,29 @@ public class Field extends Button {
         this.right = null;
         this.top = null;
         this.bottom = null;
+        this.snow = new Snow();
     }
     @Override
     public void draw(Graphics g, int x, int y){
         this.initBounds(x, y);
-
-        for (Image image : this.fieldComponents) {
-            g.drawImage(image, x - this.getWidth()/2, y - this.getWidth()/2, this.getWidth(), this.getHeight(), null);
+        int cornerX = x - this.getWidth()/2;
+        int cornerY = y - this.getWidth()/2;
+        if (isSnowCovered) {
+            this.snow.draw(g, cornerX, cornerY, this.getWidth(), this.getHeight());
+        }else{
+            for (Image image : this.fieldComponents) {
+                g.drawImage(image, cornerX, cornerY, this.getWidth(), this.getHeight(), null);
+            }
         }
         if (this.text != null) {
             this.drawText(g, x, y);
         }
         
     }
+    public void update(){
+        snow.update();
+    }
+
     @Override
     public void initBounds(int x, int y){
         this.x = x;
@@ -112,6 +125,11 @@ public class Field extends Button {
     }
     public int getX(){
         return this.x;
+    }
+    public void mouseClicked(){
+        if (isSnowCovered) {
+            this.snow.mouseClicked();
+        }
     }
     
 }
