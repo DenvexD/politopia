@@ -237,7 +237,17 @@ public class Board extends Button{
             this.adjustBoardSize(sizeChangeX, sizeChangeY);
             this.adjustBoardCoordinatesOnZoom(sizeChangeX, sizeChangeY, x, y);
             handleIntersection();
+        } else{
+            if (isMinSize(sizeChangeX, sizeChangeY) && rotation > 0) {
+                sizeChangeX = getRestSizeChangeX();
+                sizeChangeY = getRestSizeChangeY();
+                System.out.println(sizeChangeX);
+                this.adjustBoardSize(sizeChangeX, sizeChangeY);
+                this.adjustBoardCoordinatesOnZoom(sizeChangeX, sizeChangeY, x, y);
+                handleIntersection();
+            }
         }
+
 
     }
     private boolean isMaxSize(){
@@ -245,7 +255,24 @@ public class Board extends Button{
     }
     private boolean isMinSize(int sizeChangeX, int sizeChangeY){
         System.out.println("width: " + this.getWidth() + " height: " + this.getHeight());
-        return (this.getWidth() + sizeChangeX * game.getBoardWidthInFields())  * 0.85 < game.getWindowWidth() && (this.getHeight() + sizeChangeY * game.getBoardHeightInFields()) * 0.85 < game.getWindowHeight();
+        System.out.println("x: " + ((this.getWidth() + sizeChangeX * game.getBoardWidthInFields())  * game.getMaxBoardWindowSizeRatio()) + " < " + game.getWindowWidth() + " size changed: " + sizeChangeX);
+        return (this.getWidth() + sizeChangeX * game.getBoardWidthInFields())  * game.getMaxBoardWindowSizeRatio() < game.getWindowWidth() && (this.getHeight() + sizeChangeY * game.getBoardHeightInFields()) * game.getMaxBoardWindowSizeRatio() < game.getWindowHeight();
+    }
+    private int getRestSizeChangeX(){
+        int sizeChangeX = (int)(this.getWidth() * game.getMaxBoardWindowSizeRatio() - game.getWindowWidth()) / game.getBoardWidthInFields();
+        if (Math.ceilMod(sizeChangeX, 2) == 0) {
+            return -sizeChangeX;
+        }else{
+            return -(sizeChangeX + 1);
+        }
+    }
+    private int getRestSizeChangeY(){
+        int sizeChangeY = (int)(this.getHeight() * game.getMaxBoardWindowSizeRatio() - game.getWindowHeight()) / game.getBoardHeightInFields();
+        if (Math.ceilMod(sizeChangeY, 2) == 0) {
+            return -sizeChangeY;
+        }else{
+            return -(sizeChangeY + 1);
+        }
     }
 
     public void handleIntersection(){

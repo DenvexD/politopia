@@ -29,6 +29,7 @@ public class Game implements Runnable{
     private int boardWidthInFields = 20;
     private int boardHeightInFields = 20;
     private int velocityMovementFramesDuration = 200;
+    private float maxBoardWindowSizeRatio = (float)0.7;
 
 
 
@@ -179,6 +180,9 @@ public class Game implements Runnable{
     }
     public void setvelocityMovementFramesDuration(int velocityMovementFramesDuration){
         this.velocityMovementFramesDuration = velocityMovementFramesDuration;
+    }
+    public float getMaxBoardWindowSizeRatio(){
+        return this.maxBoardWindowSizeRatio;
     }
 
 }
