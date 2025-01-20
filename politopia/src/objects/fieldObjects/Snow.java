@@ -3,15 +3,20 @@ package objects.fieldObjects;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
+import objects.Field;
+import objects.objectsMethods;
+
 import java.util.ArrayList;
 
-public class Snow {
+public class Snow implements objectsMethods {
     private int animationTick = 0;
     private int animationDuration = 4;
     private int animationStage = 0;
+    private Field field;
     private boolean animationIsInProgress = false;
     private ArrayList<Image> animationStages = new ArrayList<Image>();
-    public Snow(){
+    public Snow(Field field){
+        this.field = field;
         this.animationStages.add(Toolkit.getDefaultToolkit().getImage("politopia/src/main/res/clouds.png"));
         this.animationStages.add(Toolkit.getDefaultToolkit().getImage("politopia/src/main/res/Cloud puff.png"));
     }
@@ -21,6 +26,7 @@ public class Snow {
         this.animationTick = 0;
         this.animationStage = 0;
         this.animationIsInProgress = true;
+        this.field.setIsSnowCovered(false);
     }
     public void update(){
         if (this.animationIsInProgress) {

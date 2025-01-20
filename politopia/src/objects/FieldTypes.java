@@ -1,5 +1,5 @@
 package objects;
 
 public enum FieldTypes {
-    DEEP_WATER, CLOUDS, Imperius, Vengir, Zebasi;
+    DEEP_WATER, Imperius, Vengir, Zebasi;
 }

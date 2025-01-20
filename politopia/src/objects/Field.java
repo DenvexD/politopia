@@ -8,6 +8,7 @@ import java.awt.Polygon;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 import objects.fieldObjects.Snow;
+import objects.Hero;
 
 public class Field extends Button {
     private FieldTypes fieldType;
@@ -20,9 +21,10 @@ public class Field extends Button {
     private int x;
     private int y;
     private ArrayList<Image> fieldComponents = new ArrayList<Image>();
-    private boolean isSnowCovered = false;
+    private boolean isSnowCovered = true;
     private Snow snow;
     private final float imageRatio = (float)1909 / 1208;
+    private Hero hero = null;
 
     public Field(int width, int height, FieldTypes fieldType){
         super(null, width, height);
@@ -32,7 +34,7 @@ public class Field extends Button {
         this.right = null;
         this.top = null;
         this.bottom = null;
-        this.snow = new Snow();
+        this.snow = new Snow(this);
     }
     @Override
     public void draw(Graphics g, int x, int y){
@@ -49,6 +51,9 @@ public class Field extends Button {
 
         if (this.text != null) {
             this.drawText(g, x, y);
+        }
+        if (this.hero != null) {
+            this.hero.draw(g);
         }
 
         
@@ -84,9 +89,6 @@ public class Field extends Button {
             switch (this.fieldType) {
                 case DEEP_WATER:
                     this.fieldComponents.add(Toolkit.getDefaultToolkit().getImage("politopia/src/main/res/deep.png"));  
-                    break;
-                case CLOUDS:
-                    this.fieldComponents.add(Toolkit.getDefaultToolkit().getImage("politopia/src/main/res/clouds.png"));  
                     break;
                 case Imperius:
                     this.fieldComponents.add(Toolkit.getDefaultToolkit().getImage("politopia/src/main/res/Imperius ground.png"));
@@ -134,5 +136,10 @@ public class Field extends Button {
             this.snow.mouseClicked();
         }
     }
-    
+    public void setIsSnowCovered(boolean status){
+        this.isSnowCovered = status;
+    }
+    public void setHero(Hero hero){
+        this.hero = hero;
+    }
 }

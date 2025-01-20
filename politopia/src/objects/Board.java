@@ -392,6 +392,13 @@ public class Board extends Button{
             }
         }
     }
+
+    public Field getFieldBasedOnId(int id){
+        int row = id / this.fields.size();
+        int column = id % this.fields.getFirst().size();
+        System.err.println("row: " + row + " column: " + column);
+        return this.fields.get(row).get(column);
+    }
     
 
 

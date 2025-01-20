@@ -2,16 +2,20 @@ package scenes;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import objects.Field;
+import objects.Hero;
 
 import main.Game;
 import objects.Board;
 
 public class Play extends GameScene implements scenesMethods {
     private Board myBoard;
+    private Hero myHero;
 
     public Play(Game game){
         super(game);
         initBoard();
+        initHero(5);
     }
 
     @Override
@@ -28,6 +32,10 @@ public class Play extends GameScene implements scenesMethods {
 
     private void initBoard(){
         myBoard = new Board(getGame().getBoardWidthInFields(), getGame().getBoardHeightInFields(), getGame());
+    }
+    private void initHero(int fieldNumber){
+        Field field = myBoard.getFieldBasedOnId(fieldNumber);
+        myHero = new Hero(field, 5);
     }
     public void mouseDragged(int newPositionX, int newPositionY){
 
