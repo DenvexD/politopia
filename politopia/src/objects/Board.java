@@ -87,6 +87,7 @@ public class Board extends Button{
         Field currField = null;
         Field topRowField = null;
         int currRow = 0;
+        int currColumn = 0;
         int rows = (int)(Math.sqrt(Math.pow(this.getWidth() / 2, 2) + Math.pow(this.getHeight()/2, 2)) / (Math.sqrt(Math.pow(game.getFieldWidth() / 2, 2) + Math.pow(game.getFieldHeight() / 2, 2))));
         while (currRow < rows) {
             this.rawOFields = new ArrayList<>();
@@ -96,18 +97,21 @@ public class Board extends Button{
             int boarderY = this.polygonBound.ypoints[1] + currRow * game.getFieldHeight()/2;
             while (currX < boarderX && currY < boarderY) {
                 currField = this.initFieldBounds(currX, currY, i);
+                System.out.println("row: " + currRow + " column: " + currColumn);
                 currField.number = i;
                 this.initFieldLeftRightNeighbours(prevField, currField);
                 prevField = currField;
                 currX += game.getFieldWidth()/2;
                 currY += game.getFieldHeight()/2;
                 i++;
+                currColumn ++;
             }
             this.fields.add(this.rawOFields);
             this.conectTopAndBottomFields(topRowField, currField);
             topRowField = currField;
             prevField = null;
             currRow++;
+            currColumn = 0;
         }
     }
     private Field initFieldBounds(int x, int y, int i){

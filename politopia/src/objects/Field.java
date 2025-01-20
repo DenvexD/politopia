@@ -20,8 +20,9 @@ public class Field extends Button {
     private int x;
     private int y;
     private ArrayList<Image> fieldComponents = new ArrayList<Image>();
-    private boolean isSnowCovered = true;
+    private boolean isSnowCovered = false;
     private Snow snow;
+    private final float imageRatio = (float)1909 / 1208;
 
     public Field(int width, int height, FieldTypes fieldType){
         super(null, width, height);
@@ -39,15 +40,17 @@ public class Field extends Button {
         int cornerX = x - this.getWidth()/2;
         int cornerY = y - this.getWidth()/2;
         if (isSnowCovered) {
-            this.snow.draw(g, cornerX, cornerY, this.getWidth(), this.getHeight());
+            this.snow.draw(g, cornerX, cornerY, this.getWidth(), (int)(this.getHeight() * imageRatio));
         }else{
             for (Image image : this.fieldComponents) {
-                g.drawImage(image, cornerX, cornerY, this.getWidth(), this.getHeight(), null);
+                g.drawImage(image, cornerX, cornerY, this.getWidth(), (int)((float)this.getHeight() * imageRatio), null);
             }
         }
+
         if (this.text != null) {
             this.drawText(g, x, y);
         }
+
         
     }
     public void update(){
