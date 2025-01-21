@@ -52,10 +52,22 @@ public class Hero{
     private ArrayList<Field> getActiveNeighbourList(Field currField, Field prevField){
         ArrayList<Field> fieldNeightbours = new ArrayList<Field>();
         if (currField.left != prevField && currField.left != null) {
+            if (currField.left.top != prevField && currField.left.top != null) {
+                fieldNeightbours.add(currField.left.top);
+            }
             fieldNeightbours.add(currField.left);
+            if (currField.left.bottom != prevField && currField.left.bottom != null) {
+                fieldNeightbours.add(currField.left.bottom);
+            }
         }
         if (currField.right != prevField && currField.right != null) {
+            if (currField.right.top != prevField && currField.right.top != null) {
+                fieldNeightbours.add(currField.right.top);
+            }
             fieldNeightbours.add(currField.right);
+            if (currField.right.bottom != prevField && currField.right.bottom != null) {
+                fieldNeightbours.add(currField.right.bottom);
+            }
         }
         if (currField.top != prevField && currField.top != null) {
             fieldNeightbours.add(currField.top);
