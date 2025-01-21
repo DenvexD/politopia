@@ -35,7 +35,8 @@ public class Play extends GameScene implements scenesMethods {
     }
     private void initHero(int fieldNumber){
         Field field = myBoard.getFieldBasedOnId(fieldNumber);
-        myHero = new Hero(field, 5);
+        myHero = new Hero(field, 1);
+        myHero.meltSnowInRange(0, myHero.getField(), null);
     }
     public void mouseDragged(int newPositionX, int newPositionY){
 

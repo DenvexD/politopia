@@ -3,6 +3,8 @@ package objects;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.geom.AffineTransform;
+import java.util.ArrayList;
 
 import objects.Field;
 public class Hero{
@@ -32,6 +34,41 @@ public class Hero{
     private int getHeight(){
         return this.field.getHeight() / 3;
     }
+    public void meltSnowInRange(int currRange, Field currField, Field prevField){
+        if (currRange < this.range) {
+            ArrayList<Field> fieldNeightbours = this.getActiveNeighbourList(currField, prevField);
+            prevField = currField;
+            for (Field field : fieldNeightbours) {
+                if (field == this.field) {
+                    System.out.println("s");
+                }
+                currField = field;
+                currField.setIsSnowCovered(false);
+                this.meltSnowInRange(currRange + 1, currField, prevField);
+            }
+        }
+        this.field.setIsSnowCovered(false);
+    }
+    private ArrayList<Field> getActiveNeighbourList(Field currField, Field prevField){
+        ArrayList<Field> fieldNeightbours = new ArrayList<Field>();
+        if (currField.left != prevField && currField.left != null) {
+            fieldNeightbours.add(currField.left);
+        }
+        if (currField.right != prevField && currField.right != null) {
+            fieldNeightbours.add(currField.right);
+        }
+        if (currField.top != prevField && currField.top != null) {
+            fieldNeightbours.add(currField.top);
+        }
+        if (currField.bottom != prevField && currField.bottom != null) {
+            fieldNeightbours.add(currField.bottom);
+        }
+        return fieldNeightbours;
+    }
+    public Field getField(){
+        return this.field;
+    }
+        
 
 }
 
