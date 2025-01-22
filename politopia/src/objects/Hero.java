@@ -116,4 +116,11 @@ public class Hero{
         this.markedFields = new ArrayList<Field>();
     }
 
+    public void changeField(Field field){
+        this.field.setHero(null);
+        this.field = field;
+        this.field.setHero(this);
+        this.meltSnowInRange(0, this.field, null);
+    }
+
 }

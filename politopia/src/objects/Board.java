@@ -405,6 +405,7 @@ public class Board extends Button{
         if (field.getHero() != null) {
             this.handleHeroObjectClicked(field);
         }else{
+            handleFieldClicked(field);
             this.resetHeroClicked();
             BoardClickedStates.boardClickedState = BoardClickedStates.FIELD;
 
@@ -415,12 +416,18 @@ public class Board extends Button{
 
     private void handleHeroObjectClicked(Field field){
         if (field.getHero().isClicked()){
+            handleFieldClicked(field);
             field.getHero().unclick();
             BoardClickedStates.boardClickedState = BoardClickedStates.FIELD;
         }else{
             this.resetHeroClicked();
             field.getHero().mouseClicked();
             BoardClickedStates.boardClickedState = BoardClickedStates.HERO;
+        }
+    }
+    private void handleFieldClicked(Field field){
+        if (field.getCircleMark() != null) {
+            field.getCircleMark().mouseClick();
         }
     }
 
