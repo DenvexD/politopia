@@ -13,6 +13,8 @@ public class Board extends Button{
     private ArrayList<ArrayList<Field>> fields = new ArrayList<>();
     private ArrayList<Field> rawOFields;
     private Field field;
+    private Hero myHero;
+    private ArrayList<Hero> heros = new ArrayList<Hero>();
     private Game game;
     private int x;
     private int y;
@@ -43,6 +45,7 @@ public class Board extends Button{
         this.y = game.getWindowHeight() / 2;
         this.initBounds(this.x, this.y);
         initFields();
+        initHero(15);
     }
 
 
@@ -87,7 +90,6 @@ public class Board extends Button{
         Field currField = null;
         Field topRowField = null;
         int currRow = 0;
-        int currColumn = 0;
         int rows = (int)(Math.sqrt(Math.pow(this.getWidth() / 2, 2) + Math.pow(this.getHeight()/2, 2)) / (Math.sqrt(Math.pow(game.getFieldWidth() / 2, 2) + Math.pow(game.getFieldHeight() / 2, 2))));
         while (currRow < rows) {
             this.rawOFields = new ArrayList<>();
@@ -97,21 +99,18 @@ public class Board extends Button{
             int boarderY = this.polygonBound.ypoints[1] + currRow * game.getFieldHeight()/2;
             while (currX < boarderX && currY < boarderY) {
                 currField = this.initFieldBounds(currX, currY, i);
-                System.out.println("row: " + currRow + " column: " + currColumn);
                 currField.number = i;
                 this.initFieldLeftRightNeighbours(prevField, currField);
                 prevField = currField;
                 currX += game.getFieldWidth()/2;
                 currY += game.getFieldHeight()/2;
                 i++;
-                currColumn ++;
             }
             this.fields.add(this.rawOFields);
             this.conectTopAndBottomFields(topRowField, currField);
             topRowField = currField;
             prevField = null;
             currRow++;
-            currColumn = 0;
         }
     }
     private Field initFieldBounds(int x, int y, int i){
@@ -183,6 +182,16 @@ public class Board extends Button{
 
     private boolean isVisable(Field field){
         return field.getPolygonBound().intersects(0, 0, game.getWindowWidth(), game.getWindowHeight());
+    }
+
+
+    private void initHero(int fieldNumber){
+        Field field = this.getFieldBasedOnId(fieldNumber);
+        myHero = new Hero(field, 1);
+        this.heros.add(myHero);
+        for (Hero hero : this.heros) {
+            hero.meltSnowInRange(0, hero.getField(), null);
+        }
     }
 
 
@@ -387,9 +396,29 @@ public class Board extends Button{
         for (ArrayList<Field> arrayList : fields) {
             for (Field field : arrayList) {
                 if (field.getPolygonBound().contains(x, y)) {
-                    field.mouseClicked();
+                    this.clickFieldsObject(field);
                 }
             }
+        }
+    }
+    private void clickFieldsObject(Field field){
+        if (field.getHero() != null) {
+            field.getHero().mouseClicked();
+            BoardClickedStates.boardClickedState = BoardClickedStates.HERO;
+
+            if (!field.getHero().isClicked()) {
+                BoardClickedStates.boardClickedState = BoardClickedStates.FIELD;
+            }
+        }else{
+            BoardClickedStates.boardClickedState = BoardClickedStates.FIELD;
+            this.resetHeroClicked();
+        }
+        System.out.println(BoardClickedStates.boardClickedState);
+
+    }
+    private void resetHeroClicked(){
+        for (Hero hero : this.heros) {
+            hero.setClicked(false);
         }
     }
 

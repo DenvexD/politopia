@@ -8,7 +8,6 @@ import java.awt.Polygon;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 import objects.fieldObjects.Snow;
-import objects.Hero;
 
 public class Field extends Button {
     private FieldTypes fieldType;
@@ -141,5 +140,8 @@ public class Field extends Button {
     }
     public void setHero(Hero hero){
         this.hero = hero;
+    }
+    public Hero getHero(){
+        return this.hero;
     }
 }

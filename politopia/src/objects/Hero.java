@@ -3,14 +3,13 @@ package objects;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 
-import objects.Field;
 public class Hero{
     private Field field;
     private int range;
     private Image img = Toolkit.getDefaultToolkit().getImage("politopia/src/main/res/Nature bunny.png");
+    private boolean isClicked = false;
     public Hero(Field field, int range){
         this.field = field;
         this.range = range;
@@ -24,8 +23,7 @@ public class Hero{
     }
 
     public void update() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+
     }
 
     private int getWidth(){
@@ -52,22 +50,12 @@ public class Hero{
     private ArrayList<Field> getActiveNeighbourList(Field currField, Field prevField){
         ArrayList<Field> fieldNeightbours = new ArrayList<Field>();
         if (currField.left != prevField && currField.left != null) {
-            if (currField.left.top != prevField && currField.left.top != null) {
-                fieldNeightbours.add(currField.left.top);
-            }
             fieldNeightbours.add(currField.left);
-            if (currField.left.bottom != prevField && currField.left.bottom != null) {
-                fieldNeightbours.add(currField.left.bottom);
-            }
+            fieldNeightbours = this.setCornerNeighboursInTheList(currField.left, prevField, fieldNeightbours);
         }
         if (currField.right != prevField && currField.right != null) {
-            if (currField.right.top != prevField && currField.right.top != null) {
-                fieldNeightbours.add(currField.right.top);
-            }
             fieldNeightbours.add(currField.right);
-            if (currField.right.bottom != prevField && currField.right.bottom != null) {
-                fieldNeightbours.add(currField.right.bottom);
-            }
+            fieldNeightbours = this.setCornerNeighboursInTheList(currField.right, prevField, fieldNeightbours);
         }
         if (currField.top != prevField && currField.top != null) {
             fieldNeightbours.add(currField.top);
@@ -77,9 +65,36 @@ public class Hero{
         }
         return fieldNeightbours;
     }
+    private ArrayList<Field> setCornerNeighboursInTheList(Field currField, Field prevField, ArrayList<Field> fieldNeightbours){
+        if (currField.bottom != prevField && currField.bottom != null) {
+            fieldNeightbours.add(currField.bottom);
+        }
+        if (currField.top != prevField && currField.top != null) {
+            fieldNeightbours.add(currField.top);
+        }
+        return fieldNeightbours;
+    }
     public Field getField(){
         return this.field;
     }
+
+
+
+    public void mouseClicked(){
+        isClicked = !isClicked;
+        if (isClicked) {
+            System.out.println("clicked");
+        }else{
+            System.out.println("unckicked");
+        }
+    }
+    public boolean isClicked(){
+        return this.isClicked;
+    }
+    public void setClicked(Boolean status){
+        this.isClicked = status;
+    }
+
         
 
 }
