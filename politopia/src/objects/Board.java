@@ -187,7 +187,7 @@ public class Board extends Button{
 
     private void initHero(int fieldNumber){
         Field field = this.getFieldBasedOnId(fieldNumber);
-        myHero = new Hero(field, 1);
+        myHero = new Hero(field, 2);
         this.heros.add(myHero);
         for (Hero hero : this.heros) {
             hero.meltSnowInRange(0, hero.getField(), null);
@@ -403,22 +403,30 @@ public class Board extends Button{
     }
     private void clickFieldsObject(Field field){
         if (field.getHero() != null) {
-            field.getHero().mouseClicked();
-            BoardClickedStates.boardClickedState = BoardClickedStates.HERO;
-
-            if (!field.getHero().isClicked()) {
-                BoardClickedStates.boardClickedState = BoardClickedStates.FIELD;
-            }
+            this.handleHeroObjectClicked(field);
         }else{
-            BoardClickedStates.boardClickedState = BoardClickedStates.FIELD;
             this.resetHeroClicked();
+            BoardClickedStates.boardClickedState = BoardClickedStates.FIELD;
+
         }
         System.out.println(BoardClickedStates.boardClickedState);
 
     }
+
+    private void handleHeroObjectClicked(Field field){
+        if (field.getHero().isClicked()){
+            field.getHero().unclick();
+            BoardClickedStates.boardClickedState = BoardClickedStates.FIELD;
+        }else{
+            this.resetHeroClicked();
+            field.getHero().mouseClicked();
+            BoardClickedStates.boardClickedState = BoardClickedStates.HERO;
+        }
+    }
+
     private void resetHeroClicked(){
         for (Hero hero : this.heros) {
-            hero.setClicked(false);
+            hero.unclick();
         }
     }
 

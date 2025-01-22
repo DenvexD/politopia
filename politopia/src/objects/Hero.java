@@ -10,6 +10,7 @@ public class Hero{
     private int range;
     private Image img = Toolkit.getDefaultToolkit().getImage("politopia/src/main/res/Nature bunny.png");
     private boolean isClicked = false;
+    private ArrayList<Field> markedFields = new ArrayList<Field>();
     public Hero(Field field, int range){
         this.field = field;
         this.range = range;
@@ -37,9 +38,6 @@ public class Hero{
             ArrayList<Field> fieldNeightbours = this.getActiveNeighbourList(currField, prevField);
             prevField = currField;
             for (Field field : fieldNeightbours) {
-                if (field == this.field) {
-                    System.out.println("s");
-                }
                 currField = field;
                 currField.setIsSnowCovered(false);
                 this.meltSnowInRange(currRange + 1, currField, prevField);
@@ -77,25 +75,45 @@ public class Hero{
     public Field getField(){
         return this.field;
     }
-
-
-
-    public void mouseClicked(){
-        isClicked = !isClicked;
-        if (isClicked) {
-            System.out.println("clicked");
-        }else{
-            System.out.println("unckicked");
-        }
-    }
     public boolean isClicked(){
         return this.isClicked;
     }
-    public void setClicked(Boolean status){
-        this.isClicked = status;
+
+
+    public void mouseClicked(){
+        isClicked = true;
+        this.setMarksToTheFields(0, this.field, null);
+    }
+    public void unclick(){
+        this.isClicked = false;
+        this.resetAllMarkedFields(markedFields);
     }
 
-        
+    private void setMarksToTheFields(int currRange, Field currField, Field prevField){
+        if (currRange < this.range) {
+            ArrayList<Field> fieldNeightbours = this.getActiveNeighbourList(currField, prevField);
+            prevField = currField;
+            for (Field field : fieldNeightbours) {
+                if (field.getCircleMark() != null) {
+                    if (field.getCircleMark().distanseSteps > currRange) {
+                        field.createCircleMark(currRange, prevField);
+                        this.markedFields.add(field);
+                    }
+                    
+                }else{
+                    field.createCircleMark(currRange, prevField);
+                    this.markedFields.add(field);
+                }
+                this.setMarksToTheFields(currRange + 1, field, prevField);
+            }
+        }
+    }
+
+    private void resetAllMarkedFields(ArrayList<Field> markedFields){
+        for (Field field : markedFields) {
+            field.setCircleMark(null);
+        }
+        this.markedFields = new ArrayList<Field>();
+    }
 
 }
-

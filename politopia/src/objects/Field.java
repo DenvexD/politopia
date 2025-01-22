@@ -24,6 +24,7 @@ public class Field extends Button {
     private Snow snow;
     private final float imageRatio = (float)1909 / 1208;
     private Hero hero = null;
+    private CircleMark circleMark = null;
 
     public Field(int width, int height, FieldTypes fieldType){
         super(null, width, height);
@@ -53,6 +54,9 @@ public class Field extends Button {
         }
         if (this.hero != null) {
             this.hero.draw(g);
+        }
+        if (this.circleMark != null) {
+            this.circleMark.draw(g);
         }
 
         
@@ -143,5 +147,14 @@ public class Field extends Button {
     }
     public Hero getHero(){
         return this.hero;
+    }
+    public CircleMark getCircleMark(){
+        return this.circleMark;
+    }
+    public void createCircleMark(int distanseSteps, Field prevField){
+        this.circleMark = new CircleMark(distanseSteps, prevField, null, this);
+    }
+    public void setCircleMark(CircleMark circleMark){
+        this.circleMark = circleMark;
     }
 }
