@@ -190,7 +190,7 @@ public class Board extends Button{
 
     private void initHero(int fieldNumber){
         Field field = this.getFieldBasedOnId(fieldNumber);
-        myHero = new Hero(field, 2);
+        myHero = new Hero(field, 1);
         this.heros.add(myHero);
         for (Hero hero : this.heros) {
             hero.meltSnowInRange(0, hero.getField(), null);
@@ -263,17 +263,13 @@ public class Board extends Button{
             sizeChangeY = -sizeChangeY;
         }
         if ((!isMaxSize() && rotation < 0) || (!isMinSize(sizeChangeX, sizeChangeY) && rotation > 0)) {
-            System.out.println("1");
             this.adjustBoardSize(sizeChangeX, sizeChangeY);
             this.adjustBoardCoordinatesOnZoom(sizeChangeX, sizeChangeY, x, y);
             handleIntersection();
         } else{
             if (isMinSize(sizeChangeX, sizeChangeY) && rotation > 0) {
-                System.out.println("2");
                 sizeChangeX = getRestSizeChangeX();
-                System.out.println(sizeChangeX);
                 sizeChangeY = getRestSizeChangeY();
-                System.out.println(sizeChangeX);
                 this.adjustBoardSize(sizeChangeX, sizeChangeY);
                 this.adjustBoardCoordinatesOnZoom(sizeChangeX, sizeChangeY, x, y);
                 handleIntersection();
@@ -286,8 +282,6 @@ public class Board extends Button{
         return game.getFieldWidth() * 5 > game.getWindowWidth() && game.getFieldHeight() * 5 > game.getWindowHeight();
     }
     private boolean isMinSize(int sizeChangeX, int sizeChangeY){
-        System.out.println("width: " + this.getWidth() + " height: " + this.getHeight());
-        System.out.println("x: " + ((this.getWidth() + sizeChangeX * game.getBoardWidthInFields())  * game.getMaxBoardWindowSizeRatio()) + " < " + game.getWindowWidth() + " size changed: " + sizeChangeX);
         return (this.getWidth() + sizeChangeX * game.getBoardWidthInFields())  * game.getMaxBoardWindowSizeRatio() < game.getWindowWidth() && (this.getHeight() + sizeChangeY * game.getBoardHeightInFields()) * game.getMaxBoardWindowSizeRatio() < game.getWindowHeight();
     }
     private int getRestSizeChangeX(){
@@ -413,7 +407,6 @@ public class Board extends Button{
             BoardClickedStates.boardClickedState = BoardClickedStates.FIELD;
 
         }
-        System.out.println(BoardClickedStates.boardClickedState);
 
     }
 
@@ -443,7 +436,6 @@ public class Board extends Button{
     public Field getFieldBasedOnId(int id){
         int row = id / this.fields.size();
         int column = id % this.fields.getFirst().size();
-        System.err.println("row: " + row + " column: " + column);
         return this.fields.get(row).get(column);
     }
     

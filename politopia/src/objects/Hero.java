@@ -15,10 +15,14 @@ public class Hero{
     private ArrayList<Field> fieldsPathFromHero;
     private int tick = 0;
     private int currOrderNumber = 0;
+    private ArrayList<FieldTypes> exclusionTypesMelting = new ArrayList<>();
+    private ArrayList<FieldTypes> exclusionsTypesWalking = new ArrayList<>();
+    
     public Hero(Field field, int range){
         this.field = field;
         this.range = range;
         this.field.setHero(this);
+        this.exclusionsTypesWalking.add(FieldTypes.DEEP_WATER);
     }
 
     public void draw(Graphics g){
@@ -56,7 +60,7 @@ public class Hero{
     }
     public void meltSnowInRange(int currRange, Field currField, Field prevField){
         if (currRange < this.range) {
-            ArrayList<Field> fieldNeightbours = this.getActiveNeighbourList(currField, prevField);
+            ArrayList<Field> fieldNeightbours = this.getActiveNeighbourList(currField, prevField, this.exclusionTypesMelting);
             prevField = currField;
             for (Field field : fieldNeightbours) {
                 currField = field;
@@ -66,30 +70,33 @@ public class Hero{
         }
         this.field.setIsSnowCovered(false);
     }
-    private ArrayList<Field> getActiveNeighbourList(Field currField, Field prevField){
+    private ArrayList<Field> getActiveNeighbourList(Field currField, Field prevField, ArrayList<FieldTypes> requierementTypes){
         ArrayList<Field> fieldNeightbours = new ArrayList<Field>();
-        if (currField.left != prevField && currField.left != null) {
-            fieldNeightbours.add(currField.left);
-            fieldNeightbours = this.setCornerNeighboursInTheList(currField.left, prevField, fieldNeightbours);
-        }
-        if (currField.right != prevField && currField.right != null) {
-            fieldNeightbours.add(currField.right);
-            fieldNeightbours = this.setCornerNeighboursInTheList(currField.right, prevField, fieldNeightbours);
-        }
-        if (currField.top != prevField && currField.top != null) {
-            fieldNeightbours.add(currField.top);
-        }
-        if (currField.bottom != prevField && currField.bottom != null) {
-            fieldNeightbours.add(currField.bottom);
+        Field[] actualFieldNeighbours = {currField.left, currField.right, currField.top, currField.bottom};
+        for (Field field : actualFieldNeighbours) {
+            if (field != prevField && field != null && field != this.field){
+                if (!requierementTypes.contains(field.getFieldType())) {
+                    fieldNeightbours.add(field);
+                } 
+                if (field == currField.left || field == currField.right) {
+                    fieldNeightbours = this.setCornerNeighboursInTheList(field, prevField, fieldNeightbours, requierementTypes);
+                }
+            }
         }
         return fieldNeightbours;
     }
-    private ArrayList<Field> setCornerNeighboursInTheList(Field currField, Field prevField, ArrayList<Field> fieldNeightbours){
-        if (currField.bottom != prevField && currField.bottom != null) {
-            fieldNeightbours.add(currField.bottom);
+    private ArrayList<Field> setCornerNeighboursInTheList(Field currField, Field prevField, ArrayList<Field> fieldNeightbours, ArrayList<FieldTypes> requierementTypes){
+        if (currField.bottom != prevField && currField.bottom != null && currField.bottom != this.field) {
+            if (!requierementTypes.contains(currField.bottom.getFieldType())){
+                fieldNeightbours.add(currField.bottom);
+            }
+
         }
-        if (currField.top != prevField && currField.top != null) {
-            fieldNeightbours.add(currField.top);
+        if (currField.top != prevField && currField.top != null && currField.top != this.field) {
+            if (!requierementTypes.contains(currField.top.getFieldType())) {
+                fieldNeightbours.add(currField.top);
+            }
+
         }
         return fieldNeightbours;
     }
@@ -112,9 +119,9 @@ public class Hero{
 
     private void setMarksToTheFields(int currRange, Field currField, Field prevField){
         if (currRange < this.range) {
-            ArrayList<Field> fieldNeightbours = this.getActiveNeighbourList(currField, prevField);
+            ArrayList<Field> fieldNeighbours = this.getActiveNeighbourList(currField, prevField, this.exclusionsTypesWalking);
             prevField = currField;
-            for (Field field : fieldNeightbours) {
+            for (Field field : fieldNeighbours) {
                 if (field.getCircleMark() != null) {
                     if (field.getCircleMark().distanseSteps > currRange) {
                         field.createCircleMark(currRange, prevField);
@@ -149,9 +156,6 @@ public class Hero{
     }
 
     private Field getNextPathField(int currOrderNumber){
-        for (Field field : fieldsPathFromHero) {
-            System.out.println(field.number);
-        }
         if (currOrderNumber < this.fieldsPathFromHero.size()) {
             return this.fieldsPathFromHero.get(this.fieldsPathFromHero.size() - currOrderNumber - 1);
         }else{

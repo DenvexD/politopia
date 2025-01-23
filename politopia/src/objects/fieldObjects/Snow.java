@@ -22,7 +22,6 @@ public class Snow implements objectsMethods {
     }
 
     public void mouseClicked(){
-        System.out.println("click");
         this.animationTick = 0;
         this.animationStage = 0;
         this.animationIsInProgress = true;

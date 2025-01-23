@@ -28,7 +28,7 @@ public class Game implements Runnable{
     private int windowWidth = 640;
     private int boardWidthInFields = 10;
     private int boardHeightInFields = 10;
-    private int velocityMovementFramesDuration = 200;
+    private int velocityMovementFramesDuration = 100;
     private float maxBoardWindowSizeRatio = (float)0.7;
 
 

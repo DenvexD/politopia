@@ -157,4 +157,7 @@ public class Field extends Button {
     public void setCircleMark(CircleMark circleMark){
         this.circleMark = circleMark;
     }
+    public FieldTypes getFieldType(){
+        return this.fieldType;
+    }
 }
