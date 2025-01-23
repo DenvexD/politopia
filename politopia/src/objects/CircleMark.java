@@ -1,12 +1,15 @@
 package objects;
 
 import java.awt.Graphics;
+import java.util.ArrayList;
 
 public class CircleMark {
-    int distanseSteps;
-    Field prevField;
-    Field nextField;
-    Field currField;
+    public int distanseSteps;
+    private Field prevField;
+    private Field nextField;
+    private Field currField;
+    private ArrayList<Field> fieldsPathFromHero;
+    
     public CircleMark(int distanseSteps, Field prevField, Field nextField, Field currField){
         this.distanseSteps = distanseSteps;
         this.prevField = prevField;
@@ -20,12 +23,20 @@ public class CircleMark {
 
     }
     public void mouseClick() {
+        this.fieldsPathFromHero = this.getFieldsPathFromHero();
+        this.fieldsPathFromHero.getLast().getHero().activateMoving(fieldsPathFromHero);
+    }
+
+    private ArrayList<Field> getFieldsPathFromHero(){
+        fieldsPathFromHero = new ArrayList<Field>();
         CircleMark currCircle = this;
         while (currCircle.prevField.getCircleMark() != null) {
+            this.fieldsPathFromHero.add(currCircle.currField);
             currCircle = currCircle.prevField.getCircleMark();
-
         }
-        Hero hero = currCircle.prevField.getHero();
-        hero.changeField(this.currField);
+        this.fieldsPathFromHero.add(currCircle.currField);
+        this.fieldsPathFromHero.add(currCircle.prevField);
+        return fieldsPathFromHero;
     }
+
 }

@@ -65,6 +65,9 @@ public class Board extends Button{
             for (Field field : arrayList) {
                 field.update();
             }
+            for (Hero hero : this.heros) {
+                hero.update();
+            }
         }
     }
 

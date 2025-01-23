@@ -10,7 +10,11 @@ public class Hero{
     private int range;
     private Image img = Toolkit.getDefaultToolkit().getImage("politopia/src/main/res/Nature bunny.png");
     private boolean isClicked = false;
+    private boolean isMoving = false;
     private ArrayList<Field> markedFields = new ArrayList<Field>();
+    private ArrayList<Field> fieldsPathFromHero;
+    private int tick = 0;
+    private int currOrderNumber = 0;
     public Hero(Field field, int range){
         this.field = field;
         this.range = range;
@@ -24,7 +28,24 @@ public class Hero{
     }
 
     public void update() {
+        if (this.isMoving) {
+            if (tick == 120) {
+                Field nextField = this.getNextPathField(currOrderNumber);
 
+                if (nextField == null) {
+                    tick = 0;
+                    currOrderNumber = 0;
+                    this.isMoving = false;
+                }else{
+                    this.changeField(nextField);
+                    tick = 0;
+                    currOrderNumber ++;
+                }
+            }else{
+                tick ++;
+            }
+
+        }
     }
 
     private int getWidth(){
@@ -121,6 +142,21 @@ public class Hero{
         this.field = field;
         this.field.setHero(this);
         this.meltSnowInRange(0, this.field, null);
+    }
+    public void activateMoving(ArrayList<Field> fieldsPathFromHero){
+        this.isMoving = true;
+        this.fieldsPathFromHero = fieldsPathFromHero;
+    }
+
+    private Field getNextPathField(int currOrderNumber){
+        for (Field field : fieldsPathFromHero) {
+            System.out.println(field.number);
+        }
+        if (currOrderNumber < this.fieldsPathFromHero.size()) {
+            return this.fieldsPathFromHero.get(this.fieldsPathFromHero.size() - currOrderNumber - 1);
+        }else{
+            return null;
+        }
     }
 
 }
