@@ -25,6 +25,7 @@ public class Field extends Button {
     private final float imageRatio = (float)1909 / 1208;
     private Hero hero = null;
     private CircleMark circleMark = null;
+    private Forest forest;
 
     public Field(int width, int height, FieldTypes fieldType){
         super(null, width, height);
@@ -47,17 +48,23 @@ public class Field extends Button {
             for (Image image : this.fieldComponents) {
                 g.drawImage(image, cornerX, cornerY, this.getWidth(), (int)((float)this.getHeight() * imageRatio), null);
             }
+            if (this.text != null) {
+                this.drawText(g, x, y);
+            }
+            if (this.hero != null) {
+                this.hero.draw(g);
+            }
+            if (this.forest != null) {
+                this.forest.draw(g);
+            }
+            if (this.circleMark != null) {
+                this.circleMark.draw(g);
+            }
+
+
         }
 
-        if (this.text != null) {
-            this.drawText(g, x, y);
-        }
-        if (this.hero != null) {
-            this.hero.draw(g);
-        }
-        if (this.circleMark != null) {
-            this.circleMark.draw(g);
-        }
+
 
         
     }
@@ -159,5 +166,14 @@ public class Field extends Button {
     }
     public FieldTypes getFieldType(){
         return this.fieldType;
+    }
+    public void createForest(){
+        this.forest = new Forest(this);
+    }
+    public Forest getForest(){
+        return this.forest;
+    }
+    public void clearForest(){
+        this.forest = null;
     }
 }

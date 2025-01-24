@@ -14,6 +14,7 @@ public class Board extends Button{
     private ArrayList<Field> rawOFields;
     private Field field;
     private Hero myHero;
+    private HeroDisplay heroDisplay;
     private ArrayList<Hero> heros = new ArrayList<Hero>();
     private Game game;
     private int x;
@@ -46,6 +47,8 @@ public class Board extends Button{
         this.initBounds(this.x, this.y);
         initFields();
         initHero(15);
+        initForest(13);
+        initHeroDisplay();
     }
 
 
@@ -58,6 +61,9 @@ public class Board extends Button{
                 }
             }
         }    
+        if (this.heroDisplay.isVisable()) {
+            this.heroDisplay.draw(g);
+        }
     }
 
     public void update(){
@@ -195,6 +201,13 @@ public class Board extends Button{
         for (Hero hero : this.heros) {
             hero.meltSnowInRange(0, hero.getField(), null);
         }
+    }
+    private void initForest(int fieldNumber){
+        Field field = this.getFieldBasedOnId(fieldNumber);
+        field.createForest();
+    }
+    private void initHeroDisplay(){
+        this.heroDisplay = new HeroDisplay(game);
     }
 
 
@@ -390,6 +403,9 @@ public class Board extends Button{
         this.handleIntersection();
     }
     public void mouseClicked(int x, int y) {
+        if (this.heroDisplay.isVisable()) {
+            heroDisplay.mouseClick(x, y);
+        }
         for (ArrayList<Field> arrayList : fields) {
             for (Field field : arrayList) {
                 if (field.getPolygonBound().contains(x, y)) {
@@ -412,16 +428,39 @@ public class Board extends Button{
 
     private void handleHeroObjectClicked(Field field){
         if (field.getHero().isClicked()){
-            handleFieldClicked(field);
-            field.getHero().unclick();
-            BoardClickedStates.boardClickedState = BoardClickedStates.FIELD;
+            this.clickField(field);
         }else{
-            this.resetHeroClicked();
-            field.getHero().mouseClicked();
-            BoardClickedStates.boardClickedState = BoardClickedStates.HERO;
+            this.clickHero(field);
         }
     }
+    private void clickHero(Field field){
+        this.setDisplayActions(field);
+        this.heroDisplay.setVisable(true);
+        this.resetHeroClicked();
+        field.getHero().mouseClicked();
+        BoardClickedStates.boardClickedState = BoardClickedStates.HERO;
+    }
+    private void clickField(Field field){
+        handleFieldClicked(field);
+        field.getHero().unclick();
+        BoardClickedStates.boardClickedState = BoardClickedStates.FIELD;
+    }
+    private void setDisplayActions(Field field){
+        ArrayList<HeroDisplayActions> actions = new ArrayList<HeroDisplayActions>();
+        if (field.getForest() != null) {
+            actions.add(HeroDisplayActions.clearForest);
+        }else{
+            if (field.getFieldType() != FieldTypes.DEEP_WATER) {
+                actions.add(HeroDisplayActions.growForest);
+            }
+        }
+
+        this.heroDisplay.setHero(field.getHero());
+        this.heroDisplay.setActions(actions);
+    }
+
     private void handleFieldClicked(Field field){
+        this.heroDisplay.setVisable(false);
         if (field.getCircleMark() != null) {
             field.getCircleMark().mouseClick();
         }
