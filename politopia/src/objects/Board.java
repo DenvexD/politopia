@@ -196,8 +196,11 @@ public class Board extends Button{
 
     private void initHero(int fieldNumber){
         Field field = this.getFieldBasedOnId(fieldNumber);
-        myHero = new Hero(field, 1);
+        myHero = new Hero(field, 3);
+        Field field2 = this.getFieldBasedOnId(60);
+        Hero myHero2 = new Hero(field2, 1);
         this.heros.add(myHero);
+        this.heros.add(myHero2);
         for (Hero hero : this.heros) {
             hero.meltSnowInRange(0, hero.getField(), null);
         }
