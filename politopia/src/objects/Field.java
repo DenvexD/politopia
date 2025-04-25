@@ -160,7 +160,7 @@ public class Field extends Button {
         return this.circleMark;
     }
     public void createCircleMark(int distanseSteps, Field prevField){
-        this.circleMark = new CircleMark(distanseSteps, prevField, null, this);
+        this.circleMark = new CircleMark(distanseSteps, prevField, this);
     }
     public void setCircleMark(CircleMark circleMark){
         this.circleMark = circleMark;

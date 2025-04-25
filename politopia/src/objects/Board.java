@@ -390,64 +390,7 @@ public class Board extends Button{
         }
         return null;
     }
-    private void clickFieldsObject(Field field){
-        if (field.getHero() != null) {
-            this.handleHeroObjectClicked(field);
-        }else{
-            handleFieldClicked(field);
-            this.resetHeroClicked();
-            BoardClickedStates.boardClickedState = BoardClickedStates.FIELD;
-
-        }
-
-    }
-
-    private void handleHeroObjectClicked(Field field){
-        if (field.getHero().isClicked()){
-            this.clickField(field);
-        }else{
-            this.clickHero(field);
-        }
-    }
-    private void clickHero(Field field){
-        this.setDisplayActions(field);
-        this.heroDisplay.setVisable(true);
-        this.resetHeroClicked();
-        field.getHero().mouseClicked();
-        BoardClickedStates.boardClickedState = BoardClickedStates.HERO;
-    }
-    private void clickField(Field field){
-        handleFieldClicked(field);
-        field.getHero().unclick();
-        BoardClickedStates.boardClickedState = BoardClickedStates.FIELD;
-    }
-    private void setDisplayActions(Field field){
-        ArrayList<HeroDisplayActions> actions = new ArrayList<HeroDisplayActions>();
-        if (field.getForest() != null) {
-            actions.add(HeroDisplayActions.clearForest);
-        }else{
-            if (field.getFieldType() != FieldTypes.DEEP_WATER) {
-                actions.add(HeroDisplayActions.growForest);
-            }
-        }
-
-        this.heroDisplay.setHero(field.getHero());
-        this.heroDisplay.setActions(actions);
-    }
-
-    private void handleFieldClicked(Field field){
-        this.heroDisplay.setVisable(false);
-        if (field.getCircleMark() != null) {
-            field.getCircleMark().mouseClick();
-        }
-    }
-
-    private void resetHeroClicked(){
-        for (Hero hero : this.heros) {
-            hero.unclick();
-        }
-    }
-
+    
     public Field getFieldBasedOnId(int id){
         int row = id / this.fields.size();
         int column = id % this.fields.getFirst().size();

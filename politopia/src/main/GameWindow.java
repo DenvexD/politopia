@@ -8,8 +8,8 @@ public class GameWindow extends JFrame{
     private GameScreen gameScreen;
     private Dimension windowSize;
 
-    private static int height = 640;
-    private static int width = 640;
+    private static int height = 840;
+    private static int width = 1640;
 
     public GameWindow(Game game){
         setDefaultCloseOperation(EXIT_ON_CLOSE);

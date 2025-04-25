@@ -6,14 +6,12 @@ import java.util.ArrayList;
 public class CircleMark {
     public int distanseSteps;
     private Field prevField;
-    private Field nextField;
     private Field currField;
     private ArrayList<Field> fieldsPathFromHero;
     
-    public CircleMark(int distanseSteps, Field prevField, Field nextField, Field currField){
+    public CircleMark(int distanseSteps, Field prevField, Field currField){
         this.distanseSteps = distanseSteps;
         this.prevField = prevField;
-        this.nextField = nextField;
         this.currField = currField;
     }
     public void draw(Graphics g){
