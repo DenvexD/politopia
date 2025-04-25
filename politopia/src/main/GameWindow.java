@@ -8,18 +8,17 @@ public class GameWindow extends JFrame{
     private GameScreen gameScreen;
     private Dimension windowSize;
 
-    private static int height = 840;
-    private static int width = 1640;
 
     public GameWindow(Game game){
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setTheWindowSize(game.getWindowWidth(), game.getWindowHeight());
         setLocationRelativeTo(null);
         gameScreen = new GameScreen(game);
         add(gameScreen);
         setVisible(true);
-        setTheWindowSize();
+
     }
-    private void setTheWindowSize(){
+    private void setTheWindowSize(int width, int height){
         windowSize = new Dimension(width, height);
         setMinimumSize(windowSize);
         setMaximumSize(windowSize);
@@ -29,12 +28,5 @@ public class GameWindow extends JFrame{
 
     public void initInputs(){
         gameScreen.initInputs();
-    }
-
-    public static int getWindowWidth(){
-        return width;
-    }
-    public static int getWindowHeight(){
-        return height;
     }
 }

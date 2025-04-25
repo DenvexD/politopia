@@ -184,11 +184,6 @@ public class Board extends Button{
     }
 
 
-
-
-
-
-
     public void mouseDragged(int newPositionX, int newPositionY){
         if (!this.mouseExited) {
             resetVelocity();
@@ -276,7 +271,7 @@ public class Board extends Button{
         return (this.getWidth() + sizeChangeX * game.getBoardWidthInFields())  * game.getMaxBoardWindowSizeRatio() < game.getWindowWidth() && (this.getHeight() + sizeChangeY * game.getBoardHeightInFields()) * game.getMaxBoardWindowSizeRatio() < game.getWindowHeight();
     }
     private int getRestSizeChangeX(){
-        int sizeChangeX = (int)(this.getWidth() * game.getMaxBoardWindowSizeRatio() - game.getWindowWidth()) / game.getBoardWidthInFields();
+        int sizeChangeX = (int)(this.getWidth() * game.getMaxBoardWindowSizeRatio() - game.getWindowHeight()) / game.getBoardWidthInFields();
         if (Math.ceilMod(sizeChangeX, 2) == 0) {
             return -sizeChangeX;
         }else{
@@ -324,11 +319,7 @@ public class Board extends Button{
         this.y -= adjustY;
         this.adjustBounds(this.x, this.y);
     }
-    public void moveCoordinatesToCentre(int x, int y){
-        int distanceY = game.getWindowHeight()/2 - y;
-        int distanceX = game.getWindowWidth()/2 - x;
-        this.adjustBoardCoordinates(distanceX, distanceY);
-    }
+
     private void adjustFieldsCoordinates(int adjustX, int adjustY){
        for (ArrayList<Field> rawOFields : this.fields) {
             for (Field field : rawOFields) {
@@ -390,7 +381,7 @@ public class Board extends Button{
         }
         return null;
     }
-    
+
     public Field getFieldBasedOnId(int id){
         int row = id / this.fields.size();
         int column = id % this.fields.getFirst().size();

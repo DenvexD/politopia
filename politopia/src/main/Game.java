@@ -2,6 +2,7 @@ package main;
 
 import scenes.Menu;
 import scenes.Play;
+import java.awt.Toolkit;
 
 public class Game implements Runnable{
     private static double timePerFrame;
@@ -24,8 +25,8 @@ public class Game implements Runnable{
 
     private int fieldWidth = 120;
     private int fieldHeight = 120;
-    private int windowHeight = 840;
-    private int windowWidth = 1640;
+    private int windowHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
+    private int windowWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
     private int boardWidthInFields = 10;
     private int boardHeightInFields = 10;
     private int velocityMovementFramesDuration = 100;

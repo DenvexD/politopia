@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 import ui.Button;
-import main.GameWindow;
 
 import main.Game;
 import main.GameStates;
@@ -36,10 +35,10 @@ public class Menu extends GameScene implements scenesMethods{
 
 
     private int getButtonDivCentreX(Button button){
-        return GameWindow.getWindowWidth() / 2;
+        return getGame().getWindowWidth() / 2;
     }
     private int getButtonDivCentreY(int divHight){
-        return GameWindow.getWindowHeight() / 2;
+        return getGame().getWindowHeight() / 2;
     }
     private void drawButtonDiv(Graphics g, ArrayList<Button> buttonDiv){
         int divHight = getButtonDivHight(buttonDiv);
