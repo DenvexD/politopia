@@ -8,6 +8,7 @@ import java.awt.Polygon;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 import objects.fieldObjects.Snow;
+import structures.Structure;
 
 public class Field extends Button {
     private FieldTypes fieldType;
@@ -26,6 +27,7 @@ public class Field extends Button {
     private Hero hero = null;
     private CircleMark circleMark = null;
     private Forest forest;
+    private Structure structure;
 
     public Field(int width, int height, FieldTypes fieldType){
         super(null, width, height);
@@ -60,16 +62,15 @@ public class Field extends Button {
             if (this.circleMark != null) {
                 this.circleMark.draw(g);
             }
-
-
         }
-
-
-
-        
     }
     public void update(){
         snow.update();
+    }
+
+
+    public void unclick(){
+        //TODO
     }
 
     @Override
@@ -176,4 +177,11 @@ public class Field extends Button {
     public void clearForest(){
         this.forest = null;
     }
+    public void setStructure(Structure structure){
+        this.structure = structure;
+    }
+    public Structure getStructure(){
+        return structure;
+    }
+
 }

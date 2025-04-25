@@ -13,9 +13,8 @@ public class Board extends Button{
     private ArrayList<ArrayList<Field>> fields = new ArrayList<>();
     private ArrayList<Field> rawOFields;
     private Field field;
-    private Hero myHero;
-    private HeroDisplay heroDisplay;
-    private ArrayList<Hero> heros = new ArrayList<Hero>();
+
+
     private Game game;
     private int x;
     private int y;
@@ -46,9 +45,6 @@ public class Board extends Button{
         this.y = game.getWindowHeight() / 2;
         this.initBounds(this.x, this.y);
         initFields();
-        initHero(15);
-        initForest(13);
-        initHeroDisplay();
     }
 
 
@@ -61,18 +57,12 @@ public class Board extends Button{
                 }
             }
         }    
-        if (this.heroDisplay.isVisable()) {
-            this.heroDisplay.draw(g);
-        }
     }
 
     public void update(){
         for (ArrayList<Field> arrayList : fields) {
             for (Field field : arrayList) {
                 field.update();
-            }
-            for (Hero hero : this.heros) {
-                hero.update();
             }
         }
     }
@@ -194,24 +184,9 @@ public class Board extends Button{
     }
 
 
-    private void initHero(int fieldNumber){
-        Field field = this.getFieldBasedOnId(fieldNumber);
-        myHero = new Hero(field, 3);
-        Field field2 = this.getFieldBasedOnId(60);
-        Hero myHero2 = new Hero(field2, 1);
-        this.heros.add(myHero);
-        this.heros.add(myHero2);
-        for (Hero hero : this.heros) {
-            hero.meltSnowInRange(0, hero.getField(), null);
-        }
-    }
-    private void initForest(int fieldNumber){
-        Field field = this.getFieldBasedOnId(fieldNumber);
-        field.createForest();
-    }
-    private void initHeroDisplay(){
-        this.heroDisplay = new HeroDisplay(game);
-    }
+
+
+
 
 
     public void mouseDragged(int newPositionX, int newPositionY){
@@ -405,17 +380,15 @@ public class Board extends Button{
         this.mouseExited = status;
         this.handleIntersection();
     }
-    public void mouseClicked(int x, int y) {
-        if (this.heroDisplay.isVisable()) {
-            heroDisplay.mouseClick(x, y);
-        }
+    public Field getClickedField(int x, int y) {
         for (ArrayList<Field> arrayList : fields) {
             for (Field field : arrayList) {
                 if (field.getPolygonBound().contains(x, y)) {
-                    this.clickFieldsObject(field);
+                    return field;
                 }
             }
         }
+        return null;
     }
     private void clickFieldsObject(Field field){
         if (field.getHero() != null) {

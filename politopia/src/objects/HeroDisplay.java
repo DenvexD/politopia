@@ -75,6 +75,9 @@ public class HeroDisplay {
         }
 
     }
+    public boolean isMouseClicked(int x, int y){
+        return this.isVisable() && bounds.contains(x, y);
+    }
 
     public void mouseClick(int x, int y){
         HeroDisplayActions action = null;
