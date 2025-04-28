@@ -1,7 +1,7 @@
 package objects;
 
 import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.util.ArrayList;
 import java.util.Random;
@@ -48,12 +48,12 @@ public class Board extends Button{
     }
 
 
-    public void draw(Graphics g){
+    public void draw(Graphics2D g2d){
         for (ArrayList<Field> rawOFields : this.fields) {
             for (Field field : rawOFields) {
                 if (this.isVisable(field)){
-                    g.setColor(Color.gray);
-                    field.draw(g, field.getX(), field.getY());
+                    g2d.setColor(Color.gray);
+                    field.draw(g2d, field.getX(), field.getY());
                 }
             }
         }    

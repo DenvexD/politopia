@@ -64,7 +64,7 @@ public class Game implements Runnable{
     }
     private static void updateGame(){
         ups++;
-        switch (GameStates.gameState) {
+        switch (GameStates.GameState) {
             case MENU:
                 
                 break;

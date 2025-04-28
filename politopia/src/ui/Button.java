@@ -1,6 +1,6 @@
 package ui;
 import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 
@@ -22,49 +22,49 @@ public class Button {
         this.width = width;
         this.height = height;
     }
-    public void draw(Graphics g, int x, int y){
+    public void draw(Graphics2D g2d, int x, int y){
         initBounds(x, y);
         if(this.img == null){
-            this.drawBody(g);
-            this.drawBorders(g);
+            this.drawBody(g2d);
+            this.drawBorders(g2d);
         }else{
-            g.drawImage(this.img, this.bound.x, this.bound.width, this.width, this.height, null);
+            g2d.drawImage(this.img, this.bound.x, this.bound.width, this.width, this.height, null);
         }
 
         if(this.text != null){
-            this.drawText(g, x, y);
+            this.drawText(g2d, x, y);
         }
         
     }
 
 
-    private void drawBody(Graphics g){
+    private void drawBody(Graphics2D g2d){
         if (this.mouseOver){
-            g.setColor(Color.DARK_GRAY);
+            g2d.setColor(Color.DARK_GRAY);
         }else{
-            g.setColor(Color.GRAY);
+            g2d.setColor(Color.GRAY);
         }
         
-        g.fillRect(this.bound.x, this.bound.y, this.bound.width, this.bound.height);
+        g2d.fillRect(this.bound.x, this.bound.y, this.bound.width, this.bound.height);
   
     }
-    private void drawBorders(Graphics g){
-        g.setColor(Color.BLACK);
-        g.drawRect(this.bound.x, this.bound.y, this.bound.width, this.bound.height);
+    private void drawBorders(Graphics2D g2d){
+        g2d.setColor(Color.BLACK);
+        g2d.drawRect(this.bound.x, this.bound.y, this.bound.width, this.bound.height);
         if (this.mousePressed) {
-            g.drawRect(this.bound.x + 1, this.bound.y + 1, this.bound.width - 2, this.bound.height - 2);
-            g.drawRect(this.bound.x + 2, this.bound.y + 2, this.bound.width - 4, this.bound.height - 4);
+            g2d.drawRect(this.bound.x + 1, this.bound.y + 1, this.bound.width - 2, this.bound.height - 2);
+            g2d.drawRect(this.bound.x + 2, this.bound.y + 2, this.bound.width - 4, this.bound.height - 4);
         }
 
     }
-    protected void drawText(Graphics g, int x, int y){
-        g.setColor(Color.WHITE);
-        textWidth = g.getFontMetrics().stringWidth(text);
-        textHeight = g.getFontMetrics().getHeight();
+    protected void drawText(Graphics2D g2d, int x, int y){
+        g2d.setColor(Color.WHITE);
+        textWidth = g2d.getFontMetrics().stringWidth(text);
+        textHeight = g2d.getFontMetrics().getHeight();
         
         textX = x - textWidth / 2;
         textY = y + textHeight / 4;
-        g.drawString(text, textX, textY);
+        g2d.drawString(text, textX, textY);
     }
     public void initBounds(int x, int y){
         this.bound = new Rectangle(x - this.width/2, y - this.height/2, this.width, this.height);

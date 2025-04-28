@@ -1,6 +1,6 @@
 package objects;
 
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 public class CircleMark {
@@ -14,10 +14,10 @@ public class CircleMark {
         this.prevField = prevField;
         this.currField = currField;
     }
-    public void draw(Graphics g){
-        g.drawOval(this.currField.getX() - this.currField.getWidth() / 8, this.currField.getY() - this.currField.getHeight() / 8, this.currField.getWidth() / 4, this.currField.getHeight() / 4);
+    public void draw(Graphics2D g2d){
+        g2d.drawOval(this.currField.getX() - this.currField.getWidth() / 8, this.currField.getY() - this.currField.getHeight() / 8, this.currField.getWidth() / 4, this.currField.getHeight() / 4);
         String number = String.valueOf(this.prevField.number);
-        g.drawString(number, this.currField.getX() + 20, this.currField.getY() + 20);
+        g2d.drawString(number, this.currField.getX() + 20, this.currField.getY() + 20);
 
     }
     public void mouseClick() {

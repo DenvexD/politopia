@@ -1,6 +1,6 @@
 package scenes;
 
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 import ui.Button;
@@ -29,8 +29,9 @@ public class Menu extends GameScene implements scenesMethods{
     }
 
     @Override
-    public void render(Graphics g) {
-        drawButtonDiv(g, buttonDiv);
+    public void render(Graphics2D g2d) {
+        drawButtonDiv(g2d, buttonDiv);
+        GameStates.listenerReadyGameState = GameStates.MENU;
     }
 
 
@@ -40,13 +41,13 @@ public class Menu extends GameScene implements scenesMethods{
     private int getButtonDivCentreY(int divHight){
         return getGame().getWindowHeight() / 2;
     }
-    private void drawButtonDiv(Graphics g, ArrayList<Button> buttonDiv){
+    private void drawButtonDiv(Graphics2D g2d, ArrayList<Button> buttonDiv){
         int divHight = getButtonDivHight(buttonDiv);
         int i = 0;
         int compoundHight = 0;
         for (Button button : buttonDiv) {
             int yCoordinates = getButtonDivCentreY(divHight) - divHight/2 + button.getHeight()/2 + i * yOffset + compoundHight;
-            button.draw(g, getButtonDivCentreX(button), yCoordinates);
+            button.draw(g2d, getButtonDivCentreX(button), yCoordinates);
             i ++;
             compoundHight += button.getHeight();
         }
@@ -63,7 +64,7 @@ public class Menu extends GameScene implements scenesMethods{
 
     public void mouseClicked(int x, int y){
         if(playButton.getBound().contains(x, y)){
-            GameStates.gameState = GameStates.PLAYING;
+            GameStates.GameState = GameStates.PLAYING;
             System.out.println("played got clicked");
         }
         if(settingsButton.getBound().contains(x, y)){

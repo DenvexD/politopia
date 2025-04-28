@@ -1,6 +1,6 @@
 package objects;
 
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.Ellipse2D;
 
@@ -19,8 +19,8 @@ public class ActionButton {
         this.action = action;
         this.initBounds();
     }
-    public void draw(Graphics g){
-        g.drawImage(img, x, y, width, width, null);
+    public void draw(Graphics2D g2d){
+        g2d.drawImage(img, x, y, width, width, null);
     }
     private void initBounds(){
         this.bound = new Ellipse2D.Double(this.x, this.y, this.width, this.width);

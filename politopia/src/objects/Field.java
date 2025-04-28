@@ -2,7 +2,7 @@ package objects;
 
 import ui.Button;
 
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Polygon;
 import java.awt.Toolkit;
@@ -42,27 +42,27 @@ public class Field extends Button {
         this.snow = new Snow(this);
     }
     @Override
-    public void draw(Graphics g, int x, int y){
+    public void draw(Graphics2D g2d, int x, int y){
         this.initBounds(x, y);
         int cornerX = x - this.getWidth()/2;
         int cornerY = y - this.getWidth()/2;
         if (isSnowCovered) {
-            this.snow.draw(g, cornerX, cornerY, this.getWidth(), (int)(this.getHeight() * imageRatio));
+            this.snow.draw(g2d, cornerX, cornerY, this.getWidth(), (int)(this.getHeight() * imageRatio));
         }else{
             for (Image image : this.fieldComponents) {
-                g.drawImage(image, cornerX, cornerY, this.getWidth(), (int)((float)this.getHeight() * imageRatio), null);
+                g2d.drawImage(image, cornerX, cornerY, this.getWidth(), (int)((float)this.getHeight() * imageRatio), null);
             }
             if (this.text != null) {
-                this.drawText(g, x, y);
+                this.drawText(g2d, x, y);
             }
             if (this.hero != null) {
-                this.hero.draw(g);
+                this.hero.draw(g2d);
             }
             if (this.forest != null) {
-                this.forest.draw(g);
+                this.forest.draw(g2d);
             }
             if (this.circleMark != null) {
-                this.circleMark.draw(g);
+                this.circleMark.draw(g2d);
             }
         }
     }

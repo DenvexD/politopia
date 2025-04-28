@@ -1,10 +1,11 @@
 package scenes;
 
 import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 import main.Game;
+import main.GameStates;
 import objects.Board;
 import objects.BoardClickedStates;
 import objects.Field;
@@ -30,13 +31,14 @@ public class Play extends GameScene implements scenesMethods {
     }
 
     @Override
-    public void render(Graphics g) {
+    public void render(Graphics2D g2d) {
 
         myBoard.moveBoardVelocity();
-        g.setColor(Color.WHITE);
-        g.fillRect(0, 0, 640, 640);
-        myBoard.draw(g);
-        heroDisplay.draw(g);
+        g2d.setColor(Color.WHITE);
+        g2d.fillRect(0, 0, 640, 640);
+        myBoard.draw(g2d);
+        heroDisplay.draw(g2d);
+        GameStates.listenerReadyGameState = GameStates.PLAYING;
 
     }
     public void update(){

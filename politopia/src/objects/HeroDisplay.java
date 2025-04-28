@@ -1,6 +1,6 @@
 package objects;
 import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
@@ -27,12 +27,12 @@ public class HeroDisplay {
         this.game = game;
         this.initBounds();
     }
-    public void draw(Graphics g){
+    public void draw(Graphics2D g2d){
         if (isVisable) {
-            g.setColor(Color.black);
-            g.fillRect(this.x, this.y, this.width, this.height);
+            g2d.setColor(Color.black);
+            g2d.fillRect(this.x, this.y, this.width, this.height);
             for (ActionButton actionButton : actionButtons) {
-                actionButton.draw(g);
+                actionButton.draw(g2d);
             }
         }
     }

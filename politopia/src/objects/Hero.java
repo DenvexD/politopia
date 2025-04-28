@@ -1,6 +1,6 @@
 package objects;
 
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.util.ArrayList;
@@ -25,10 +25,10 @@ public class Hero{
         this.exclusionsTypesWalking.add(FieldTypes.DEEP_WATER);
     }
 
-    public void draw(Graphics g){
+    public void draw(Graphics2D g2d){
         int leftCornerX = this.field.getX() - this.getWidth()/2;
         int leftCornerY = this.field.getY() - this.getHeight() / 2;
-        g.drawImage(img, leftCornerX, leftCornerY, this.getWidth(), this.getHeight(), null);
+        g2d.drawImage(img, leftCornerX, leftCornerY, this.getWidth(), this.getHeight(), null);
     }
 
     public void update() {

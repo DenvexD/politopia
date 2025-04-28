@@ -1,6 +1,6 @@
 package structures;
 
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 
 import objects.Field;
@@ -22,7 +22,7 @@ public abstract class Structure {
     public abstract void mouseClicked();
     public abstract void unclick();
     public abstract void isClicked();
-    public abstract void render(Graphics g);
+    public abstract void render(Graphics2D g2d);
     public abstract void update();
 
 }

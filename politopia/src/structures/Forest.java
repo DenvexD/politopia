@@ -1,6 +1,6 @@
 package structures;
 
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Toolkit;
 
@@ -12,10 +12,10 @@ public class Forest extends Structure{
     public Forest(Field field){
         super(field);
     }
-    public void render(Graphics g){
+    public void render(Graphics2D g2d){
         int cornerX = this.field.getX() - this.field.getWidth()/2;
         int cornerY = this.field.getY() - this.field.getWidth()/2;
-        g.drawImage(img, cornerX, cornerY, this.field.getWidth(), this.field.getHeight(), null);
+        g2d.drawImage(img, cornerX, cornerY, this.field.getWidth(), this.field.getHeight(), null);
     }
     @Override
     public void mouseClicked() {
