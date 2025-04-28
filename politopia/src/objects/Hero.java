@@ -64,11 +64,11 @@ public class Hero{
             prevField = currField;
             for (Field field : fieldNeightbours) {
                 currField = field;
-                currField.setIsSnowCovered(false);
+                currField.removeSnowCovered();
                 this.meltSnowInRange(currRange + 1, currField, prevField);
             }
         }
-        this.field.setIsSnowCovered(false);
+        this.field.removeSnowCovered();
     }
     private ArrayList<Field> getActiveNeighbourList(Field currField, Field prevField, ArrayList<FieldTypes> requierementTypes){
         ArrayList<Field> fieldNeightbours = new ArrayList<Field>();

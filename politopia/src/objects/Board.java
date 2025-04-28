@@ -113,7 +113,7 @@ public class Board extends Button{
         }
     }
     private Field initFieldBounds(int x, int y, int i){
-        field = new Field(game.getFieldWidth(), game.getFieldHeight(), getRandomType());
+        field = new Field(game.getFieldWidth(), game.getFieldHeight(), getRandomType(), false);
         field.initBounds(x, y + game.getFieldHeight()/2);
         field.setText(Integer.toString(i));
         this.rawOFields.add(field);
@@ -181,6 +181,10 @@ public class Board extends Button{
 
     private boolean isVisable(Field field){
         return field.getPolygonBound().intersects(0, 0, game.getWindowWidth(), game.getWindowHeight());
+    }
+
+    public boolean isMouseClicked(int x, int y){
+        return polygonBound.contains(x, y);
     }
 
 

@@ -28,9 +28,11 @@ public class Field extends Button {
     private CircleMark circleMark = null;
     private Forest forest;
     private Structure structure;
+    private boolean isClickable;
 
-    public Field(int width, int height, FieldTypes fieldType){
+    public Field(int width, int height, FieldTypes fieldType, boolean isClickable){
         super(null, width, height);
+        this.isClickable = isClickable;
         this.fieldType = fieldType;
         this.setImageBasedOnType();
         this.left = null;
@@ -147,8 +149,9 @@ public class Field extends Button {
             this.snow.mouseClicked();
         }
     }
-    public void setIsSnowCovered(boolean status){
-        this.isSnowCovered = status;
+    public void removeSnowCovered(){
+        this.isSnowCovered = false;
+        isClickable = true;
     }
     public void setHero(Hero hero){
         this.hero = hero;
@@ -182,6 +185,12 @@ public class Field extends Button {
     }
     public Structure getStructure(){
         return structure;
+    }
+    public boolean isClickable(){
+        return isClickable;
+    }
+    public Snow getSnow(){
+        return snow;
     }
 
 }

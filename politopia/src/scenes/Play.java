@@ -18,7 +18,7 @@ public class Play extends GameScene implements scenesMethods {
     private HeroDisplay heroDisplay;
     private Hero clickedHero = null;
     private Field clickedField = null;
-    private Structure clickedStructure = null; //TODO
+    private Structure clickedStructure = null;
 
 
     public Play(Game game){
@@ -98,7 +98,7 @@ public class Play extends GameScene implements scenesMethods {
     public void mouseClicked(int x, int y) {
         if (heroDisplay.isMouseClicked(x, y)) {
             heroDisplay.mouseClick(x, y);
-        }else if (myBoard.getPolygonBound().contains(x, y)){
+        }else if (myBoard.isMouseClicked(x, y)){
             clickFieldsObject(myBoard.getClickedField(x, y));
         }
 
@@ -121,7 +121,6 @@ public class Play extends GameScene implements scenesMethods {
                 handleNoStateClicked(clickedField);
                 break;
         }
-        BoardClickedStates.nextState();
     }
     private void handleHeroStateClicked(Field clickedField){     //TODO
         if (clickedField.getHero() == null){
@@ -175,10 +174,12 @@ public class Play extends GameScene implements scenesMethods {
             BoardClickedStates.boardClickedState = BoardClickedStates.STRUCTURE;
             clickedStructure = clickedField.getStructure();
             clickedStructure.mouseClicked();
-        }else{
+        }else if (clickedField.isClickable()){
             BoardClickedStates.boardClickedState = BoardClickedStates.FIELD;
             this.clickedField = clickedField;
             clickedField.mouseClicked();
+        }else{
+            clickedField.getSnow().mouseClicked();
         }
     }
 

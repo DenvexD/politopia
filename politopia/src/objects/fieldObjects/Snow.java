@@ -1,5 +1,6 @@
 package objects.fieldObjects;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -25,7 +26,6 @@ public class Snow implements objectsMethods {
         this.animationTick = 0;
         this.animationStage = 0;
         this.animationIsInProgress = true;
-        this.field.setIsSnowCovered(false);
     }
     public void update(){
         if (this.animationIsInProgress) {
@@ -47,8 +47,11 @@ public class Snow implements objectsMethods {
         Image img = this.animationStages.get(0);
         g.drawImage(img, x, y, width, height, null);
         if (this.animationStage == 1) {
-            Image imga = this.animationStages.get(this.animationStage);
-            g.drawImage(imga, x, y, width, height, null);
+            g.drawImage(img, x, y, width, height, null);
+            g.setColor(Color.BLACK);
+            g.drawPolygon(field.getPolygonBound());
+            
+            g.fillPolygon(field.getPolygonBound());
         }
 
     }

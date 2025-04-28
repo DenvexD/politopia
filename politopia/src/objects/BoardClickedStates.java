@@ -3,7 +3,7 @@ package objects;
 public enum BoardClickedStates {
     HERO, STRUCTURE, FIELD, NULL;
 
-    public static BoardClickedStates boardClickedState = HERO;
+    public static BoardClickedStates boardClickedState = NULL;
     public static void nextState(){
         switch (BoardClickedStates.boardClickedState) {
             case HERO:
