@@ -162,6 +162,7 @@ public class Play extends GameScene implements scenesMethods {
         }
     }
     private void handleFieldStateClicked(Field clickedField){
+        this.clickedField.unclick();
         this.clickedField = null;
         clickedField.unclick();
         BoardClickedStates.boardClickedState = BoardClickedStates.NULL;

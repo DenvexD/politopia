@@ -13,7 +13,7 @@ public class Snow implements objectsMethods {
     private int animationDuration = 3;
     private int animationStage = 0;
     private Field field;
-    private boolean animationIsInProgress = false;
+    private boolean hoveringAnimationIsInProgress = false;
     private int animationStagesCount = 4;
     private Image img;
     private Image pufImg;
@@ -27,22 +27,11 @@ public class Snow implements objectsMethods {
     public void mouseClicked(){
         this.animationTick = 0;
         this.animationStage = 0;
-        this.animationIsInProgress = true;
+        this.hoveringAnimationIsInProgress = true;
     }
     public void update(){
-        if (this.animationIsInProgress) {
-            if (this.animationTick < this.animationDuration) {
-                this.animationTick ++;
-            }else{
-                if (this.animationStage < this.animationStagesCount) {
-                    this.animationStage ++;
-                }else{
-                    this.animationStage = 0;
-                    this.animationIsInProgress = false;
-                }
-                this.animationTick = 0;
-
-            }
+        if (this.hoveringAnimationIsInProgress) {
+            updateHoveringAnimation();
         }
     }
     public void draw(Graphics2D g2d, int x, int y, int width, int height){
@@ -58,5 +47,19 @@ public class Snow implements objectsMethods {
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
 
 
+    }
+    private void updateHoveringAnimation(){
+        if (this.animationTick < this.animationDuration) {
+            this.animationTick ++;
+        }else{
+            if (this.animationStage < this.animationStagesCount) {
+                this.animationStage ++;
+            }else{
+                this.animationStage = 0;
+                this.hoveringAnimationIsInProgress = false;
+            }
+            this.animationTick = 0;
+
+        }
     }
 }

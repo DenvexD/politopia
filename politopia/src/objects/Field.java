@@ -2,6 +2,9 @@ package objects;
 
 import ui.Button;
 
+import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Polygon;
@@ -20,7 +23,7 @@ public class Field extends Button {
     private Polygon polygonBound;
     private int x;
     private int y;
-    private ArrayList<Image> fieldComponents = new ArrayList<Image>();
+    private Image fieldImage;
     private boolean isSnowCovered = true;
     private Snow snow;
     private final float imageRatio = (float)1909 / 1208;
@@ -29,6 +32,12 @@ public class Field extends Button {
     private Forest forest;
     private Structure structure;
     private boolean isClickable;
+    private boolean highlightingAnimationIsInProgress;
+    private boolean isClicked = false;
+    private int highlightingAnimationStage = 0;
+    private int highlightingAnimationTick = 0;
+    private int highlightingAnimationStagesAmount = 2;
+    private int highlightingAnimationTicksAmount = 2;
 
     public Field(int width, int height, FieldTypes fieldType, boolean isClickable){
         super(null, width, height);
@@ -49,30 +58,104 @@ public class Field extends Button {
         if (isSnowCovered) {
             this.snow.draw(g2d, cornerX, cornerY, this.getWidth(), (int)(this.getHeight() * imageRatio));
         }else{
-            for (Image image : this.fieldComponents) {
-                g2d.drawImage(image, cornerX, cornerY, this.getWidth(), (int)((float)this.getHeight() * imageRatio), null);
+            if (isClicked) {
+                drawClickedState(g2d);
+            }else{
+                g2d.drawImage(fieldImage, cornerX, cornerY, this.getWidth(), (int)((float)this.getHeight() * imageRatio), null);
             }
-            if (this.text != null) {
-                this.drawText(g2d, x, y);
-            }
-            if (this.hero != null) {
-                this.hero.draw(g2d);
-            }
-            if (this.forest != null) {
-                this.forest.draw(g2d);
-            }
-            if (this.circleMark != null) {
-                this.circleMark.draw(g2d);
-            }
+
+            drawFieldsObjects(g2d, x, y);
+            
+
+        }
+    }
+
+    private void drawClickedState(Graphics2D g2d){
+        int cornerX = x - this.getWidth()/2;            //reusing what i already had above. Fix?
+        int cornerY = y - this.getWidth()/2;
+        g2d.drawImage(fieldImage, cornerX, cornerY, this.getWidth(), (int)((float)this.getHeight() * imageRatio), null);
+        drawHighligtedState(g2d);
+        drawActionBar(g2d);
+        
+    }
+
+    private void drawActionBar(Graphics2D g2d){
+        int[] xPoints = {0, 0, 500, 500};
+        int[] yPoints = {0, 300, 300, 0};
+        g2d.setColor(Color.BLACK);
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
+        g2d.setStroke(new BasicStroke(1.0f));
+        g2d.fillPolygon(xPoints, yPoints, 4);
+
+    }
+
+    private void drawHighligtedState(Graphics2D g2d){
+        float transparacy;
+        g2d.setColor(Color.BLUE);
+        if (highlightingAnimationIsInProgress) {
+            transparacy = 0.3f * highlightingAnimationStage;
+        }else{
+            transparacy = 1.0f;
+        }
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, transparacy));
+        g2d.setStroke(new BasicStroke(5.0f));
+        g2d.drawPolygon(polygonBound);
+        g2d.setColor(Color.BLACK);
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
+        g2d.setStroke(new BasicStroke(1.0f));
+    }
+
+    private void drawFieldsObjects(Graphics2D g2d, int x, int y){
+        if (this.text != null) {
+            this.drawText(g2d, x, y);
+        }
+        if (this.hero != null) {
+            this.hero.draw(g2d);
+        }
+        if (this.forest != null) {
+            this.forest.draw(g2d);
+        }
+        if (this.circleMark != null) {
+            this.circleMark.draw(g2d);
         }
     }
     public void update(){
-        snow.update();
+        if (isSnowCovered) {
+            snow.update();
+        }
+        if (highlightingAnimationIsInProgress) {
+            updateHighlightAnimation();
+        }
+
+
+    }
+
+    public void mouseClicked(){
+        if (isSnowCovered) {
+            this.snow.mouseClicked();
+        }else{
+            isClicked = true;
+            highlightingAnimationIsInProgress = true;
+        }
     }
 
 
     public void unclick(){
-        //TODO
+        isClicked = false;
+    }
+
+    private void updateHighlightAnimation(){
+        if (highlightingAnimationTick < highlightingAnimationTicksAmount) {
+            highlightingAnimationTick++;
+        }else{
+            if (highlightingAnimationStage < highlightingAnimationStagesAmount) {
+                highlightingAnimationStage++;
+            }else{
+                highlightingAnimationStage = 0;
+                highlightingAnimationIsInProgress = false;
+            }
+            highlightingAnimationTick = 0;
+        }
     }
 
     @Override
@@ -101,16 +184,16 @@ public class Field extends Button {
         if (this.fieldType != null) {
             switch (this.fieldType) {
                 case DEEP_WATER:
-                    this.fieldComponents.add(Toolkit.getDefaultToolkit().getImage("politopia/src/main/res/deep.png"));  
+                    fieldImage = (Toolkit.getDefaultToolkit().getImage("politopia/src/main/res/deep.png"));  
                     break;
                 case Imperius:
-                    this.fieldComponents.add(Toolkit.getDefaultToolkit().getImage("politopia/src/main/res/Imperius ground.png"));
+                    fieldImage = (Toolkit.getDefaultToolkit().getImage("politopia/src/main/res/Imperius ground.png"));
                     break;
                 case Vengir:
-                    this.fieldComponents.add(Toolkit.getDefaultToolkit().getImage("politopia/src/main/res/Vengir ground.png"));
+                    fieldImage = (Toolkit.getDefaultToolkit().getImage("politopia/src/main/res/Vengir ground.png"));
                     break;
                 case Zebasi:
-                    this.fieldComponents.add(Toolkit.getDefaultToolkit().getImage("politopia/src/main/res/Zebasi ground.png"));
+                    fieldImage = (Toolkit.getDefaultToolkit().getImage("politopia/src/main/res/Zebasi ground.png"));
                     break;
             }
         }
@@ -144,11 +227,7 @@ public class Field extends Button {
     public int getX(){
         return this.x;
     }
-    public void mouseClicked(){
-        if (isSnowCovered) {
-            this.snow.mouseClicked();
-        }
-    }
+
     public void removeSnowCovered(){
         this.isSnowCovered = false;
         isClickable = true;
