@@ -18,7 +18,7 @@ public abstract class Display {
     protected int width;
     protected int height;
     protected int distanceBetweenButtons = 50;
-    protected ArrayList<DisplayActions> actions = new ArrayList<DisplayActions>();
+    protected ArrayList<Actions> actions = new ArrayList<Actions>();
     protected ArrayList<ActionButton> actionButtons;
     Image clearForsetImg = Toolkit.getDefaultToolkit().getImage("politopia/src/main/res/Clear forest.png");
     Image growForestImg = Toolkit.getDefaultToolkit().getImage("politopia/src/main/res/Grow forest.png");
@@ -47,7 +47,7 @@ public abstract class Display {
     public boolean isVisable(){
         return this.isVisable;
     }
-    public void setActions(ArrayList<DisplayActions> actions){
+    public void setActions(ArrayList<Actions> actions){
         this.actions = actions;
         this.createButtonsBasedOnActions();
     }

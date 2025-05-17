@@ -74,18 +74,6 @@ public class Field extends Button {
         int cornerY = y - this.getWidth()/2;
         g2d.drawImage(fieldImage, cornerX, cornerY, this.getWidth(), (int)((float)this.getHeight() * imageRatio), null);
         drawHighligtedState(g2d);
-        drawActionBar(g2d);
-        
-    }
-
-    private void drawActionBar(Graphics2D g2d){
-        int[] xPoints = {0, 0, 500, 500};
-        int[] yPoints = {0, 300, 300, 0};
-        g2d.setColor(Color.BLACK);
-        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
-        g2d.setStroke(new BasicStroke(1.0f));
-        g2d.fillPolygon(xPoints, yPoints, 4);
-
     }
 
     private void drawHighligtedState(Graphics2D g2d){

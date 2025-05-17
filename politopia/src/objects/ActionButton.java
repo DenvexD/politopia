@@ -9,9 +9,9 @@ public class ActionButton {
     private int y;
     private int width;
     private Image img;
-    private DisplayActions action;
+    private Actions action;
     private Ellipse2D.Double bound;
-    public ActionButton(int x, int y, int width, Image img, DisplayActions action){
+    public ActionButton(int x, int y, int width, Image img, Actions action){
         this.x = x;
         this.y = y;
         this.width = width;
@@ -25,7 +25,7 @@ public class ActionButton {
     private void initBounds(){
         this.bound = new Ellipse2D.Double(this.x, this.y, this.width, this.width);
     }
-    public DisplayActions isClicked(int x, int y){
+    public Actions isClicked(int x, int y){
         if(this.bound.contains(x, y)){
             return this.action;
         }else{

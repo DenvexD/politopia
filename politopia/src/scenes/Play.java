@@ -26,9 +26,10 @@ public class Play extends GameScene implements scenesMethods {
     public Play(Game game){
         super(game);
         initBoard();
+        initDisplays();
         initHero(15);
         initForest(13);
-        initDisplays();
+
     }
 
     @Override
@@ -58,7 +59,7 @@ public class Play extends GameScene implements scenesMethods {
 
     private void initHero(int fieldNumber){
         Field field = myBoard.getFieldBasedOnId(fieldNumber);
-        Hero myHero = new Hero(field, 3);
+        Hero myHero = new Hero(field, 2, displays.get(0));
         this.heros.add(myHero);
         for (Hero hero : this.heros) {
             hero.meltSnowInRange(0, hero.getField(), null);
@@ -137,6 +138,9 @@ public class Play extends GameScene implements scenesMethods {
     }
     private void handleHeroStateClicked(Field clickedField){     //TODO
         if (clickedField.getHero() == null){
+            if (clickedField.getCircleMark() != null) {
+                clickedField.getCircleMark().mouseClick();
+            }
             BoardClickedStates.resetState();
             clickedHero.unclick();
             clickedHero = null;

@@ -5,6 +5,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 
+
 public class Hero{
     private Field field;
     private int range;
@@ -17,12 +18,15 @@ public class Hero{
     private int currOrderNumber = 0;
     private ArrayList<FieldTypes> exclusionTypesMelting = new ArrayList<>();
     private ArrayList<FieldTypes> exclusionsTypesWalking = new ArrayList<>();
+    private ArrayList<Actions> actions = new ArrayList<Actions>();
+    private Display display;
     
-    public Hero(Field field, int range){
+    public Hero(Field field, int range, Display display){
         this.field = field;
         this.range = range;
-        this.field.setHero(this);
-        this.exclusionsTypesWalking.add(FieldTypes.DEEP_WATER);
+        this.display = display;
+        field.setHero(this);
+        exclusionsTypesWalking.add(FieldTypes.DEEP_WATER);
     }
 
     public void draw(Graphics2D g2d){
@@ -33,7 +37,7 @@ public class Hero{
 
     public void update() {
         if (this.isMoving) {
-            if (tick == 120) {
+            if (tick == 10) {
                 Field nextField = this.getNextPathField(currOrderNumber);
 
                 if (nextField == null) {
@@ -69,6 +73,15 @@ public class Hero{
             }
         }
         this.field.removeSnowCovered();
+    }
+    private void setActions(){
+        actions.clear();
+        if (field.getForest() != null) {
+            actions.add(Actions.clearForest);
+        }else{
+            actions.add(Actions.growForest);
+        }
+
     }
     private ArrayList<Field> getActiveNeighbourList(Field currField, Field prevField, ArrayList<FieldTypes> requierementTypes){
         ArrayList<Field> fieldNeightbours = new ArrayList<Field>();
@@ -109,12 +122,20 @@ public class Hero{
 
 
     public void mouseClicked(){
+        setActions();
         isClicked = true;
+        showDisplay();
         this.setMarksToTheFields(0, this.field, null);
     }
     public void unclick(){
         this.isClicked = false;
+        display.setVisable(false);
         this.resetAllMarkedFields(markedFields);
+    }
+    private void showDisplay(){
+        ((HeroDisplay)display).setHero(this);
+        display.setActions(actions);
+        display.setVisable(true);
     }
 
     private void setMarksToTheFields(int currRange, Field currField, Field prevField){
