@@ -16,12 +16,10 @@ public class Snow implements objectsMethods {
     private boolean hoveringAnimationIsInProgress = false;
     private int animationStagesCount = 4;
     private Image img;
-    private Image pufImg;
     private int adjustAnimationY;
     public Snow(Field field){
         this.field = field;
         this.img = Toolkit.getDefaultToolkit().getImage("politopia/src/main/res/clouds.png");
-        this.pufImg = Toolkit.getDefaultToolkit().getImage("politopia/src/main/res/Cloud puff.png");
     }
 
     public void mouseClicked(){

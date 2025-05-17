@@ -1,5 +1,5 @@
 package objects;
 
-public enum HeroDisplayActions {
+public enum DisplayActions {
     clearForest, growForest
 }

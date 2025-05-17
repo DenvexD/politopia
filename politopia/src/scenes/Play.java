@@ -11,12 +11,13 @@ import objects.BoardClickedStates;
 import objects.Field;
 import objects.Hero;
 import objects.HeroDisplay;
+import objects.Display;
 import structures.Structure;
 
 public class Play extends GameScene implements scenesMethods {
     private Board myBoard;
     private ArrayList<Hero> heros = new ArrayList<Hero>();
-    private HeroDisplay heroDisplay;
+    private ArrayList<Display> displays = new ArrayList<Display>();
     private Hero clickedHero = null;
     private Field clickedField = null;
     private Structure clickedStructure = null;
@@ -27,7 +28,7 @@ public class Play extends GameScene implements scenesMethods {
         initBoard();
         initHero(15);
         initForest(13);
-        initHeroDisplay();
+        initDisplays();
     }
 
     @Override
@@ -37,9 +38,14 @@ public class Play extends GameScene implements scenesMethods {
         g2d.setColor(Color.WHITE);
         g2d.fillRect(0, 0, 640, 640);
         myBoard.draw(g2d);
-        heroDisplay.draw(g2d);
+        drawDisplays(g2d);
         GameStates.listenerReadyGameState = GameStates.PLAYING;
 
+    }
+    private void drawDisplays(Graphics2D g2d){
+        for (Display display : displays) {
+            display.draw(g2d);
+        }
     }
     public void update(){
         myBoard.update();
@@ -64,8 +70,8 @@ public class Play extends GameScene implements scenesMethods {
         field.createForest();
     }
 
-    private void initHeroDisplay(){
-        this.heroDisplay = new HeroDisplay(getGame());
+    private void initDisplays(){
+        displays.add(new HeroDisplay(getGame()));
     }
 
     private void updateMyHeros(){
@@ -98,9 +104,14 @@ public class Play extends GameScene implements scenesMethods {
     }
 
     public void mouseClicked(int x, int y) {
-        if (heroDisplay.isMouseClicked(x, y)) {
-            heroDisplay.mouseClick(x, y);
-        }else if (myBoard.isMouseClicked(x, y)){
+        for (Display display : displays) {
+            if (display.isMouseClicked(x, y)) {
+                display.mouseClick(x, y);
+            break;
+            }
+        }
+
+        if (myBoard.isMouseClicked(x, y)){
             clickFieldsObject(myBoard.getClickedField(x, y));
         }
 
@@ -134,9 +145,18 @@ public class Play extends GameScene implements scenesMethods {
             clickedField.getHero().mouseClicked();
             clickedHero = clickedField.getHero();
         }else{
-            BoardClickedStates.boardClickedState = BoardClickedStates.STRUCTURE;
-            clickedField.getStructure().mouseClicked();
-            clickedStructure = clickedField.getStructure();
+            clickedHero.unclick();
+            clickedHero = null;
+            if (clickedField.getStructure() != null) {
+                BoardClickedStates.boardClickedState = BoardClickedStates.STRUCTURE;
+                clickedField.getStructure().mouseClicked();
+                clickedStructure = clickedField.getStructure();
+            }else{
+                BoardClickedStates.boardClickedState = BoardClickedStates.FIELD;
+                clickedField.mouseClicked();
+                this.clickedField = clickedField;
+            }
+
         }
     }
     private void handleStructureStateClicked(Field clickedField){

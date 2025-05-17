@@ -9,7 +9,6 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Polygon;
 import java.awt.Toolkit;
-import java.util.ArrayList;
 import objects.fieldObjects.Snow;
 import structures.Structure;
 
