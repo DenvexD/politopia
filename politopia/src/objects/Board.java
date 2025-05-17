@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import main.Game;
+import scenes.Play;
 import ui.Button;
 
 public class Board extends Button{
@@ -35,12 +36,14 @@ public class Board extends Button{
     private float accelerationY = 0;
     private boolean velocityGreaterZeroX;
     private boolean velocityGreaterZeroY;
+    private Display display;
     
     private boolean mouseExited = false;
 
-    public Board(int widthInFields, int heightInFields, Game game){
+    public Board(int widthInFields, int heightInFields, Game game, Display display){
         super(null, widthInFields * game.getFieldWidth(), heightInFields * game.getFieldHeight());
         this.game = game;
+        this.display = display;
         this.x = game.getWindowWidth() / 2;
         this.y = game.getWindowHeight() / 2;
         this.initBounds(this.x, this.y);
@@ -113,7 +116,8 @@ public class Board extends Button{
         }
     }
     private Field initFieldBounds(int x, int y, int i){
-        field = new Field(game.getFieldWidth(), game.getFieldHeight(), getRandomType(), false);
+   
+        field = new Field(game.getFieldWidth(), game.getFieldHeight(), getRandomType(), false, display);
         field.initBounds(x, y + game.getFieldHeight()/2);
         field.setText(Integer.toString(i));
         this.rawOFields.add(field);

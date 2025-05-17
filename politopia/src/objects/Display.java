@@ -22,6 +22,7 @@ public abstract class Display {
     protected ArrayList<ActionButton> actionButtons;
     Image clearForsetImg = Toolkit.getDefaultToolkit().getImage("politopia/src/main/res/Clear forest.png");
     Image growForestImg = Toolkit.getDefaultToolkit().getImage("politopia/src/main/res/Grow forest.png");
+    Image defrostImg = Toolkit.getDefaultToolkit().getImage("politopia/src/main/res/capture.png");
 
     public Display(Game game){
         this.game = game;

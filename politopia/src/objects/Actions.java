@@ -1,5 +1,5 @@
 package objects;
 
 public enum Actions {
-    clearForest, growForest
+    clearForest, growForest, defrost
 }

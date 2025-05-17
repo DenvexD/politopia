@@ -14,6 +14,7 @@ public class MyMouseListener implements MouseListener, MouseMotionListener, Mous
 
     public MyMouseListener() {
         super();
+        System.out.println(Game.getPlay());
 	}
 
     @Override

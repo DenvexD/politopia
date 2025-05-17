@@ -9,6 +9,8 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Polygon;
 import java.awt.Toolkit;
+import java.util.ArrayList;
+
 import objects.fieldObjects.Snow;
 import structures.Structure;
 
@@ -37,8 +39,10 @@ public class Field extends Button {
     private int highlightingAnimationTick = 0;
     private int highlightingAnimationStagesAmount = 2;
     private int highlightingAnimationTicksAmount = 2;
+    private Display display;
+    private ArrayList<Actions> actions = new ArrayList<Actions>();
 
-    public Field(int width, int height, FieldTypes fieldType, boolean isClickable){
+    public Field(int width, int height, FieldTypes fieldType, boolean isClickable, Display display){
         super(null, width, height);
         this.isClickable = isClickable;
         this.fieldType = fieldType;
@@ -48,6 +52,7 @@ public class Field extends Button {
         this.top = null;
         this.bottom = null;
         this.snow = new Snow(this);
+        this.display = display;
     }
     @Override
     public void draw(Graphics2D g2d, int x, int y){
@@ -118,17 +123,36 @@ public class Field extends Button {
     }
 
     public void mouseClicked(){
+        setActions();
+        showDisplay();
+        isClicked = true;
         if (isSnowCovered) {
             this.snow.mouseClicked();
         }else{
-            isClicked = true;
             highlightingAnimationIsInProgress = true;
+        }
+    }
+    private void showDisplay(){
+        ((FieldDisplay)display).setField(this);
+        display.setActions(actions);
+        display.setVisable(true);
+    }
+    private void setActions(){
+        actions.clear();
+        if (isSnowCovered) {
+            actions.add(Actions.defrost);
+        }
+        else if (getForest() != null) {
+            actions.add(Actions.clearForest);
+        }else{
+            actions.add(Actions.growForest);
         }
     }
 
 
     public void unclick(){
         isClicked = false;
+        display.setVisable(false);
     }
 
     private void updateHighlightAnimation(){

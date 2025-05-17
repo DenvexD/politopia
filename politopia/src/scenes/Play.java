@@ -6,9 +6,11 @@ import java.util.ArrayList;
 
 import main.Game;
 import main.GameStates;
+import objects.Actions;
 import objects.Board;
 import objects.BoardClickedStates;
 import objects.Field;
+import objects.FieldDisplay;
 import objects.Hero;
 import objects.HeroDisplay;
 import objects.Display;
@@ -25,8 +27,8 @@ public class Play extends GameScene implements scenesMethods {
 
     public Play(Game game){
         super(game);
-        initBoard();
         initDisplays();
+        initBoard();
         initHero(15);
         initForest(13);
 
@@ -54,7 +56,7 @@ public class Play extends GameScene implements scenesMethods {
     }
 
     private void initBoard(){
-        myBoard = new Board(getGame().getBoardWidthInFields(), getGame().getBoardHeightInFields(), getGame());
+        myBoard = new Board(getGame().getBoardWidthInFields(), getGame().getBoardHeightInFields(), getGame(), displays.get(1));
     }
 
     private void initHero(int fieldNumber){
@@ -73,6 +75,11 @@ public class Play extends GameScene implements scenesMethods {
 
     private void initDisplays(){
         displays.add(new HeroDisplay(getGame()));
+        displays.add(new FieldDisplay(getGame()));
+    }
+
+    public Display getFieldDisplay(){
+        return displays.get(1);
     }
 
     private void updateMyHeros(){
@@ -201,12 +208,14 @@ public class Play extends GameScene implements scenesMethods {
             BoardClickedStates.boardClickedState = BoardClickedStates.STRUCTURE;
             clickedStructure = clickedField.getStructure();
             clickedStructure.mouseClicked();
-        }else if (clickedField.isClickable()){
+        }else{
             BoardClickedStates.boardClickedState = BoardClickedStates.FIELD;
             this.clickedField = clickedField;
             clickedField.mouseClicked();
-        }else{
-            clickedField.getSnow().mouseClicked();
+            if (clickedField.isClickable()) {
+                clickedField.getSnow().mouseClicked();
+            }
+
         }
     }
 
