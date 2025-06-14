@@ -1,8 +1,9 @@
-package objects;
+package displays;
 
 import java.util.ArrayList;
 
 import main.Game;
+import objects.Field;
 
 public class FieldDisplay extends Display {
     private Field field;
@@ -34,6 +35,8 @@ public class FieldDisplay extends Display {
                 case defrost:
                     ActionButton defrost = new ActionButton(this.x + currX, this.y, this.height, defrostImg, Actions.defrost);
                     this.actionButtons.add(defrost);
+                    break;
+                default:
                     break;
             }
             currX += this.height + this.distanceBetweenButtons;

@@ -11,10 +11,16 @@ import java.awt.Polygon;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 
+import displays.Actions;
+import displays.Display;
+import displays.FieldDisplay;
+import main.Game;
 import objects.fieldObjects.Snow;
+import scenes.Play;
 import structures.Structure;
 
 public class Field extends Button {
+    private Play play;
     private FieldTypes fieldType;
     public Field left;
     public Field right;
@@ -30,7 +36,7 @@ public class Field extends Button {
     private final float imageRatio = (float)1909 / 1208;
     private Hero hero = null;
     private CircleMark circleMark = null;
-    private Forest forest;
+    private structures.Forest forest;
     private Structure structure;
     private boolean isClickable;
     private boolean highlightingAnimationIsInProgress;
@@ -42,8 +48,9 @@ public class Field extends Button {
     private Display display;
     private ArrayList<Actions> actions = new ArrayList<Actions>();
 
-    public Field(int width, int height, FieldTypes fieldType, boolean isClickable, Display display){
+    public Field(int width, int height, FieldTypes fieldType, boolean isClickable, Play play){
         super(null, width, height);
+        this.play = play;
         this.isClickable = isClickable;
         this.fieldType = fieldType;
         this.setImageBasedOnType();
@@ -52,7 +59,7 @@ public class Field extends Button {
         this.top = null;
         this.bottom = null;
         this.snow = new Snow(this);
-        this.display = display;
+        this.display = play.getFieldDisplay();
     }
     @Override
     public void draw(Graphics2D g2d, int x, int y){
@@ -104,8 +111,8 @@ public class Field extends Button {
         if (this.hero != null) {
             this.hero.draw(g2d);
         }
-        if (this.forest != null) {
-            this.forest.draw(g2d);
+        if (this.structure != null) {
+            this.structure.render(g2d);
         }
         if (this.circleMark != null) {
             this.circleMark.draw(g2d);
@@ -142,9 +149,7 @@ public class Field extends Button {
         if (isSnowCovered) {
             actions.add(Actions.defrost);
         }
-        else if (getForest() != null) {
-            actions.add(Actions.clearForest);
-        }else{
+        else if (getForest() == null) {
             actions.add(Actions.growForest);
         }
     }
@@ -262,13 +267,13 @@ public class Field extends Button {
         return this.fieldType;
     }
     public void createForest(){
-        this.forest = new Forest(this);
+        this.structure = new structures.Forest(this);
     }
-    public Forest getForest(){
+    public structures.Forest getForest(){
         return this.forest;
     }
     public void clearForest(){
-        this.forest = null;
+        this.structure = null;
     }
     public void setStructure(Structure structure){
         this.structure = structure;
@@ -281,6 +286,12 @@ public class Field extends Button {
     }
     public Snow getSnow(){
         return snow;
+    }
+    public Display getDisplay(){
+        return display;
+    }
+    public Play getPlay(){
+        return play;
     }
 
 }

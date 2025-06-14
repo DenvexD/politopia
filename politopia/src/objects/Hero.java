@@ -5,6 +5,11 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 
+import displays.Actions;
+import displays.Display;
+import displays.HeroDisplay;
+import main.Game;
+
 
 public class Hero{
     private Field field;
@@ -21,10 +26,10 @@ public class Hero{
     private ArrayList<Actions> actions = new ArrayList<Actions>();
     private Display display;
     
-    public Hero(Field field, int range, Display display){
+    public Hero(Field field, int range){
         this.field = field;
         this.range = range;
-        this.display = display;
+        this.display = field.getPlay().getHeroDisplay();
         field.setHero(this);
         exclusionsTypesWalking.add(FieldTypes.DEEP_WATER);
     }

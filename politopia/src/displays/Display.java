@@ -1,4 +1,4 @@
-package objects;
+package displays;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -7,6 +7,7 @@ import java.awt.Toolkit;
 import java.util.ArrayList;
 
 import main.Game;
+import objects.Hero;
 
 public abstract class Display {
     protected Rectangle bounds;
@@ -23,6 +24,8 @@ public abstract class Display {
     Image clearForsetImg = Toolkit.getDefaultToolkit().getImage("politopia/src/main/res/Clear forest.png");
     Image growForestImg = Toolkit.getDefaultToolkit().getImage("politopia/src/main/res/Grow forest.png");
     Image defrostImg = Toolkit.getDefaultToolkit().getImage("politopia/src/main/res/capture.png");
+    Image destroyImg = Toolkit.getDefaultToolkit().getImage("politopia/src/main/res/Destroy.png");
+    Image levelupImg = Toolkit.getDefaultToolkit().getImage("politopia/src/main/res/levelup.png");
 
     public Display(Game game){
         this.game = game;

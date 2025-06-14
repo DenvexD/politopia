@@ -1,31 +1,22 @@
 package structures;
 
-import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Toolkit;
 
 import objects.Field;
 
 public class Forest extends Structure{
-    private Field field;
-    private Image img = Toolkit.getDefaultToolkit().getImage("politopia/src/main/res/Imperius forest.png");
     public Forest(Field field){
         super(field);
+        this.img = Toolkit.getDefaultToolkit().getImage("politopia/src/main/res/Imperius forest.png");;
     }
-    public void render(Graphics2D g2d){
-        int cornerX = this.field.getX() - this.field.getWidth()/2;
-        int cornerY = this.field.getY() - this.field.getWidth()/2;
-        g2d.drawImage(img, cornerX, cornerY, this.field.getWidth(), this.field.getHeight(), null);
-    }
+
     @Override
     public void mouseClicked() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'mouseClicked'");
+        setDisplaysActions();
     }
     @Override
-    public void unclick() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'unclick'");
+    public void unclick(){
+        super.display.setVisable(false);
     }
     @Override
     public void isClicked() {
@@ -37,5 +28,12 @@ public class Forest extends Structure{
     public void update() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'update'");
+    }
+
+    public void destroy(){
+        this.field.setStructure(null);
+    }
+    public void levelup(){
+        this.levelOfset -= 10;
     }
 }

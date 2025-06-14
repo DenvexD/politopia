@@ -6,6 +6,7 @@ import java.awt.Polygon;
 import java.util.ArrayList;
 import java.util.Random;
 
+import displays.Display;
 import main.Game;
 import scenes.Play;
 import ui.Button;
@@ -17,6 +18,7 @@ public class Board extends Button{
 
 
     private Game game;
+    private Play play;
     private int x;
     private int y;
     private Polygon polygonBound;
@@ -36,14 +38,13 @@ public class Board extends Button{
     private float accelerationY = 0;
     private boolean velocityGreaterZeroX;
     private boolean velocityGreaterZeroY;
-    private Display display;
     
     private boolean mouseExited = false;
 
-    public Board(int widthInFields, int heightInFields, Game game, Display display){
+    public Board(int widthInFields, int heightInFields, Game game, Play play){
         super(null, widthInFields * game.getFieldWidth(), heightInFields * game.getFieldHeight());
         this.game = game;
-        this.display = display;
+        this.play = play;
         this.x = game.getWindowWidth() / 2;
         this.y = game.getWindowHeight() / 2;
         this.initBounds(this.x, this.y);
@@ -117,7 +118,7 @@ public class Board extends Button{
     }
     private Field initFieldBounds(int x, int y, int i){
    
-        field = new Field(game.getFieldWidth(), game.getFieldHeight(), getRandomType(), false, display);
+        field = new Field(game.getFieldWidth(), game.getFieldHeight(), getRandomType(), false, play);
         field.initBounds(x, y + game.getFieldHeight()/2);
         field.setText(Integer.toString(i));
         this.rawOFields.add(field);

@@ -4,16 +4,17 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
+import displays.Actions;
+import displays.Display;
+import displays.FieldDisplay;
+import displays.HeroDisplay;
+import displays.StructureDispaly;
 import main.Game;
 import main.GameStates;
-import objects.Actions;
 import objects.Board;
 import objects.BoardClickedStates;
 import objects.Field;
-import objects.FieldDisplay;
 import objects.Hero;
-import objects.HeroDisplay;
-import objects.Display;
 import structures.Structure;
 
 public class Play extends GameScene implements scenesMethods {
@@ -56,12 +57,12 @@ public class Play extends GameScene implements scenesMethods {
     }
 
     private void initBoard(){
-        myBoard = new Board(getGame().getBoardWidthInFields(), getGame().getBoardHeightInFields(), getGame(), displays.get(1));
+        myBoard = new Board(getGame().getBoardWidthInFields(), getGame().getBoardHeightInFields(), getGame(), this);
     }
 
     private void initHero(int fieldNumber){
         Field field = myBoard.getFieldBasedOnId(fieldNumber);
-        Hero myHero = new Hero(field, 2, displays.get(0));
+        Hero myHero = new Hero(field, 2);
         this.heros.add(myHero);
         for (Hero hero : this.heros) {
             hero.meltSnowInRange(0, hero.getField(), null);
@@ -76,10 +77,17 @@ public class Play extends GameScene implements scenesMethods {
     private void initDisplays(){
         displays.add(new HeroDisplay(getGame()));
         displays.add(new FieldDisplay(getGame()));
+        displays.add(new StructureDispaly(getGame()));
     }
 
     public Display getFieldDisplay(){
         return displays.get(1);
+    }
+    public Display getHeroDisplay(){
+        return displays.get(0);
+    }
+    public Display getStructureDisplay(){
+        return displays.get(2);
     }
 
     private void updateMyHeros(){
@@ -112,14 +120,28 @@ public class Play extends GameScene implements scenesMethods {
     }
 
     public void mouseClicked(int x, int y) {
+        boolean displayGotClicked = false;
         for (Display display : displays) {
             if (display.isMouseClicked(x, y)) {
+                displayGotClicked = true;
                 display.mouseClick(x, y);
+                display.setVisable(false);
+                BoardClickedStates.boardClickedState = BoardClickedStates.NULL;
+                if (clickedField != null) {
+                    clickedField.unclick();
+                    clickedField = null;
+                }else if(clickedHero != null){
+                    clickedHero.unclick();
+                    clickedHero = null;
+                }else{
+                    clickedStructure.unclick();
+                    clickedStructure = null;
+                }
             break;
             }
         }
 
-        if (myBoard.isMouseClicked(x, y)){
+        if (!displayGotClicked && myBoard.isMouseClicked(x, y)){
             clickFieldsObject(myBoard.getClickedField(x, y));
         }
 
@@ -173,10 +195,10 @@ public class Play extends GameScene implements scenesMethods {
     private void handleStructureStateClicked(Field clickedField){
         if (clickedField.getStructure() == null) {
             BoardClickedStates.resetState();
-            clickedField.getStructure().unclick();
+            clickedStructure.unclick();
             clickedStructure = null;
-        }else if(clickedField.getStructure() != this.clickedField.getStructure()){
-            this.clickedField.getStructure().unclick();
+        }else if(clickedField.getStructure() != this.clickedStructure){
+            clickedStructure.unclick();
             if (clickedField.getHero() != null) {
                 BoardClickedStates.boardClickedState = BoardClickedStates.HERO;
                 clickedHero = clickedField.getHero();
@@ -187,6 +209,8 @@ public class Play extends GameScene implements scenesMethods {
                 clickedStructure = clickedField.getStructure();
             }
         }else{
+            this.clickedStructure.unclick();
+            this.clickedStructure = null;
             BoardClickedStates.boardClickedState = BoardClickedStates.FIELD;
             clickedField.mouseClicked();
             this.clickedField = clickedField;

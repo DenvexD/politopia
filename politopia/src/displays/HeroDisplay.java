@@ -1,8 +1,9 @@
-package objects;
+package displays;
 
 import java.util.ArrayList;
 
 import main.Game;
+import objects.Hero;
 
 public class HeroDisplay extends Display {
 
@@ -44,6 +45,8 @@ public class HeroDisplay extends Display {
                 case growForest:
                     ActionButton growForest = new ActionButton(this.x + currX, this.y, this.height, growForestImg, Actions.growForest);
                     this.actionButtons.add(growForest);
+                    break;
+                default:
                     break;
             }
             currX += this.height + this.distanceBetweenButtons;
