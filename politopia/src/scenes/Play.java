@@ -42,6 +42,7 @@ public class Play extends GameScene implements scenesMethods {
         g2d.setColor(Color.WHITE);
         g2d.fillRect(0, 0, 640, 640);
         myBoard.draw(g2d);
+        renderMyHeros(g2d);
         drawDisplays(g2d);
         GameStates.listenerReadyGameState = GameStates.PLAYING;
 
@@ -49,6 +50,11 @@ public class Play extends GameScene implements scenesMethods {
     private void drawDisplays(Graphics2D g2d){
         for (Display display : displays) {
             display.draw(g2d);
+        }
+    }
+    private void renderMyHeros(Graphics2D g2d){
+        for (Hero hero : heros) {
+            hero.draw(g2d);
         }
     }
     public void update(){
@@ -88,6 +94,9 @@ public class Play extends GameScene implements scenesMethods {
     }
     public Display getStructureDisplay(){
         return displays.get(2);
+    }
+    public BoardClickedStates getBoardClickedState(){
+        return BoardClickedStates.boardClickedState;
     }
 
     private void updateMyHeros(){
@@ -240,6 +249,48 @@ public class Play extends GameScene implements scenesMethods {
                 clickedField.getSnow().mouseClicked();
             }
 
+        }
+    }
+
+    public void WGotPressed(){
+        if (BoardClickedStates.boardClickedState == BoardClickedStates.HERO) {
+            this.clickedHero.setIsMovingForward(true);
+        }
+    }
+        public void AGotPressed(){
+        if (BoardClickedStates.boardClickedState == BoardClickedStates.HERO) {
+            this.clickedHero.setIsMovingLeft(true);
+        }
+    }
+        public void SGotPressed(){
+        if (BoardClickedStates.boardClickedState == BoardClickedStates.HERO) {
+            this.clickedHero.setIsMovingDown(true);
+        }
+    }
+        public void DGotPressed(){
+        if (BoardClickedStates.boardClickedState == BoardClickedStates.HERO) {
+            this.clickedHero.setIsMovingRight(true);
+        }
+    }
+    
+        public void WGotReleased(){
+        if (BoardClickedStates.boardClickedState == BoardClickedStates.HERO) {
+            this.clickedHero.setIsMovingForward(false);
+        }
+    }
+        public void AGotReleased(){
+        if (BoardClickedStates.boardClickedState == BoardClickedStates.HERO) {
+            this.clickedHero.setIsMovingLeft(false);
+        }
+    }
+        public void SGotReleased(){
+        if (BoardClickedStates.boardClickedState == BoardClickedStates.HERO) {
+            this.clickedHero.setIsMovingDown(false);
+        }
+    }
+        public void DGotReleased(){
+        if (BoardClickedStates.boardClickedState == BoardClickedStates.HERO) {
+            this.clickedHero.setIsMovingRight(false);
         }
     }
 

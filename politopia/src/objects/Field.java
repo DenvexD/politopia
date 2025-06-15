@@ -108,9 +108,6 @@ public class Field extends Button {
         if (this.text != null) {
             this.drawText(g2d, x, y);
         }
-        if (this.hero != null) {
-            this.hero.draw(g2d);
-        }
         if (this.structure != null) {
             this.structure.render(g2d);
         }

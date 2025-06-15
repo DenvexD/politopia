@@ -25,6 +25,14 @@ public class Hero{
     private ArrayList<FieldTypes> exclusionsTypesWalking = new ArrayList<>();
     private ArrayList<Actions> actions = new ArrayList<Actions>();
     private Display display;
+    private int xToCentre = 0;
+    private int yToCentre = 0;
+    private int x;
+    private int y;
+    private boolean isMovingLeft = false;
+    private boolean isMovingRight = false;
+    private boolean isMovingForward = false;
+    private boolean isMovingDown = false;
     
     public Hero(Field field, int range){
         this.field = field;
@@ -35,12 +43,43 @@ public class Hero{
     }
 
     public void draw(Graphics2D g2d){
-        int leftCornerX = this.field.getX() - this.getWidth()/2;
-        int leftCornerY = this.field.getY() - this.getHeight() / 2;
-        g2d.drawImage(img, leftCornerX, leftCornerY, this.getWidth(), this.getHeight(), null);
+        x = this.field.getX() + xToCentre;
+        y = this.field.getY() + yToCentre;
+        int leftCornerX = x - this.getWidth()/2;
+        int leftCornerY = y - this.getHeight() / 2;
+            g2d.drawImage(img, leftCornerX, leftCornerY, this.getWidth(), this.getHeight(), null);
+        // g2d.drawString("left", field.left.getX(), field.left.getY());
+        // g2d.drawString("right", field.right.getX(), field.right.getY());
+        // g2d.drawString("top", field.top.getX(), field.top.getY());
+        // g2d.drawString("bottom", field.bottom.getX(), field.bottom.getY());
+
+        g2d.drawLine(x, y, field.left.getX(), field.left.getY());
+        g2d.drawLine(x, y, field.right.getX(), field.right.getY());
+        g2d.drawLine(x, y, field.top.getX(), field.top.getY());
+        g2d.drawLine(x, y, field.bottom.getX(), field.bottom.getY());
+        g2d.drawLine(x, y, field.top.left.getX(), field.top.left.getY());
+        g2d.drawLine(x, y, field.top.right.getX(), field.top.right.getY());
+        g2d.drawLine(x, y, field.bottom.left.getX(), field.bottom.left.getY());
+        g2d.drawLine(x, y, field.bottom.right.getX(), field.bottom.right.getY());
     }
 
     public void update() {
+        if (BoardClickedStates.boardClickedState == BoardClickedStates.HERO) {
+            if (isMovingForward) {
+                yToCentre --;
+                
+            }
+            if (isMovingDown) {
+                yToCentre ++;
+            }
+            if (isMovingLeft) {
+                xToCentre --;
+            }
+            if (isMovingRight) {
+                xToCentre ++;
+            }
+        }
+
         if (this.isMoving) {
             if (tick == 10) {
                 Field nextField = this.getNextPathField(currOrderNumber);
@@ -174,6 +213,10 @@ public class Hero{
         this.field.setHero(null);
         this.field = field;
         this.field.setHero(this);
+        x = this.field.getX();
+        y = this.field.getY();
+        xToCentre = 0;
+        yToCentre = 0;
         this.meltSnowInRange(0, this.field, null);
     }
     public void activateMoving(ArrayList<Field> fieldsPathFromHero){
@@ -188,5 +231,20 @@ public class Hero{
             return null;
         }
     }
+
+
+    public void setIsMovingForward(boolean status){
+        isMovingForward = status;
+    }
+        public void setIsMovingDown(boolean status){
+        isMovingDown = status;
+    }
+        public void setIsMovingLeft(boolean status){
+        isMovingLeft = status;
+    }
+        public void setIsMovingRight(boolean status){
+        isMovingRight = status;
+    }
+
 
 }
